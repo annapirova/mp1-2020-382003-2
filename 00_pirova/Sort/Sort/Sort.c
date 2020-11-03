@@ -5,25 +5,6 @@
 
 void print(int B[], int n);
 
-void BubbleSort1(int A[], int n)
-{
-	int i, j;
-	int tmp;
-	for (i = 0; i < n; i++)
-	{
-		for (j = 0; j < n - i - 1; j++)
-		{
-			if (A[j] > A[j + 1])
-			{
-				tmp = A[j];
-				A[j] = A[j + 1];
-				A[j + 1] = tmp;
-			}
-		}
-
-		print(A, n);
-	}
-}
 
 void BubbleSort(int A[], int n)
 {
