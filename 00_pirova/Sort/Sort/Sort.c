@@ -1,12 +1,12 @@
 ﻿#include "stdio.h"
 #include "stdlib.h"
 #include "stdbool.h"
+#include "memory.h"
+
+void print(int* B, int n);
 
 
-void print(int B[], int n);
-
-
-void BubbleSort(int A[], int n)
+void BubbleSort(int* A, int n)
 {
 	int i, j;
 	int tmp;
@@ -37,14 +37,14 @@ void BubbleSort(int A[], int n)
 }
 
 
-void randArray(int B[], int n, int a, int b)
+void randArray(int* B, int n, int a, int b)
 {
 	int i;
 	for (i = 0; i < n; i++)
 		B[i] = rand() % (b - a) + a;
 }
 
-void sortedArray(int B[], int n)
+void sortedArray(int* B, int n)
 {
 	int i; int tmp;
 	for (i = 0; i < n; i++)
@@ -55,7 +55,7 @@ void sortedArray(int B[], int n)
 	B[n - 1] = tmp;
 }
 
-void print(int B[], int n)
+void print(int* B, int n)
 {
 	int i;
 	for (i = 0; i < n; i++)
@@ -73,7 +73,7 @@ void menu()
 	printf("0. Exit\n");
 }
 
-void Split(int B[], int left, int right)
+void Split(int* B, int left, int right)
 {
 	int mid, i, j, tmp;
 
@@ -114,12 +114,12 @@ void Split(int B[], int left, int right)
 		Split(B, i, right);
 }
 
-void QuickSort(int B[], int n)
+void QuickSort(int* B, int n)
 {
 	Split(B, 0, n - 1);
 }
 
-int Check(int B[], int n)
+int Check(int* B, int n)
 {
 	bool f = true;
 	int i;
@@ -138,13 +138,17 @@ int Check(int B[], int n)
 
 void main()
 {
-	int B[100];
+	int* B;
 	int n = 100;
 	int t = 10;
 	bool wasInput = true;
 
 	printf("start\n");
 	srand(1000);
+
+	printf("Input array size\n");
+	scanf_s("%d", &n);
+	B = (int*)malloc(sizeof(int)*n);
 
 	while (t != 0)
 	{
@@ -188,5 +192,7 @@ void main()
 		}
 		}
 	}
+
+	free(B);
 }
 
