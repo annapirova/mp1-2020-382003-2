@@ -73,51 +73,7 @@ void menu()
 	printf("0. Exit\n");
 }
 
-void Split(int B[], int left, int right)
-{
-	int mid, i, j, tmp;
 
-	mid = B[(right + left) / 2];
-	i = left;
-	j = right;
-
-	//printf("mid %d left %d right %d\n", mid, left, right);
-
-	while (i < j)
-	{
-		while (B[i] < mid)
-		{
-			i++;
-		}
-		while (B[j] > mid) 
-		{
-			j--;
-		}
-
-		if (i <= j) // <=
-		{
-			tmp = B[i];
-			B[i] = B[j];
-			B[j] = tmp;
-			i++;
-			j--;
-		}
-	}
-	 
-	//printf("=> i %d j %d\n", i, j);
-
-	// половинка от left до i
-	if (left < j)
-		Split(B, left, j);
-	// половинка от j до right
-	if (i < right)
-		Split(B, i, right);
-}
-
-void QuickSort(int B[], int n)
-{
-	Split(B, 0, n - 1);
-}
 
 int Check(int B[], int n)
 {
@@ -173,16 +129,7 @@ void main()
 			else printf("Please, input array\n");
 			break;
 		}
-		case 4: {
-			if (wasInput == 1)
-			{
-				QuickSort(B, n);
-				if (Check(B, n))
-					printf("correct\n");
-				else
-					printf("error\n");
-				print(B, n);
-			}
+
 			else printf("Please, input array\n");
 			break;
 		}
