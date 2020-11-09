@@ -153,8 +153,8 @@ void main()
 		switch (t)
 		{
 		case 1: {
-			sortedArray(B, n);
-			//randArray(B, n, -10, 10); 
+//			sortedArray(B, n);
+			randArray(B, n, -10, 10); 
 			wasInput = true;
 			break;
 		}
@@ -186,12 +186,7 @@ void main()
 			else printf("Please, input array\n");
 			break;
 		}
-
-	    //default: printf("error\n");
-		//	break;
 		}
 	}
-	//randArray(B, n, -10, 10);
-	//print(B, n);
 }
 
