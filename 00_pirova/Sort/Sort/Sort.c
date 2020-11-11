@@ -70,6 +70,8 @@ void menu()
 	printf("2. Print array\n");
 	printf("3. BubbleSort\n");
 	printf("4. QuickSort\n");
+	printf("5. InsertSort\n");
+	printf("6. MergeSort\n");
 	printf("0. Exit\n");
 }
 
