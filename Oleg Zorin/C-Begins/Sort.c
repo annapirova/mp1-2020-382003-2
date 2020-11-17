@@ -1,4 +1,4 @@
-#define _USE_MATH_DEFINES
+#define USE_MATH_DEFINES_
 #include "stdio.h"
 #include "stdlib.h"
 #include "stdbool.h"

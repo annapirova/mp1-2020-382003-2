@@ -126,7 +126,7 @@
       <CompileAs>CompileAsC</CompileAs>
       <InterproceduralOptimization>SingleFile</InterproceduralOptimization>
       <OptimizeForWindowsApplication>true</OptimizeForWindowsApplication>
-      <UseIntelOptimizedHeaders>true</UseIntelOptimizedHeaders>
+      <UseIntelOptimizedHeaders>false</UseIntelOptimizedHeaders>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
