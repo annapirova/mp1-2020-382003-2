@@ -1,7 +1,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 
-void SortBubble(int A[i], int n)
+void SortBubble(int* A, int n)
 {
 	int tmp, i, j;
 	char bl;
