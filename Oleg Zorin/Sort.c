@@ -32,7 +32,7 @@ void bubbleSort(int A[], int n)
 	inf = 0;
 	sup = n - 1;
 
-	do
+	while (inf < sup)
 	{
 		for (i = inf; i < sup; i++) // всплывает
 		{
@@ -56,7 +56,7 @@ void bubbleSort(int A[], int n)
 			}
 		}
 		inf = k;
-	} while (inf < sup);
+	}
 }
 
 void quickSort(int A[], int right, int left)
