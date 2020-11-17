@@ -61,7 +61,7 @@ void bubbleSort(int A[], int n)
 void quickSort(int A[], int right, int left)
 {
 	int mid, i, j, temp;
-
+	
 	mid = A[(left + right) / 2];
 	i = left;
 	j = right;
@@ -76,7 +76,7 @@ void quickSort(int A[], int right, int left)
 		{
 			j--;
 		}
-		if (i <= j)
+		if (i <= j) 
 		{
 			temp = A[i];
 			A[i] = A[j];
@@ -84,16 +84,16 @@ void quickSort(int A[], int right, int left)
 			i++;
 			j--;
 		}
-
+		
 	}
-
+	
 	if (left < j)
 		quickSort(A, j, left);
 	if (i < right)
 		quickSort(A, right, i);
 }
 
-void menu()
+void menu() 
 {
 	printf("\nMENU\n");
 	printf("1. Input\n");
