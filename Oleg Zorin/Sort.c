@@ -25,9 +25,8 @@ void print(int A[], int n)
 
 void bubbleSort(int A[], int n)
 {
-	int i, j, k, inf, sup, temp;
+	int i, k, inf, sup, temp;
 
-	j = 0;
 	k = 0;
 	inf = 0;
 	sup = n - 1;
