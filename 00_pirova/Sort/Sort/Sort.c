@@ -2,13 +2,17 @@
 #include "stdio.h"
 #include "stdlib.h"
 
-void swaplementm(int B[], int i)
+void swaplementm(int B[], int i1, int i2)
 {
 	int t;
-	t = B[i];
-	B[i] = B[i - 1];
-	B[i - 1] = t;
+	t = B[i1];
+	B[i1] = B[i2];
+	B[i2] = t;
 }
+
+swaplementm(B, i, i - 1)
+swaplementp(B, j, j + 1)
+
 void swaplementp(int B[], int j)
 {
 	int t;
@@ -16,6 +20,7 @@ void swaplementp(int B[], int j)
 	B[j] = B[j + 1];
 	B[j + 1] = t;
 }
+
 void Vvodmassiv(int B[], int n)
 {
 	printf("Vvodite svoi massive:");
