@@ -84,6 +84,49 @@ void print(int B[], int n)
 	printf("\n");
 }
 
+void Split(int B[], int left, int right)
+{
+	int mid, i, j, tmp;
+
+	mid = B[(right + left) / 2];
+	i = left;
+	j = right;
+
+	while (i < j)
+	{
+		while (B[i] < mid)
+		{
+			i++;
+		}
+		while (B[j] > mid)
+		{
+			j--;
+		}
+
+		if (i <= j) // <=
+		{
+			tmp = B[i];
+			B[i] = B[j];
+			B[j] = tmp;
+			i++;
+			j--;
+		}
+	}
+
+	// половинка от left до i
+	if (left < j)
+		Split(B, left, j);
+	// половинка от j до right
+	if (i < right)
+		Split(B, i, right);
+}
+
+void QuickSort(int B[], int n)
+{
+	Split(B, 0, n - 1);
+}
+
+
 void menu()
 {
 	printf("\nMENU:\n");
@@ -175,7 +218,21 @@ void main()
 			else printf("Please, input array\n");
 			break;
 		}
-
+		case 4: {
+			if (wasInput)
+			{
+				int isCorrect;
+				int* Bcopy = (int*)malloc(sizeof(int) * n);
+				//копирую содержимое массива
+				memcpy(Bcopy, B, sizeof(int) * n);
+				QuickSort(Bcopy, n);
+				isCorrect = Check(Bcopy, n);
+				printf("isCorrect %d\n", isCorrect);
+				free(Bcopy);
+			}
+			else printf("Please, input array\n");
+			break;
+		}
 		}
 	}
 
