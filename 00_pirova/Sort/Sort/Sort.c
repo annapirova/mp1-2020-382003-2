@@ -1,6 +1,7 @@
 ﻿#include "stdio.h"
 #include "stdlib.h"
 #include "stdbool.h"
+#include "windows.h"
 
 void print(int B[], int n);
 
@@ -45,15 +46,15 @@ void BubbleSort(int A[], int n, int* nc, int* nsw)
 				wasSwap = true;
 			}
 		}
-		if (!wasSwap) // wasSwap == false
+		if (wasSwap == false)
 		{
 			break;
 		}
 
-		print(A, n);
+		//print(A, n);
 	}
 
-	printf("i = %d\n", i);
+	//printf("i = %d\n", i);
 }
 
 
@@ -114,13 +115,21 @@ int Check(int B[], int n)
 
 void main()
 {
-	int B[100];
-	int n = 100;
+	int B[1000];
+	int n = 1000;
 	int t = 10;
 	bool wasInput = true;
-	double time;
+	int nComp[5]; // 0 - сравнения для Bubble, 1 - сравнения для QuickSort,...
+	int nSwaps[5]; // 0 - обмены для Bubble, 1 - обмены для QuickSort,...
 	printf("start\n");
 	srand(1000);
+	LARGE_INTEGER start, finish, freq;
+	double time;
+
+	// для всех сортировок
+	double timeAll[5];
+
+	QueryPerformanceFrequency(&freq);
 
 	while (t != 0)
 	{
@@ -129,8 +138,8 @@ void main()
 		switch (t)
 		{
 		case 1: {
-			sortedArray(B, n);
-			//randArray(B, n, -10, 10); 
+			//sortedArray(B, n);
+			randArray(B, n, -10, 10); 
 			wasInput = true;
 			break;
 		}
@@ -145,9 +154,21 @@ void main()
 			{
 				int* Bcopy = (int*)malloc(sizeof(int) * n);
 				int nc = 0, nsw = 0;
+				int isCorrect = 0;
+				//копирую содержимое массива
+				memcpy(Bcopy, B, sizeof(int)*n);
+
+				QueryPerformanceCounter(&start);
 				BubbleSort(Bcopy, n, &nc, &nsw);
+				QueryPerformanceCounter(&finish);
+				time = (double)(finish.QuadPart - start.QuadPart) / (double)freq.QuadPart;
+				nSwaps[0] = nsw;
+				nComp[0] = nc;
+				timeAll[0] = time;
+				isCorrect = Check(Bcopy, n);
+				printf("isCorrect %d\n", isCorrect);
 				printf("swaps %d comparisons %d\n", nsw, nc);
-//				printf("time %lf\n", time);
+				printf("time %lf\n", time);
 				//print(B, n);
 				free(Bcopy);
 			}
@@ -157,6 +178,8 @@ void main()
 
 		}
 	}
+
+	// сравнить nSwaps, nComp, ...
 }
 
 
