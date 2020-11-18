@@ -24,7 +24,7 @@ void BubbleSort1(int A[], int n)
 	}
 }
 
-void BubbleSort(int A[], int n)
+void BubbleSort(int A[], int n, int* nc, int* nsw)
 {
 	int i, j;
 	int tmp;
@@ -35,11 +35,13 @@ void BubbleSort(int A[], int n)
 		wasSwap = false;
 		for (j = 0; j < n - i - 1; j++)
 		{
+			(*nc)++;
 			if (A[j] > A[j + 1])
 			{
 				tmp = A[j];
 				A[j] = A[j + 1];
 				A[j + 1] = tmp;
+				(*nsw)++;
 				wasSwap = true;
 			}
 		}
@@ -141,10 +143,13 @@ void main()
 		case 3: {
 			if (wasInput == 1)
 			{
-				BubbleSort(B, n);
+				int* Bcopy = (int*)malloc(sizeof(int) * n);
+				int nc = 0, nsw = 0;
+				BubbleSort(Bcopy, n, &nc, &nsw);
+				printf("swaps %d comparisons %d\n", nsw, nc);
 //				printf("time %lf\n", time);
-				print(B, n);
-
+				//print(B, n);
+				free(Bcopy);
 			}
 			else printf("Please, input array\n");
 			break;
