@@ -1,131 +1,201 @@
-/* Number 9
-#include "stdio.h"
 #include "math.h"
-void main()
+#include "stdio.h"
+#include "stdbool.h"
+#include "stdlib.h"
+#include "time.h"
+
+void Menu()
 {
-	double r, q, p;
-	int d;
-		printf("Enter r circle\n");
-	scanf_s("%lf", &r);
-		printf("Enter diagonal q and p\n");
-	scanf_s("%lf", &q);
-	scanf_s("%lf", &p);
-	d = 2 * r;
-	if ((q>d)&&(p>d))
+	printf("\nMenu: \n");
+	printf(" 1) Input massive \n ");
+	printf(" 2) Print massive \n");
+	printf(" 3) BubbleSort \n");
+	printf(" 4) InsertSort \n");
+	printf(" 5) MergeSort \n");
+	printf(" 0) Exit \n");
+}
+
+void InputRandArray(int *B, int n, int a, int b)
+{
+	int i;
+	for (i = 0; i < n; i++)
 	{
-		printf("Right!\n");
-	}
-	else
-	{
-		printf("Wrong!\n");
+		B[i] = rand() % (b - a) + a;
 	}
 }
-*/
-/* Number 5
-#include "stdio.h"
-#include "math.h"
-void main()
+
+void PrintArray(int *B, int n)
 {
-	double a, b, c, x1, x2, x3, d;
-	printf("Enter a,b\n");
-	scanf_s("%lf", &a);
-	scanf_s("%lf", &b);
-	x1 = -b / a;
-	printf("x = %3.3f\n", x1);
-	printf("Enter c\n");
-	scanf_s("%lf", &c);
-	d = (b * b) - 4 * a * c;
-	if (d>0)
+	int i;
+	for (i = 0; i < n; i++)
 	{
-		printf("Has 2 solutions\n");
-		x2 = ((-b) + sqrt(d)) / (2 * a);
-		x3 = ((-b) - sqrt(d)) / (2 * a);
-		printf("x1 = %3.3f\n", x2);
-		printf("x2 = %3.3f\n", x3);
+		printf("%d ", B[i]);
 	}
-	else
+	printf("\n");
+}
+
+void BubbleSort(int *B, int n)
+{
+	int i, tmp, j;
+	for (i = 0; i < n; i++)
 	{
-		if (d==0)
+		for (j = 0; j < i; j++)
 		{
-			printf("Has 1 solution");
-			x2 = ((-b) + sqrt(d)) / (2 * a);
-			x3 = ((-b) - sqrt(d)) / (2 * a);
-			printf("x1 = x2 = %3.3f\n", x2);
+			if (B[i] > B[j + 1])
+			{
+				tmp = B[i];
+				B[j] = B[j + 1];
+				B[j + 1] = tmp;
+			}
+		}
+	}
+}
+
+void InsertSort(int *B, int n)
+{
+	int i, j, tmp;
+	for (i = 0; i < n; i++)
+	{
+		tmp = B[i];
+		j = i - 1;
+
+		while (j >= 0 && B[j] > tmp)
+		{
+			B[j + 1] = B[j];
+			j--;
+		}
+		B[j + 1] = tmp;
+	}
+}
+
+void MergeSort1(int *B, int l, int r, int mid)
+{
+	int i, j, k;
+	int sl = mid - l + 1;
+	int sr = r - mid;
+	int* L;
+	int* R;
+	for (i = 0; i < sl; i++)
+	{
+		L[i] = B[l + i];
+	}
+	for (j = 0; j < sr; j++)
+	{
+		R[j] = B[mid + 1 + j];
+	}
+	i = 0;
+	j = 0;
+	k = 1;
+	while (i < sl && j < sr)
+	{
+		if (L[i] <= R[j])
+		{
+			B[k] = L[i];
+			i++;
 		}
 		else
 		{
-			if (d < 0)
-			{
-				printf("Hasn't solutions\n");
-			}
+			B[k] = R[j];
+			j++;
 		}
-		
+	}
+	while (i < sl)
+	{
+		B[k] = L[i];
+		i++;
+		k++;
+	}
+	while (j < sr)
+	{
+		B[k] = R[j];
+		j++;
+		k++;
 	}
 }
-*/
 
+void MergeSort(int *B, int l, int r)
+{
+	if (l < r)
+	{
+		int mid = l + (int)((r - l) / 2);
+		MergeSort(B, l, mid);
+		MergeSort(B, mid + 1, r);
+		MergeSort1(B, l, mid, r);
+	}
+}
 
-/*#include "stdio.h"
-#include "math.h"
 void main()
 {
-	double x ;
-	int j, i;
-	int c = 0;
-	printf("Enter n\n");
-	scanf_s("%lf", &x);
-	for (int i = 2; i <= x; i++)
+	int A[1000];
+	int n =1000;
+	int t = 10;
+	bool check = false;
+	while(t != 0)
 	{
-		for (int j = 2; j < i; j++)
-		{
-			if ((i % j == 0) && (i != j))
+		Menu();
+			scanf_s("%d", &t);
+			switch (t);
 			{
-				c = 1;
+				case 1: 
+				{
+					InputRandArray(A, n, -100, 100);
+					check = true;
+					break;
+				}
+				case 2:
+				{
+					if (check)
+					{
+						PrintArray(A, n);
+					}
+					else
+					{
+						printf("Input Massive\n");
+					}
+					break;
+				}
+				case 3:
+				{
+					if (check)
+					{
+						BubbleSort(A, n);
+						PrintArray(A, n);
+					}
+					else
+					{
+						printf("Input Massive\n");
+					}
+					break;
+				}
+				case 4:
+				{
+					if (check)
+					{
+						InsertSort(A, n);
+						PrintArray(A, n);
+					}
+					else
+					{
+						printf("Input Massive\n");
+					}
+					break;
+				}
+				case 5:
+				{
+					if (check)
+					{
+						MergeSort(A, 0, n - 1);
+						PrintArray(A, n);
+					}
+					else
+					{
+						printf("Input Massive\n");
+					}
+					break;
+				}
 			}
-			
-		}
-		if (c == 0)
-		{
-			printf("%d\n", i);
-		}
-		c = 0;
-		
+				default:
+					printf("Enter number 0 to 5\n");
 	}
-		
+	return 0;
 }
-*/
-/*#include "stdio.h"
-#include "math.h"
-#include <stdbool.h>
-void main()
-{
-	int s = 0;
-	int num;
-	bool check = true;
-	scanf_s("%d", &num);
-	if (num < 0)
-	{
-		check = false;
-	}
-	while (true)
-	{
-		scanf_s("%d", &num);
-		if (num == 1000)
-		{
-			break;
-		}
-		if ((num < 0) && (check == true))
-		{
-			s = s + 1;
-			check = false;
-		}
-		else if ((num > 0) && (check == false))
-		{
-			s = s + 1;
-			check = true;
-		}
-	}
-	printf("%d", s);
-
-}
-*/
