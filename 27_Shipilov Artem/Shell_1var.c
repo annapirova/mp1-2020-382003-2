@@ -5,7 +5,7 @@
 
 void shell(int* B, int n)
 {
-    int i, j, s, prim = 4;
+    int i, j, s, prim = 1;
     while (prim > 0)
     {
         for (i = 0; i < n; i++)
@@ -28,7 +28,11 @@ void shell(int* B, int n)
 int main()
 {
     int i;
-    int B[10] = { 0, 1, 6, 3, 5, 2, 5, -1, 4, 6 };
+    int B[10];// = { 0, 1, 6, 3, 5, 2, 5, -1, 4, 6 };
+    int n = 10;
+    printf("Massiv - ");
+    for (i = 0; i < n; i++)
+        scanf_s("%d", &B[i]);
     shell(B, 10);
     for (i = 0; i < 10; i++)
     {
