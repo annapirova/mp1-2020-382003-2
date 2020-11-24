@@ -12,7 +12,7 @@ void print(int* B, int n)
 {
 	int i;
 	for (i = 0; i < n; i++)
-		printf("%d ", B[i]);
+		printf("%3d ", B[i]);
 	printf("\n");
 }
 
@@ -97,14 +97,42 @@ void Free2d(int*** A, int n)
 	free(*A);
 }
 
+// С[i][j] = summ(A[i][k]*B[k][j]) 
+void MatMult(int** A, int** B, int** C, int n, int m, int l)
+{
+	// A размера n * m
+	// B размера m * l
+	// С размера n * l
+	int i, j, k, sum;
+	for (i = 0; i < n; i++)
+	{
+		for (j = 0; j < l; j++)
+		{
+			sum = 0;
+			for (k = 0; k < m; k++)
+				sum += A[i][k] * B[k][j];
+			C[i][j] = sum;
+		}
+	}
+}
+
+int SumDiag(int** M, int n, int shift)
+{
+	int i, j;
+	int sum = 0;
+	for (i = 0; i < n - shift; i++)
+		sum += M[i][i + shift];
+	return sum;
+}
+
 void main()
 {
 	int* B, *B2;
-	int n = 5, m = 3;
+	int n = 2, m = 3, l = 4;
 	int i, j;
 	int** A;
 	int** A2;
-
+	int** C;
 	/*
 	// способ 1
 	// матрица размера n * m
@@ -129,18 +157,38 @@ void main()
 		A[i] = (int*)malloc(sizeof(int) * m);
 */	
 	Malloc2d(&A, n, m);
-	Malloc2d(&A2, n, m);
+	Malloc2d(&A2, m, l);
+	Malloc2d(&C, n, l);
 
 	// A[i, j] --> A[i][j]
 	// элемент из строки 3 столбец 2 --> A[3][2]
 	RandArray2d(A, n, m, -1, 5);
 	Print2D_2(A, n, m);
 	
-	RandArray2d(A2, n, m, -1, 5);
-	Print2D_2(A2, n, m);
+	RandArray2d(A2, m, l, -1, 5);
+	Print2D_2(A2, m, l);
+
+	MatMult(A, A2, C, n, m, l);
+	Print2D_2(C, n, l);
 
 	Free2d(&A, n);
-	Free2d(&A2, n);
+	Free2d(&A2, m);
+	Free2d(&C, n);
+
+	// сумма элементов по диагоналям
+	{
+		int** M;
+		int n = 5;
+		int sum;
+		Malloc2d(&M, n, n);
+		RandArray2d(M, n, n, -1, 5);
+		Print2D_2(M, n, n);
+
+		sum = SumDiag(M, n, 2);
+		printf("sum = %d\n", sum);
+
+		Free2d(&M, n);
+	}
 
 	// освободить память
 	//for (i = 0; i < n; i++)
