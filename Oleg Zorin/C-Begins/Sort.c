@@ -2,6 +2,7 @@
 #include "stdlib.h"
 #include "stdbool.h"
 #include "malloc.h"
+#include "memory.h"
 #include "time.h"
 
 void randArray(int* A, int n)
@@ -26,7 +27,7 @@ void print(int* A, int n)
 	printf("\n");
 }
 
-void bubbleSort(int* A, int n)
+void bubbleSort(int* A, int n, int* nc, int* nsw)
 {
 	int i, k, inf, sup, temp;
 
@@ -44,7 +45,9 @@ void bubbleSort(int* A, int n)
 				A[i + 1] = A[i];
 				A[i] = temp;
 				k = i;
+				(*nsw)++;
 			}
+			(*nc)++;
 		}
 		sup = k;
 		for (i = sup; i > inf; i--) // тонет
@@ -55,13 +58,15 @@ void bubbleSort(int* A, int n)
 				A[i - 1] = A[i];
 				A[i] = temp;
 				k = i;
+				(*nsw)++;
 			}
+			(*nc)++;
 		}
 		inf = k;
 	}
 }
 
-void quickSort(int* A, int right, int left)
+void quickSort(int* A, int right, int left, int* nc, int* nsw)
 {
 	int mid, i, j, temp;
 	
@@ -86,14 +91,15 @@ void quickSort(int* A, int right, int left)
 			A[j] = temp;
 			i++;
 			j--;
+			(*nsw)++;
 		}
-		
+		(*nc)++;	
 	}
 	
 	if (left < j)
-		quickSort(A, j, left);
+		quickSort(A, j, left, &(*nc), &(*nsw));
 	if (i < right)
-		quickSort(A, right, i);
+		quickSort(A, right, i, &(*nc), &(*nsw));
 }
 
 void insertSort(int* A, int n)
@@ -206,7 +212,10 @@ void menu()
 void main()
 {
 	int* Arr = NULL;
+	int* ArrCopy = NULL;
 	int n, t;
+	int nComp[5], nSwap[5];
+	int nc, nsw;
 	bool wasInput = false;
 	clock_t time;
 
@@ -239,11 +248,22 @@ void main()
 		case 3: {
 			if (wasInput)
 			{
+				ArrCopy = (int*)malloc(sizeof(int) * n);
+				memcpy(ArrCopy, Arr, sizeof(int) * n);
+				nc = 0;
+				nsw = 0;
+
 				time = clock();
-				bubbleSort(Arr, n);
+				bubbleSort(ArrCopy, n, &nc, &nsw);
 				time = clock() - time;
-				if (Check) printf("Sorted correctly\n");
-				printf("Time: %f\n", (double)time / CLOCKS_PER_SEC);
+
+				if (Check(ArrCopy, n)) printf("Sorted correctly\n");
+				printf("Time: %f sec\n", (double)time / CLOCKS_PER_SEC);
+				printf("Swaps: %d, comparisons: %d\n", nsw, nc);
+
+				nComp[0] = nc;
+				nSwap[0] = nsw;
+				free(ArrCopy);
 			}
 			else
 				printf("Please, input array\n");
@@ -252,11 +272,22 @@ void main()
 		case 4: {
 			if (wasInput)
 			{
+				ArrCopy = (int*)malloc(sizeof(int) * n);
+				memcpy(ArrCopy, Arr, sizeof(int) * n);
+				nc = 0;
+				nsw = 0;
+
 				time = clock();
-				quickSort(Arr, n - 1, 0);
+				quickSort(ArrCopy, n - 1, 0, &nc, &nsw);
 				time = clock() - time;
-				if (Check) printf("Sorted correctly\n");
-				printf("Time: %f\n", (double)time / CLOCKS_PER_SEC);
+
+				if (Check(ArrCopy, n)) printf("Sorted correctly\n");
+				printf("Time: %f sec\n", (double)time / CLOCKS_PER_SEC);
+				printf("Swaps: %d, comparisons: %d\n", nsw, nc);
+
+				nComp[1] = nc;
+				nSwap[1] = nsw;
+				free(ArrCopy);
 			}
 			else
 				printf("Please, input array\n");
@@ -265,26 +296,40 @@ void main()
 		case 5: {
 			if (wasInput)
 			{
+				ArrCopy = (int*)malloc(sizeof(int) * n);
+				memcpy(ArrCopy, Arr, sizeof(int) * n);
+
 				time = clock();
-				insertSort(Arr, n);
+				insertSort(ArrCopy, n);
 				time = clock() - time;
-				if (Check) printf("Sorted correctly\n");
-				printf("Time: %f\n", (double)time / CLOCKS_PER_SEC);
+
+				if (Check(ArrCopy, n)) printf("Sorted correctly\n");
+				printf("Time: %f sec\n", (double)time / CLOCKS_PER_SEC);
+
+				free(ArrCopy);
 			}
 			else
 				printf("Please, input array\n");
+			break;
 		}
 		case 6: {
 			if (wasInput)
 			{
+				ArrCopy = (int*)malloc(sizeof(int) * n);
+				memcpy(ArrCopy, Arr, sizeof(int) * n);
+
 				time = clock();
-				mergeSort(Arr, 0, n - 1);
+				mergeSort(ArrCopy, 0, n - 1);
 				time = clock() - time;
-				if (Check) printf("Sorted correctly\n");
-				printf("Time: %f\n", (double)time / CLOCKS_PER_SEC);
+
+				if (Check(ArrCopy, n)) printf("Sorted correctly\n");
+				printf("Time: %f sec\n", (double)time / CLOCKS_PER_SEC);
+
+				free(ArrCopy);
 			}
 			else
 				printf("Please, input array\n");
+			break;
 		}
 		case 0: {
 			break;
