@@ -1,19 +1,22 @@
-#define USE_MATH_DEFINES_
 #include "stdio.h"
 #include "stdlib.h"
 #include "stdbool.h"
-#include "math.h"
+#include "malloc.h"
+#include "time.h"
 
-void randArray(int A[], int n, int a, int b)
+void randArray(int* A, int n)
 {
 	int i;
+	int min = -n / 2;
+	int max = n / 2;
+
 	for (i = 0; i < n; i++)
 	{
-		A[i] = rand() % (b - a) + a;
+		A[i] = rand() % (max - min) + min;
 	}
 }
 
-void print(int A[], int n)
+void print(int* A, int n)
 {
 	int i;
 	for (i = 0; i < n; i++)
@@ -23,7 +26,7 @@ void print(int A[], int n)
 	printf("\n");
 }
 
-void bubbleSort(int A[], int n)
+void bubbleSort(int* A, int n)
 {
 	int i, k, inf, sup, temp;
 
@@ -58,7 +61,7 @@ void bubbleSort(int A[], int n)
 	}
 }
 
-void quickSort(int A[], int right, int left)
+void quickSort(int* A, int right, int left)
 {
 	int mid, i, j, temp;
 	
@@ -93,35 +96,137 @@ void quickSort(int A[], int right, int left)
 		quickSort(A, right, i);
 }
 
+void insertSort(int* A, int n)
+{
+	int i, j, temp;
+
+	for (i = 1; i < n; i++)
+	{
+		temp = A[i];
+		j = i - 1;
+		while (j >= 0 && A[j] > temp)
+		{
+			A[j + 1] = A[j];
+			j--;
+		}
+		A[j + 1] = temp;
+	}
+}
+
+void merge(int* A, int left, int mid, int right)
+{
+	int* tempArr;
+	int il, ir, i, t;
+
+	il = left;
+	ir = mid + 1;
+	i = 0;
+
+	t = right - left + 1;
+	tempArr = (int*)malloc(sizeof(int) * t);
+
+	while (il <= mid && ir <= right)
+	{
+		if (A[il] < A[ir])
+		{
+			tempArr[i] = A[il];
+			i++;
+			il++;
+		}
+		else
+		{
+			tempArr[i] = A[ir];
+			i++;
+			ir++;
+		}
+	}
+	while (il <= mid)
+	{
+		tempArr[i] = A[il];
+		i++;
+		il++;
+	}
+	while (ir <= right)
+	{
+		tempArr[i] = A[ir];
+		i++;
+		ir++;
+	}
+	for (i = 0; i < t; i++)
+	{
+		A[left + i] = tempArr[i];
+	}
+	free(tempArr);
+}
+
+void mergeSort(int* A, int left, int right)
+{
+	int mid;
+
+	if (left < right)
+	{
+		mid = (left + right) / 2;
+		mergeSort(A, left, mid);
+		mergeSort(A, mid + 1, right);
+		merge(A, left, mid, right);
+	}
+
+}
+
+bool Check(int* A, int n)
+{
+	int i;
+	bool f = true;
+
+	for (i = 0; i < n - 1; i++)
+	{
+		if (A[i + 1] < A[i])
+		{
+			f = false;
+			break;
+		}
+	}
+	return f;
+}
+
 void menu() 
 {
-	printf("\nMENU\n");
-	printf("1. Input\n");
-	printf("2. Print\n");
-	printf("3. BubbleSort\n");
-	printf("4. QuickSort\n");
-	printf("0. Exit\n");
+	printf("+---------------------+\n");
+	printf("| MENU:               |\n");
+	printf("|  1. Input           |\n");
+	printf("|  2. Print           |\n");
+	printf("|  3. BubbleSort      |\n");
+	printf("|  4. QuickSort       |\n");
+	printf("|  5. InsertSort      |\n");
+	printf("|  6. MergeSort       |\n");
+	printf("|  0. Exit            |\n");
+	printf("|_____________________|\n");
 }
 
 void main()
 {
-	int Arr[100], n, t;
+	int* Arr = NULL;
+	int n, t;
 	bool wasInput = false;
-	n = 10;
+	clock_t time;
 
-	printf("Start\n");
+	n = 0;
+	menu();
+	
 	do
 	{
-		menu();
+		printf(">>> ");
 		scanf_s("%d", &t);
-		srand(10);
+		srand(1000);
 
 		switch (t)
 		{
 		case 1: {
-			randArray(Arr, n, -10, 10);
+			printf("Enter size: ");
+			scanf_s("%d", &n);
+			Arr = (int*)malloc(sizeof(int) * n);
+			randArray(Arr, n);
 			wasInput = true;
-			print(Arr, n);
 			break;
 		}
 		case 2: {
@@ -133,19 +238,53 @@ void main()
 		}
 		case 3: {
 			if (wasInput)
+			{
+				time = clock();
 				bubbleSort(Arr, n);
+				time = clock() - time;
+				if (Check) printf("Sorted correctly\n");
+				printf("Time: %f\n", (double)time / CLOCKS_PER_SEC);
+			}
 			else
 				printf("Please, input array\n");
-			print(Arr, n);
 			break;
 		}
 		case 4: {
 			if (wasInput)
+			{
+				time = clock();
 				quickSort(Arr, n - 1, 0);
+				time = clock() - time;
+				if (Check) printf("Sorted correctly\n");
+				printf("Time: %f\n", (double)time / CLOCKS_PER_SEC);
+			}
 			else
 				printf("Please, input array\n");
-			print(Arr, n);
 			break;
+		}
+		case 5: {
+			if (wasInput)
+			{
+				time = clock();
+				insertSort(Arr, n);
+				time = clock() - time;
+				if (Check) printf("Sorted correctly\n");
+				printf("Time: %f\n", (double)time / CLOCKS_PER_SEC);
+			}
+			else
+				printf("Please, input array\n");
+		}
+		case 6: {
+			if (wasInput)
+			{
+				time = clock();
+				mergeSort(Arr, 0, n - 1);
+				time = clock() - time;
+				if (Check) printf("Sorted correctly\n");
+				printf("Time: %f\n", (double)time / CLOCKS_PER_SEC);
+			}
+			else
+				printf("Please, input array\n");
 		}
 		case 0: {
 			break;
@@ -155,4 +294,5 @@ void main()
 			break;
 		}
 	} while (t != 0);
+	free(Arr);
 }
