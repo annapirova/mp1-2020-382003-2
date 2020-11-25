@@ -26,29 +26,91 @@ void SortBubble(int* A, int n)
 void ItemList()
 {
 	printf("\nMenu:\n");
-	printf("1)InputArray\n");
-	printf("2)PrintArray\n");
-	printf("3)Bubble\n");
-	printf("4)QuickSort\n");
+	printf("1)Input array\n");
+	printf("2)Print array\n");
+	printf("3)Bubble sort\n");
+	printf("4)Sort by inserts\n");
 	printf("0)Exit\n");
 }
 
-void main();
+void randArray(int B[], int n, int a, int b)
+{
+	int i;
+	for (i = 0; i < n; i++)
+		B[i] = rand() % (b - a) + a;
+}
+
+void print(int B[], int n)
+{
+	int i;
+	for (i = 0; i < n; i++)
+		printf("%d  ", B[i]);
+	printf("\n");
+}
+
+int Check(int *B, int n)
+{
+	int f = 1;
+	int i;
+	for (i = 0; i < n - 1; i++)
+	{
+		if (B[i + 1] < B[i])
+		{
+			f = 0;
+			break;
+		}
+	}
+	return f;
+}
+
+void SortByInserts(int* A, int n)
+{
+	int i, j, tmp, z;
+	for (i = 1; i < n; i++)
+	{
+		tmp = A[i];
+		for (j = 0; j < i - 1; j++)
+		{
+			if (tmp < A[j])
+			{
+				for (z = i - 1; z > j; z--)
+				{
+					A[z + 1] = A[z];
+				}
+				A[j] = tmp;
+				break;
+			}
+		}
+	}
+}
+
+void main()
 {
 	int B[100];
 	int n = 100;
 	int t = 10;
-	int indexInput = 1;
+	int indexInput = 0;
 	printf("start\n");
 	srand(1000);
 	while (t > 0)
 	{
 		ItemList();
 		scanf_s("%d", &t);
-		switch (t);
+		switch (t)
 		{
 		case 1:
+		{
+			randArray(B, n, -100, 100);
+			indexInput = 1;
+			break;
+		}
 		case 2:
+		{
+			if (indexInput == 1)
+				print(B, n);
+			else printf("No array\n");
+			break;
+		}
 		case 3:
 		{
 			if (indexInput == 1)
@@ -56,10 +118,19 @@ void main();
 				SortBubble(B, n);
 				print(B, n);
 			}
-			else printf("No array");
-			break
+			else printf("No array\n");
+			break;
 		}
 		case 4:
+		{
+			if (indexInput == 1)
+			{
+				SortByInserts(B, n);
+				print(B, n);
+			}
+			else printf("No array\n");
+			break;
+		}
 		}
 	}
 }
