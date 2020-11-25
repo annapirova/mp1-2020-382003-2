@@ -12,6 +12,7 @@ void Menu()
 	printf(" 3) BubbleSort \n");
 	printf(" 4) InsertSort \n");
 	printf(" 5) MergeSort \n");
+	printf(" 6) DvunapBubbleSort \n");
 	printf(" 0) Exit \n");
 }
 
@@ -65,6 +66,41 @@ void InsertSort(int *B, int n)
 			j--;
 		}
 		B[j + 1] = tmp;
+	}
+}
+void DvuNap(int* B, int n)
+{
+	int r = n - 1;
+	int l = 0;
+	int fg = 1;
+	int t;
+	int i;
+	while (l < r && fg > 0)
+	{
+		fg = 0;
+		for (i = l; i < r; i++)
+		{
+			if (B[i] > B[i + 1])
+			{
+				t = B[i];
+				B[i] = B[i + 1];
+				B[i + 1] = t;
+				fg = 1;
+			}
+		}
+		r--;
+		for (i = r; i > l; i--)
+		{
+			fg = 0;
+			if (B[i - 1] > B[i])
+			{
+				t = B[i];
+				B[i] = B[i - 1];
+				B[i - 1] = t;
+				fg = 1;
+			}
+		}
+		l++;
 	}
 }
 
@@ -185,6 +221,19 @@ void main()
 					if (check)
 					{
 						MergeSort(A, 0, n - 1);
+						PrintArray(A, n);
+					}
+					else
+					{
+						printf("Input Massive\n");
+					}
+					break;
+				}
+				case 6:
+				{
+					if (check)
+					{
+						DvuNap(A, n);
 						PrintArray(A, n);
 					}
 					else
