@@ -13,6 +13,7 @@ void Menu()
 	printf(" 4) InsertSort \n");
 	printf(" 5) MergeSort \n");
 	printf(" 6) DvunapBubbleSort \n");
+	printf(" 7) QuickSort \n");
 	printf(" 0) Exit \n");
 }
 
@@ -160,6 +161,42 @@ void MergeSort(int *B, int l, int r)
 	}
 }
 
+void Quick(int* B, int l, int r)
+{
+	int a = B[(r + l) / 2];
+	int t;
+	int i = l; int j = r;
+	while (B[i] < a)
+	{
+		i++;
+	}
+	while (B[j] > a)
+	{
+		j--;
+	}
+	if (i <= j)
+	{
+		if (i < j)
+		{
+			t = B[i];
+			B[i] = B[j];
+			B[j] = t;
+		}
+		i++;
+		j--;
+	}
+	while (i <= j)
+	{
+		if (i < r)
+		{
+			Quick(B, i, r);
+		}
+		if (j > l)
+		{
+			Quick(B, l, j);
+		}
+	}
+}
 void main()
 {
 	int A[1000];
@@ -234,6 +271,19 @@ void main()
 					if (check)
 					{
 						DvuNap(A, n);
+						PrintArray(A, n);
+					}
+					else
+					{
+						printf("Input Massive\n");
+					}
+					break;
+				}
+				case 7:
+				{
+					if (check)
+					{
+						Quick(A, 0, n-1);
 						PrintArray(A, n);
 					}
 					else
