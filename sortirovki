@@ -26,35 +26,33 @@ void print_array(int a[], int n)
 
 void sort1(int a[], int n)
 {
-	int i, j, tmp;
+	int i, tmp;
+	int left, right;
+	left = 0;
+	right = n - 1;
 
-	while (a[n] <= a[0])
+	while (left < right)
 	{
-		for (i = 0; i < n; i++)
+		for (i = left; i < right; i++)
 		{
-			for (j = i + 1; j < n; j++)
+			if (a[i] > a[i + 1])
 			{
-				if (a[i] > a[j])
-				{
-					tmp = a[j];
-					a[j] = a[i];
-					a[i] = tmp;
-				}
+				tmp = a[i + 1];
+				a[i + 1] = a[i];
+				a[i] = tmp;
 			}
 		}
-
-		for (i = n; i > 0; i--)
+		right--;
+		for (i = right; i > left; i--)
 		{
-			for (j = i-1; j > 0; j--)
+			if (a[i] > a[i - 1])
 			{
-				if (a[i] > a[j])
-				{
-					tmp = a[j];
-					a[j] = a[i];
-					a[i] = tmp;
-				}
+				tmp = a[i - 1];
+				a[i - 1] = a[i];
+				a[i] = tmp;
 			}
 		}
+		left++;
 	}
 }
 
