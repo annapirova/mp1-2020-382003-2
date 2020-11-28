@@ -22,18 +22,34 @@ void printarray(int a[], int n)
 
 void sortp(int a[], int n)
 {
-    int i, j, t;
-    for (i = 0; i < n; i++)
+	int i, t, l = 0, r = n - 1;
+
+    while (l < r)
     {
-        for (j = 0; j < n - i - 1; j++)
-        {
-            if (a[j] > a[j + 1])
-            {
-                t = a[j];
-                a[j] = a[j + 1];
-                a[j + 1] = t;
-            }
+    	for (i = l; i < r; i++)
+	    {
+		    if (a[i] > a[i + 1])
+        		{
+	        		t = a[i];
+		    	a[i] = a[i + 1];
+			    a[i + 1] = t;
+				
+	        }
         }
+
+        r = r - 1;
+
+        for (i = r; i > l; i--)
+	    {
+		    if (a[i] < a[i - 1])
+		    {
+			    t = a[i];
+			    a[i] = a[i - 1];
+			    a[i - 1] = t;
+			
+    		}
+	    }
+	    l++;
     }
 }
 
@@ -42,13 +58,14 @@ void sortv(int a[], int n)
     int i, j, t;
     for (i = 0; i < n; i++)
     {
-        for (j = i; j > 0; j--)
-            while (a[j] < a[j - 1])
-            {
-                t = a[j - 1];
-                a[j - 1] = a[j];
-                a[j] = t;
-            }
+        t = a[i];
+        j = i - 1;
+        while ((j >= 0) && (a[j] > t))
+        {
+            a[j + 1] = a[j];
+            j--;
+        }
+        a[j + 1] = t;
     }
 }
 
@@ -58,6 +75,7 @@ void menu()
     printf("2. отсортировать пузырьковой сортировкой \n");
     printf("3. отсортировать сортировкой вставками \n");
     printf("4. вывести массив \n");
+    printf("0. выйти \n");
 }
 
 void main()
@@ -65,11 +83,11 @@ void main()
     setlocale(LC_ALL, "rus");
     int t = 1, n, a[100];
     srand(12223);
-    while ((t == 1) || (t == 2) || (t == 3) || (t == 4))
+    while (t != 0 )
     {
     
     menu();
-    scanf_s("%d", &t);
+    scanf("%d", &t);
     switch(t)
     {
         case 1:
