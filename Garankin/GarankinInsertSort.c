@@ -14,17 +14,17 @@ void Print(int A[], int n)
 
 void InsertSort(int A[], int n)
 {
-	int i,k,t;
+	int i,k,p;
 	for (i = 1; i < n; i++)
 	{
-		k = i;
-		while (A[k] < A[k - 1] && k > 0 )
+		k = A[i];
+		p = i - 1;
+		while (p >=0 && A[p] > k)
 		{
-			t=A[k-1];
-			A[k - 1] = A[k];
-			A[k] = t;
-			k=k-1;
+			A[p + 1] = A[p];
+			p--;
 		}
+		A[p + 1] = k;
 	}
 }
 
