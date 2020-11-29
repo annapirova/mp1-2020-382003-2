@@ -119,7 +119,7 @@ void insertSort(int* A, int n)
 	}
 }
 
-void merge(int* A, int left, int mid, int right)
+void merge(int* A, int left, int mid, int right, int* nc, int* nsw)
 {
 	int* tempArr;
 	int il, ir, i, t;
@@ -138,25 +138,30 @@ void merge(int* A, int left, int mid, int right)
 			tempArr[i] = A[il];
 			i++;
 			il++;
+			(*nsw)++;
 		}
 		else
 		{
 			tempArr[i] = A[ir];
 			i++;
 			ir++;
+			(*nsw)++;
 		}
+		(*nc)++;
 	}
 	while (il <= mid)
 	{
 		tempArr[i] = A[il];
 		i++;
 		il++;
+		(*nsw)++;
 	}
 	while (ir <= right)
 	{
 		tempArr[i] = A[ir];
 		i++;
 		ir++;
+		(*nsw)++;
 	}
 	for (i = 0; i < t; i++)
 	{
@@ -165,18 +170,18 @@ void merge(int* A, int left, int mid, int right)
 	free(tempArr);
 }
 
-void mergeSort(int* A, int left, int right)
+void mergeSort(int* A, int left, int right, int* nc, int* nsw)
 {
 	int mid;
 
 	if (left < right)
 	{
 		mid = (left + right) / 2;
-		mergeSort(A, left, mid);
-		mergeSort(A, mid + 1, right);
-		merge(A, left, mid, right);
+		mergeSort(A, left, mid, &(*nc), &(*nsw));
+		mergeSort(A, mid + 1, right, &(*nc), &(*nsw));
+		merge(A, left, mid, right, &(*nc), &(*nsw));
 	}
-
+	(*nc)++;
 }
 
 bool Check(int* A, int n)
@@ -195,16 +200,36 @@ bool Check(int* A, int n)
 	return f;
 }
 
+int binarySearch(int* A, int n, int key)
+{
+	int l = 0;
+	int r = n - 1;
+	int mid;
+
+	while (l <= r)
+	{
+		mid = (l + r) / 2;
+		if (key < A[mid])
+			r = mid - 1;
+		else if (key > A[mid])
+			l = mid + 1;
+		else
+			return mid;
+	}
+	return -1;
+}
+
 void menu() 
 {
 	printf("+---------------------+\n");
 	printf("| MENU:               |\n");
 	printf("|  1. Input           |\n");
 	printf("|  2. Print           |\n");
-	printf("|  3. BubbleSort      |\n");
-	printf("|  4. QuickSort       |\n");
-	printf("|  5. InsertSort      |\n");
-	printf("|  6. MergeSort       |\n");
+	printf("|  3. Bubble Sort     |\n");
+	printf("|  4. Quick Sort      |\n");
+	printf("|  5. Insert Sort     |\n");
+	printf("|  6. Merge Sort      |\n");
+	printf("|  7. Binary Search   |\n");
 	printf("|  0. Exit            |\n");
 	printf("|_____________________|\n");
 }
@@ -213,7 +238,7 @@ void main()
 {
 	int* Arr = NULL;
 	int* ArrCopy = NULL;
-	int n, t;
+	int n, t, key, nkey;
 	int nComp[5], nSwap[5];
 	int nc, nsw;
 	bool wasInput = false;
@@ -317,19 +342,37 @@ void main()
 			{
 				ArrCopy = (int*)malloc(sizeof(int) * n);
 				memcpy(ArrCopy, Arr, sizeof(int) * n);
+				nc = 0;
+				nsw = 0;
 
 				time = clock();
-				mergeSort(ArrCopy, 0, n - 1);
+				mergeSort(ArrCopy, 0, n - 1, &nc, &nsw);
 				time = clock() - time;
 
 				if (Check(ArrCopy, n)) printf("Sorted correctly\n");
 				printf("Time: %f sec\n", (double)time / CLOCKS_PER_SEC);
-
+				printf("Swaps: %d, comparisons: %d\n", nsw, nc);
+				
+				nComp[2] = nc;
+				nSwap[2] = nsw;
 				free(ArrCopy);
 			}
 			else
 				printf("Please, input array\n");
 			break;
+		}
+		case 7: {
+			if (wasInput)
+			{
+				print(ArrCopy, n);
+				printf("Enter the element: ");
+				scanf_s("%d", &key);
+				nkey = binarySearch(ArrCopy, n, key);
+				if (nkey == -1)
+					printf("Element not found :(\n");
+				else
+					printf("Element number: %d\n", nkey);
+			}
 		}
 		case 0: {
 			break;
