@@ -1,5 +1,50 @@
 #include "stdio.h"
 #include "stdlib.h"
+#include "locale.h"
+
+int* Merge_sort(int *X, int *Y, int a, int b)
+{
+	int mid;
+	if (a == b)
+	{
+		Y[a] = X[a];
+		return Y;
+	}
+	mid = (a + b) / 2;
+	int *left = Merge_sort(X, Y, a, mid);
+	int *right = Merge_sort(X, Y, mid + 1, b);
+
+	int *target = left == X ? Y : X;
+
+	int l_cur = a, r_cur = mid + 1;
+	for (int i = a; i <= b; i++)
+	{
+		if (l_cur <= mid && r_cur <= b)
+		{
+			if (left[l_cur] < right[r_cur])
+			{
+				target[i] = left[l_cur];
+				l_cur++;
+			}
+			else
+			{
+				target[i] = right[r_cur];
+				r_cur++;
+			}
+		}
+		else if (l_cur <= mid)
+		{
+			target[i] = left[l_cur];
+			l_cur++;
+		}
+		else
+		{
+			target[i] = right[r_cur];
+			r_cur++;
+		}
+	}
+	return target;
+}
 
 void SortBubble(int* A, int n)
 {
@@ -26,11 +71,12 @@ void SortBubble(int* A, int n)
 void ItemList()
 {
 	printf("\nMenu:\n");
-	printf("1)Input array\n");
-	printf("2)Print array\n");
-	printf("3)Bubble sort\n");
-	printf("4)Sort by inserts\n");
-	printf("0)Exit\n");
+	printf("1)Создать массив\n");
+	printf("2)Распечатать массив\n");
+	printf("3)Сортировка пузырьком\n");
+	printf("4)Сортировка вставками\n");
+	printf("5)Сортировка слиянием\n");
+	printf("0)Выход\n");
 }
 
 void randArray(int B[], int n, int a, int b)
@@ -65,33 +111,31 @@ int Check(int *B, int n)
 
 void SortByInserts(int* A, int n)
 {
-	int i, j, tmp, z;
+	int i, tmp, z;
 	for (i = 1; i < n; i++)
 	{
 		tmp = A[i];
-		for (j = 0; j < i - 1; j++)
+		z = i;
+		while ((z > 0) && (A[z - 1] > tmp))
 		{
-			if (tmp < A[j])
-			{
-				for (z = i - 1; z > j; z--)
-				{
-					A[z + 1] = A[z];
-				}
-				A[j] = tmp;
-				break;
-			}
+			A[z] = A[z - 1];
+			z--;
 		}
+		A[z] = tmp;
 	}
 }
 
 void main()
 {
 	int B[100];
+	int Bb[100];
 	int n = 100;
 	int t = 10;
-	int indexInput = 0;
+	int indexInput;
+	setlocale(LC_CTYPE, "Russian");
 	printf("start\n");
 	srand(1000);
+	indexInput = 0;
 	while (t > 0)
 	{
 		ItemList();
@@ -108,7 +152,7 @@ void main()
 		{
 			if (indexInput == 1)
 				print(B, n);
-			else printf("No array\n");
+			else printf("Массив отсутствует\n");
 			break;
 		}
 		case 3:
@@ -118,7 +162,7 @@ void main()
 				SortBubble(B, n);
 				print(B, n);
 			}
-			else printf("No array\n");
+			else printf("Массив отсутствует\n");
 			break;
 		}
 		case 4:
@@ -128,8 +172,17 @@ void main()
 				SortByInserts(B, n);
 				print(B, n);
 			}
-			else printf("No array\n");
+			else printf("Массив отсутствует\n");
 			break;
+		}
+		case 5:
+		{
+			if (indexInput == 1)
+			{
+				Merge_sort(B, Bb, 0, n-1);
+				print(B, n);
+			}
+			else printf("Массив отсутствует\n");
 		}
 		}
 	}
