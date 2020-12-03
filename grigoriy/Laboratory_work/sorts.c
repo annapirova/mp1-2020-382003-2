@@ -146,11 +146,11 @@ void insertSort(int *array, int n, int *nc, int *nsw)
 		{
 			array[j + 1] = array[j];
 			j--;
-			(*nsw)++;
 			(*nc) += 2;
+			(*nsw)++;
 		}
 		array[j + 1] = tmp;
-		(*nsw) += 2;
+		(*nsw)++;
 	}
 }
 
@@ -172,11 +172,11 @@ void shellSort(int *array, int n, int *nc, int *nsw)
 			{
 				array[j + step] = array[j];
 				j -= step;
-				(*nsw)++;
 				(*nc) += 2;
+				(*nsw)++;
 			}
 			array[j + step] = tmp;
-			(*nsw) += 2;
+			(*nsw)++;
 		}
 	}
 }
@@ -327,8 +327,8 @@ void countSort(int *array, int n, int *nc, int *nsw)
 	{
 		tmpArray[array[i] - min]++;
 		(*nc)++;
-		(*nsw)++;
 	}
+	printf("\n");
 	(*nc)++;
 	for (i = 0; i < max - min + 1; i++)
 	{
@@ -457,7 +457,8 @@ void setMinusOneArray_double(double *array, int n)
 		array[i] = -1;
 }
 
-void compareArrays(char **arrays, int *ncArray, int *nswArray, double *tArray, int n)
+void compareArrays(char **arrays, int *ncArray, int *nswArray, double *tArray,
+		int n)
 {
 
 	int i;
@@ -591,8 +592,7 @@ int main()
 				printf(
 						"\n%s sort\nComparison: %d, Swaps: %d, Time: %lf, Correct: %d\n",
 						sorts[0], nComparisonInArray[0], nSwapsInArray[0],
-						sortTime[0],
-						isCorrect(Acopy, n));
+						sortTime[0], isCorrect(Acopy, n));
 			}
 
 			else
@@ -749,8 +749,7 @@ int main()
 					scanf("%d", &key);
 					printf("\nBinary search");
 					if (binarySearch(Acopy, 0, n - 1, key, &nc) != -1)
-						printf("\nThe key '%d' is found!\n",
-								key);
+						printf("\nThe key '%d' is found!\n", key);
 					else
 						printf("\nThe key '%d' is not found!\n", key);
 					nComparisonInSearch[0] = nc;
