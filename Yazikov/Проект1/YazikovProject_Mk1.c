@@ -2,6 +2,50 @@
 #include "stdlib.h"
 #include "locale.h"
 
+int Linear_search(int *A, int n)
+{
+	int i, p;
+	int sw = 0;
+	printf("Введите элемент для поиска\n");
+	scanf_s("%d", &p);
+	for (i = 0; i < n; i++)
+	{
+		if (A[i] == p)
+		{
+			return i;
+			sw = 1;
+		}
+	}
+	if (sw = 0)
+	{
+		return -1;
+	}
+}
+
+void Count_sort(int *A, int n, int a, int b)
+{
+	int i,j;
+	int *R = malloc((b - a + 1) * sizeof(int));
+	for (i = 0; i < (b - a); i++)
+		R[i] = 0;
+	for (i = 0; i < n; i++)
+	{
+		R[A[i] - a]++;
+		A[i] = 0;
+	}
+	j = 0;
+	for (i = 0; i < (b - a); i++)
+	{
+		while (R[i] > 0)
+		{
+			A[j] = (i + a);
+			j++;
+			R[i]--;
+		}
+	}
+	free(R);
+}
+
 int* Merge_sort(int *X, int *Y, int a, int b)
 {
 	int mid;
@@ -76,14 +120,27 @@ void ItemList()
 	printf("3)Сортировка пузырьком\n");
 	printf("4)Сортировка вставками\n");
 	printf("5)Сортировка слиянием\n");
+	printf("6)Сортировка подсчетом\n");
+	printf("7)Линейный поиск заданного числа\n");
 	printf("0)Выход\n");
 }
 
-void randArray(int B[], int n, int a, int b)
+int randArray(int B[], int n, int a, int b)
 {
-	int i;
-	for (i = 0; i < n; i++)
-		B[i] = rand() % (b - a) + a;
+	int i, was_filled;
+	was_filled = 0;
+	printf("Введите нижнюю границу\n");
+	scanf_s("%d", &a);
+	printf("Введите верхнюю границу\n");
+	scanf_s("%d", &b);
+	if (a <= b)
+	{
+		for (i = 0; i < n; i++)
+			B[i] = rand() % (b - a) + a;
+		was_filled = 1;
+	}
+	else printf("Верхняя граница не должна быть меньше нижней");
+	return was_filled;
 }
 
 void print(int B[], int n)
@@ -131,7 +188,8 @@ void main()
 	int Bb[100];
 	int n = 100;
 	int t = 10;
-	int indexInput;
+	int indexInput, wasfound;
+	int lb = 0, rb = 0;
 	setlocale(LC_CTYPE, "Russian");
 	printf("start\n");
 	srand(1000);
@@ -144,8 +202,7 @@ void main()
 		{
 		case 1:
 		{
-			randArray(B, n, -100, 100);
-			indexInput = 1;
+			indexInput = randArray(B, n, lb, rb);
 			break;
 		}
 		case 2:
@@ -183,6 +240,27 @@ void main()
 				print(B, n);
 			}
 			else printf("Массив отсутствует\n");
+			break;
+		}
+		case 6:
+		{
+			if (indexInput == 1)
+			{
+				Count_sort(B, n, lb, rb);
+				print(B, n);
+			}
+			else printf("Массив отсутствует\n");
+			break;
+		}
+		case 7:
+		{
+			if (indexInput == 1)
+			{
+				wasfound = Linear_search(B, n);
+				if (wasfound > -1)
+					printf("Элемент находится на %d позиции\n", wasfound+1);
+				else printf("Элемент не найден\n");
+			}
 		}
 		}
 	}
