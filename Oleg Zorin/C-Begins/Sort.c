@@ -8,22 +8,12 @@
 void randArray(int* A, int n)
 {
 	int i;
-	int max = n;
-	int min = -n;
-	
+	int min = -n / 2;
+	int max = n / 2;
+
 	for (i = 0; i < n; i++)
 	{
 		A[i] = rand() % (max - min) + min;
-	}
-}
-
-void manuallyArray(int* A, int n)
-{
-	int i;
-
-	for (i = 0; i < n; i++)
-	{
-		scanf_s("%d", &(A[i]));
 	}
 }
 
@@ -103,17 +93,16 @@ void quickSort(int* A, int right, int left, int* nc, int* nsw)
 			j--;
 			(*nsw)++;
 		}
-		(*nc)++;
+		(*nc)++;	
 	}
 	
 	if (left < j)
 		quickSort(A, j, left, &(*nc), &(*nsw));
 	if (i < right)
 		quickSort(A, right, i, &(*nc), &(*nsw));
-	(*nc) += 2;
 }
 
-void insertSort(int* A, int n, int* nc, int* nsw)
+void insertSort(int* A, int n)
 {
 	int i, j, temp;
 
@@ -125,11 +114,8 @@ void insertSort(int* A, int n, int* nc, int* nsw)
 		{
 			A[j + 1] = A[j];
 			j--;
-			(*nsw)++;;
-			(*nc)++;
 		}
 		A[j + 1] = temp;
-		(*nsw)++;
 	}
 }
 
@@ -214,7 +200,7 @@ bool Check(int* A, int n)
 	return f;
 }
 
-int binarySearch(int* A, int n, int key, int* nc)
+int binarySearch(int* A, int n, int key)
 {
 	int l = 0;
 	int r = n - 1;
@@ -223,7 +209,6 @@ int binarySearch(int* A, int n, int key, int* nc)
 	while (l <= r)
 	{
 		mid = (l + r) / 2;
-		(*nc)++;
 		if (key < A[mid])
 			r = mid - 1;
 		else if (key > A[mid])
@@ -232,24 +217,6 @@ int binarySearch(int* A, int n, int key, int* nc)
 			return mid;
 	}
 	return -1;
-}
-
-int linearSearch(int* A, int n, int key, int* nc)
-{
-	int i;
-
-	(*nc) += 2;
-	if (A[n - 1] != key)
-		A[n - 1] = key;
-	else
-		return n - 1;
-
-	for (i = 0; A[i] != key; i++, (*nc)++);
-
-	if (i == n - 1)
-		return -1;
-	else
-		return i;
 }
 
 void menu() 
@@ -263,7 +230,6 @@ void menu()
 	printf("|  5. Insert Sort     |\n");
 	printf("|  6. Merge Sort      |\n");
 	printf("|  7. Binary Search   |\n");
-	printf("|  8. Linear Search   |\n");
 	printf("|  0. Exit            |\n");
 	printf("|_____________________|\n");
 }
@@ -272,13 +238,10 @@ void main()
 {
 	int* Arr = NULL;
 	int* ArrCopy = NULL;
-	int* ArrSorted = NULL;
-	int n, t, z, l, p, key, nkey;
-	unsigned long nComp[6], nSwap[5];
-	unsigned long nc, nsw;
+	int n, t, key, nkey;
+	int nComp[5], nSwap[5];
+	int nc, nsw;
 	bool wasInput = false;
-	bool wasNotSorted = true;
-	double sortTime[5];
 	clock_t time;
 
 	n = 0;
@@ -293,49 +256,16 @@ void main()
 		switch (t)
 		{
 		case 1: {
-			do
-			{
-				printf("Enter size: ");
-				scanf_s("%d", &n);
-			} while (n < 0);
+			printf("Enter size: ");
+			scanf_s("%d", &n);
 			Arr = (int*)malloc(sizeof(int) * n);
-			do
-			{
-				printf(" 1. Manually\n 2. Random\n> ");
-				scanf_s("%d", &z);
-			} while (z < 1 || z > 2);
-
-			switch (z)
-			{
-			case 1: {
-				manuallyArray(Arr, n);
-				break;
-			}
-			case 2: {
-				randArray(Arr, n);
-				break;
-			}
-			}
-			ArrSorted = (int*)malloc(sizeof(int) * n);
+			randArray(Arr, n);
 			wasInput = true;
 			break;
 		}
 		case 2: {
 			if (wasInput)
-			{
-				do
-				{
-					printf(" 1. Default\n 2. Sorted\n> ");
-					scanf_s("%d", &p);
-				} while (p < 1 || p > 2);
-				if (p == 1)
-					print(Arr, n);
-				else if (!wasNotSorted)
-					print(ArrSorted, n);
-				else
-					printf("Please, sort the array\n");
-				
-			}
+				print(Arr, n);
 			else
 				printf("Please, input array\n");
 			break;
@@ -352,17 +282,10 @@ void main()
 				bubbleSort(ArrCopy, n, &nc, &nsw);
 				time = clock() - time;
 
-				if (Check(ArrCopy, n)) 
-					printf("Sorted correctly\n");
-				if (wasNotSorted)
-				{
-					memcpy(ArrSorted, ArrCopy, sizeof(int) * n);
-					wasNotSorted = false;
-				}
+				if (Check(ArrCopy, n)) printf("Sorted correctly\n");
 				printf("Time: %f sec\n", (double)time / CLOCKS_PER_SEC);
 				printf("Swaps: %d, comparisons: %d\n", nsw, nc);
 
-				sortTime[0] = time;
 				nComp[0] = nc;
 				nSwap[0] = nsw;
 				free(ArrCopy);
@@ -383,17 +306,10 @@ void main()
 				quickSort(ArrCopy, n - 1, 0, &nc, &nsw);
 				time = clock() - time;
 
-				if (Check(ArrCopy, n)) 
-					printf("Sorted correctly\n");
-				if (wasNotSorted)
-				{
-					memcpy(ArrSorted, ArrCopy, sizeof(int) * n);
-					wasNotSorted = false;
-				}
+				if (Check(ArrCopy, n)) printf("Sorted correctly\n");
 				printf("Time: %f sec\n", (double)time / CLOCKS_PER_SEC);
 				printf("Swaps: %d, comparisons: %d\n", nsw, nc);
 
-				sortTime[1] = time;
 				nComp[1] = nc;
 				nSwap[1] = nsw;
 				free(ArrCopy);
@@ -407,26 +323,14 @@ void main()
 			{
 				ArrCopy = (int*)malloc(sizeof(int) * n);
 				memcpy(ArrCopy, Arr, sizeof(int) * n);
-				nc = 0;
-				nsw = 0;
 
 				time = clock();
-				insertSort(ArrCopy, n, &nc, &nsw);
+				insertSort(ArrCopy, n);
 				time = clock() - time;
 
-				if (Check(ArrCopy, n)) 
-					printf("Sorted correctly\n");
-				if (wasNotSorted)
-				{
-					memcpy(ArrSorted, ArrCopy, sizeof(int) * n);
-					wasNotSorted = false;
-				}
+				if (Check(ArrCopy, n)) printf("Sorted correctly\n");
 				printf("Time: %f sec\n", (double)time / CLOCKS_PER_SEC);
-				printf("Swaps: %d, comparisons: %d\n", nsw, nc);
 
-				sortTime[2] = time;
-				nComp[2] = nc;
-				nSwap[2] = nsw;
 				free(ArrCopy);
 			}
 			else
@@ -445,19 +349,12 @@ void main()
 				mergeSort(ArrCopy, 0, n - 1, &nc, &nsw);
 				time = clock() - time;
 
-				if (Check(ArrCopy, n)) 
-					printf("Sorted correctly\n");
-				if (wasNotSorted)
-				{
-					memcpy(ArrSorted, ArrCopy, sizeof(int) * n);
-					wasNotSorted = false;
-				}
+				if (Check(ArrCopy, n)) printf("Sorted correctly\n");
 				printf("Time: %f sec\n", (double)time / CLOCKS_PER_SEC);
 				printf("Swaps: %d, comparisons: %d\n", nsw, nc);
 				
-				sortTime[3] = time;
-				nComp[3] = nc;
-				nSwap[3] = nsw;
+				nComp[2] = nc;
+				nSwap[2] = nsw;
 				free(ArrCopy);
 			}
 			else
@@ -465,54 +362,17 @@ void main()
 			break;
 		}
 		case 7: {
-			if (wasInput && !wasNotSorted)
-			{
-				nc = 0;
-				printf("Enter the element: ");
-				scanf_s("%d", &key);
-				nkey = binarySearch(ArrSorted, n, key, &nc);
-				if (nkey == -1)
-					printf("Element not found :(\n");
-				else
-					printf("Element number: %d\n", nkey);
-				printf("Comparisons: %d\n", nc);
-				nComp[4] = nc;
-			}
-			else
-				printf("Please, sort the array\n");
-			break;
-		}
-		case 8: {
 			if (wasInput)
 			{
-				nc = 0;
-				do
-				{
-					printf("Use array:\n 1. Default\n 2. Sorted\n> ");
-					scanf_s("%d", &l);
-				} while (l < 1 || l > 2);
+				print(ArrCopy, n);
 				printf("Enter the element: ");
 				scanf_s("%d", &key);
-				if (l == 1)
-					nkey = linearSearch(Arr, n, key, &nc);
-				else if (!wasNotSorted)
-					nkey = linearSearch(ArrSorted, n, key, &nc);
-				else
-				{
-					nkey = -1;
-					printf("Please, sort the array\n");
-				}
-
+				nkey = binarySearch(ArrCopy, n, key);
 				if (nkey == -1)
 					printf("Element not found :(\n");
 				else
 					printf("Element number: %d\n", nkey);
-				printf("Comparisons: %d\n", nc);
-				nComp[5] = nc;
 			}
-			else
-				printf("Please, input array\n");
-			break;
 		}
 		case 0: {
 			break;
