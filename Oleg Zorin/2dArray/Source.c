@@ -104,7 +104,16 @@ void CountingMarks(int** A, int n, int m, int M[])
 	{
 		for (j = 0; j < m; j++)
 		{
-			M[A[i][j] - 1]++;
+			if (A[i][j] == 1)
+				M[0]++;
+			else if (A[i][j] == 2)
+				M[1]++;
+			else if (A[i][j] == 3)
+				M[2]++;
+			else if (A[i][j] == 4)
+				M[3]++;
+			else
+				M[4]++;
 		}
 	}
 }
