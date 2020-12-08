@@ -47,7 +47,7 @@ void bubbleSort(int* A, int n, int* nc, int* nsw)
 
 	while (inf < sup)
 	{
-		for (i = inf; i < sup; i++) // всплывает
+		for (i = inf; i < sup; i++) 
 		{
 			if (A[i] > A[i + 1])
 			{
@@ -60,7 +60,7 @@ void bubbleSort(int* A, int n, int* nc, int* nsw)
 			(*nc)++;
 		}
 		sup = k;
-		for (i = sup; i > inf; i--) // тонет
+		for (i = sup; i > inf; i--) 
 		{
 			if (A[i] < A[i - 1])
 			{
