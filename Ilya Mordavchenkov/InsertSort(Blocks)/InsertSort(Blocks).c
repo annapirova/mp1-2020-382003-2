@@ -39,13 +39,13 @@ void insertSort_up(int A[], int N)
 	for (i = 1; i < N; i++)
 	{
 		counter = i;
-		while ((counter > 0) && (A[counter - 1] > A[counter]))
+		tmp = A[i];
+		while ((counter > 0) && (A[counter - 1] > tmp))
 		{
-			tmp = A[counter];
 			A[counter] = A[counter - 1];
-			A[counter - 1] = tmp;
 			counter--;
 		}
+		A[counter] = tmp;
 	}
 }
 
@@ -58,13 +58,13 @@ void insertSort_down(int A[], int N)
 	for (i = 1; i < N; i++)
 	{
 		counter = i;
-		while ((counter > 0) && (A[counter - 1] < A[counter]))
+		tmp = A[i];
+		while ((counter > 0) && (A[counter-1] < tmp))
 		{
-			tmp = A[counter];
 			A[counter] = A[counter - 1];
-			A[counter - 1] = tmp;
 			counter--;
 		}
+		A[counter] = tmp;
 	}
 }
 
