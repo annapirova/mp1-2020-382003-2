@@ -2,6 +2,26 @@
 #include "stdlib.h"
 #include "locale.h"
 
+int Binar_search(int *A, int n)
+{                                  
+	int key, med;
+	int left = 0;                    
+	int right = n;
+	printf("Введите элемент для поиска\n");
+	scanf_s("%d", &key);
+	while (left < right - 1)            
+	{
+		med = (left + right) / 2;         
+		if (A[med] < key)
+			left = med;
+		else
+			right = med;                
+	}
+	if (A[right]==key)
+		return right;
+	else return -1;
+}
+
 int Linear_search(int *A, int n)
 {
 	int i, p;
@@ -13,13 +33,10 @@ int Linear_search(int *A, int n)
 		if (A[i] == p)
 		{
 			return i;
-			sw = 1;
+			break;
 		}
 	}
-	if (sw = 0)
-	{
 		return -1;
-	}
 }
 
 void Count_sort(int *A, int n, int a, int b)
@@ -122,6 +139,8 @@ void ItemList()
 	printf("5)Сортировка слиянием\n");
 	printf("6)Сортировка подсчетом\n");
 	printf("7)Линейный поиск заданного числа\n");
+	printf("8)Бинарный поиск заданного числа\n");
+	printf("9)Проверка\n");
 	printf("0)Выход\n");
 }
 
@@ -139,7 +158,7 @@ int randArray(int B[], int n, int a, int b)
 			B[i] = rand() % (b - a) + a;
 		was_filled = 1;
 	}
-	else printf("Верхняя граница не должна быть меньше нижней");
+	else printf("Верхняя граница не должна быть меньше нижней\n");
 	return was_filled;
 }
 
@@ -147,7 +166,7 @@ void print(int B[], int n)
 {
 	int i;
 	for (i = 0; i < n; i++)
-		printf("%d  ", B[i]);
+		printf("%d) %d\n", i, B[i]);
 	printf("\n");
 }
 
@@ -184,9 +203,9 @@ void SortByInserts(int* A, int n)
 
 void main()
 {
-	int B[100];
+	int B[10];
 	int Bb[100];
-	int n = 100;
+	int n = 10;
 	int t = 10;
 	int indexInput, wasfound;
 	int lb = 0, rb = 0;
@@ -257,10 +276,39 @@ void main()
 			if (indexInput == 1)
 			{
 				wasfound = Linear_search(B, n);
-				if (wasfound > -1)
-					printf("Элемент находится на %d позиции\n", wasfound+1);
+				if ((wasfound > -1) && (wasfound < n))
+					printf("Элемент находится на %d позиции\n", wasfound);
 				else printf("Элемент не найден\n");
+				break;
 			}
+			else printf("Массив отсутствует\n");
+		}
+		case 8:
+		{
+			if (indexInput == 1)
+			{
+				if (Check(B, n) == 1)
+				{
+					wasfound = Binar_search(B, n);
+					if (wasfound > -1)
+						printf("Элемент находится на %d позиции\n", wasfound);
+					else printf("Элемент не найден\n");
+				}
+				else printf("Массив не отсортирован\n");
+				break;
+			}
+			else printf("Массив отсутствует\n");
+		}
+		case 9:
+		{
+			if (indexInput == 1)
+			{
+				wasfound = Check(B, n);
+				if (wasfound == 1)
+					printf("Массив отсортирован");
+				else printf("Массив не отсортирован");
+			}
+			else printf("Массив отсутствует\n");
 		}
 		}
 	}
