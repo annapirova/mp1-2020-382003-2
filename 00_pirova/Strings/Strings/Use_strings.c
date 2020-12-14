@@ -1,14 +1,17 @@
 #include "string.h"
 #include "stdio.h"
+#include "memory.h"
+#include "stdlib.h"
 
 void PrintText(char** words, int n)
 {
 	int i;
+	printf("***\n");
 	for (i = 0; i < n; i++)
 	{
 		printf("%s\n", words[i]);
 	}
-	printf("\n");
+	printf("***\n");
 }
 
 void Perevorot(char* str, char* str2)
@@ -103,19 +106,27 @@ void SaveWordsW(char* str, char** words)
 
 	prev = str; // предыдущий разделитель
 	j = 0;
-	for (i = 1; i < len; i++)
+	for (i = 0; i < len; i++)
 	{
 		// str[i] входит ли в подмножество символов D 
 		p = strchr(D, str[i]); // указатель на символ в D
 		p2 = str + i; // // указатель на символ в str
 		if (p != NULL) // разделитель
-			if	(p2 - prev > 1)
+		{
+			if (p2 - prev > 1)
 			{
 				strncpy(words[j], prev + 1, p2 - prev - 1);
 				words[j][p2 - prev - 1] = '\0';
 				j++;
-				prev = p2;
 			}
+			prev = p2;
+		}
+	}
+	if (prev < str + len - 1)
+	{
+		p2 = str + len;
+		strncpy(words[j], prev + 1, p2 - prev - 1);
+		words[j][p2 - prev - 1] = '\0';
 	}
 
 }
@@ -198,7 +209,7 @@ void main1()
 void main()
 {
 	char* mystr = " program 1, program 22";
-	char* mystr2 = " I J ";
+	char* mystr2 = " I J";
 	char* mystr3 = "...";
 	int k1, k2, k3;
 	char** words;
@@ -212,7 +223,7 @@ void main()
 	//k2 = CountDigits2(mystr);
 	//printf("k1 %d k2 %d\n", k1, k2);
 
-	k1 = CountWordsW(mystr);
+	k1 = CountWordsW(mystr2);
 	//k2 = CountWordsW(mystr2);
 	//k3 = CountWordsW(mystr3);
 	//printf("%d %d %d\n", k1, k2, k3);
@@ -220,8 +231,8 @@ void main()
 	for (i = 0; i < k1; i++)
 		words[i] = (char*)malloc(sizeof(char) * 20);
 
-	//SaveWordsW(mystr, words);
-	//PrintText(words, k1);
+	SaveWordsW(mystr2, words);
+	PrintText(words, k1);
 
 	for (i = 0; i < k1; i++)
 		free(words[i]);
