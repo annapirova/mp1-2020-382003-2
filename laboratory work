@@ -1,9 +1,8 @@
 #include "stdio.h"
-#include "locale.h"
 #include "stdlib.h"
 #include "time.h"
 #include "windows.h"
-
+#include "locale.h"
 
 void vvod_array(int a[], int n)
 {
@@ -18,14 +17,14 @@ void vvod_array(int a[], int n)
 
 void vvod_array1(int a[], int n)
 {
-	int i;
+    int i;
 
-	printf("ââåäèòå ìàññèâ ñîñòîÿùèé èç öåëûõ ÷èñåë\n");
+    printf("enter an array of integers\n");
 
-	for (int i = 0; i < n; ++i)
-	{
-		scanf_s("%d", &a[i]);
-	}
+    for (int i = 0; i < n; ++i)
+    {
+        scanf_s("%d", &a[i]);
+    }
 }
 
 void print_array(int a[], int n)
@@ -38,7 +37,7 @@ void print_array(int a[], int n)
 	}
 }
 
-void sort1(int a[], int n, int *nc, int *nsw)
+void sort1(int a[], int n, int* nc, int* nsw)
 {
 	int i, tmp;
 	int left, right;
@@ -75,15 +74,15 @@ void sort1(int a[], int n, int *nc, int *nsw)
 	}
 }
 
-void sort2(int a[], int n, int *nc, int *nsw)
+void sort2(int a[], int n, int* nc, int* nsw)
 {
 	int k, l;
-	
+
 	for (int i = 1; i < n; i++)
 	{
 		k = a[i];
 		l = i - 1;
-		
+
 		*nc = *nc + 1;
 		while (l >= 0 && a[l] > k)
 		{
@@ -95,93 +94,95 @@ void sort2(int a[], int n, int *nc, int *nsw)
 	}
 }
 
-int a[10];
-int b[11];
-
-void merging(int left, int mid, int right, int *nc, int *nsw)
+void merging(int a[], int left, int mid, int right, int* nc, int* nsw)
 {
-	int l1, l2, i;
-	
-	for (l1 = left, l2 = mid + 1, i = left; l1 <= mid && l2 <= right; i++)
-	{
+    int array[10];
+    int i, l1 = 0, l2 = 0;
+
+	*nc = *nc + 1;
+    while ((left + l1 < mid) && (mid + l2 < right))
+    {
 		*nc = *nc + 1;
-		if (a[l1] <= a[l2])
-		{
-			b[i] = a[l1++];
+        if (a[left + i1] < a[mid + l2])
+        {
+            array[l1 + l2] = a[left + l1];
+            l1++;
 			*nsw = *nsw + 1;
-		}
-		else
-		{
-			b[i] = a[l2++];
+        }
+        else
+        {
+            array[l2 + l1] = a[mid + l2];
+            l2++;
 			*nsw = *nsw + 1;
-		}
-	}
+        }
+    }
 
 	*nc = *nc + 1;
-	while (l1 <= mid)
-	{
-		b[i++] = a[l1++];
+    while (left + l1 < mid)
+    {
+        array[l1 + l2] = a[left + l1];
+        l1++;
 		*nsw = *nsw + 1;
-	}
+    }
 
 	*nc = *nc + 1;
-	while (l2 <= right)
-	{
-		b[i++] = a[l2++];
+    while (l2 + mid < right)
+    {
+        array[l1 + l2] = a[mid + l2];
+        l2++;
 		*nsw = *nsw + 1;
-	}
+    }
 
-	
-	for (i = left; i <= right; i++)
+	for (i = 0; i < l1 + l2; i++)
 	{
-		a[i] = b[i];
+		a[left + i] = array[i];
 		*nsw = *nsw + 1;
 	}
 }
 
-void sort3(int left, int right, int *nc, int *nsw)
+void sort3(int a[], int n, int left, int right, int *nc, int *nsw)
 {
-	int mid;
-	
+    int mid;
+
 	*nc = *nc + 1;
-	if (left < right)
-	{
-		mid = (left + right) / 2;
-		sort3(left, mid, nc, nsw);
-		sort3(mid + 1, right, nc, nsw);
-		merging(left, mid, right, nc, nsw);
-	}
+    if (left + 1 < right)
+    {
+        mid = (left + right) / 2;
+        sort3(a, n, left, mid, &nc, &nsw);
+        sort3(a, n, mid, right, &nc, &nsw);
+        merging(a, left, mid, right, &nc, &nsw);
+    }
 }
 
-void linear_search(int a[], int n, int *nc)
+void linear_search(int a[], int n, int* nc)
 {
 	int k;
 	int pos = -1;
 	int i;
 
-	printf("ââåäèòå ÷èñëî, êîòîðîå íåîáõîäèìî íàéòè\n");
+	printf("enter the number, which need to find\n");
 	scanf_s("%d", &k);
 
 	for (i = 0; i < n; i++)
 	{
 		*nc = *nc + 1;
-		if (a[i] == k)    
+		if (a[i] == k)
 		{
-			printf("ýëåìåíò %d íàõîäèòñÿ íà %d ïîçèöèè\n", k, i + 1);
+			printf("эelement %d is in position %d\n", k, i + 1);
 			break;
 		}
 	}
 	*nc = *nc + 1;
 	if (i == n)
-		printf("ýëåìåíò %d íå íàéäåí â ìàññèâå\n", k);
+		printf("element %d isn't found in array\n", k);
 }
 
-void binary_search(int a[], int n, int *nc)
+void binary_search(int a[], int n, int* nc)
 {
 	int k;
 	int left, right, mid;
-	
-	printf("ââåäèòå ÷èñëî, êîòîðîå íåîáõîäèìî íàéòè\n");
+
+	printf("enter the number, which need to find\n");
 	scanf_s("%d", &k);
 
 	left = 0;
@@ -198,18 +199,18 @@ void binary_search(int a[], int n, int *nc)
 		}
 		else
 			*nc = *nc + 1;
-			if (a[mid] == k) 
-			{
-				printf("ýëåìåíò %d íàõîäèòñÿ íà %d ïîçèöèè.\n", k, mid + 1);
-				break;
-			}
-			else
-				right = mid - 1;
+		if (a[mid] == k)
+		{
+			printf("element %d is in position %d .\n", k, mid + 1);
+			break;
+		}
+		else
+			right = mid - 1;
 		mid = (left + right) / 2;
 	}
 	*nc = *nc + 1;
 	if (left > right)
-		printf("ýëåìåíò %d íå íàéäåí â ìàññèâå\n", k);
+		printf("element %d isn't found in array\n", k);
 }
 
 void menu()
@@ -218,21 +219,21 @@ void menu()
 		printf("\n__________________________________________________\n");
 		printf("\nMENU:\n");
 
-		printf("\nâûáåðèòå ñïîñîá ââîäà ìàññèâà\n");
-		printf("1. ñãåíåðèðîâàòü íîâûé ìàññèâ àâòîìàòè÷åñêè\n");
-		printf("2. ââåñòè ìàññèâ âðó÷íóþ\n");
+		printf("\nchoose array input method\n");
+		printf("1. generate new array  \n");
+		printf("2. enter an array manually \n");
 
-		printf("\n3. âûâåñòè ìàññèâ íà ýêðàí\n");
+		printf("\n3. print array  \n");
 
-		printf("\nâûáåðèòå ñïîñîá ïîèñêà ýëåìåíòîâ\n");
-		printf("4. ëèíåéíûé ïîèñê\n");
-		printf("5. áèíàðíûé ïîèñê (òîëüêî åñëè ìàññèâ óæå îòñîðòèðîâàí)\n");
+		printf("\nchoose the way how to search elements\n");
+		printf("4. linear search\n");
+		printf("5. binary search (only if array already was sorted)\n");
 
-		printf("\nâûáåðèòå ñïîñîá ñîðòèðîâêè ìàññèâà\n");
-		printf("6. øåéêåðíàÿ ñîðòèðîâêà\n");
-		printf("7. ñîðòèðîâêà âñòàâêàìè\n");
-		printf("8. ñîðòèðîâêà ñëèÿíèåì\n");
-		printf("0. âûõîä èç ïðîãðàììû\n");
+		printf("\nchoose the sort method\n");
+		printf("6. sheiker sort\n");
+		printf("7. insert sort\n");
+		printf("8. merge sort\n");
+		printf("0. exit\n");
 		printf("\n__________________________________________________\n");
 	}
 }
@@ -242,11 +243,12 @@ void main()
 	setlocale(LC_ALL, "rus");
 	int a[10];
 	int n = 10;
-	int t = 10;
+	int t = 100;
+	int left = 0, right = n - 1;
 	LARGE_INTEGER start, finish, freq;
 	double time;
 	double timeAll[5];
-	int nComp[5]; 
+	int nComp[5];
 	int nSwaps[5];
 
 	QueryPerformanceFrequency(&freq);
@@ -332,7 +334,7 @@ void main()
 		{
 			int nc = 0, nsw = 0;
 			QueryPerformanceCounter(&start);
-			sort3(a, n, &nc, &nsw);
+			sort3(a, n, left, right, &nc, &nsw);
 			print_array(a, n);
 			QueryPerformanceCounter(&finish);
 			time = (double)(finish.QuadPart - start.QuadPart) / (double)freq.QuadPart;
@@ -346,3 +348,4 @@ void main()
 		}
 	}
 }
+
