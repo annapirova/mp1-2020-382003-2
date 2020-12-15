@@ -1,6 +1,5 @@
 #include "string.h"
 #include "stdio.h"
-#include "memory.h"
 #include "stdlib.h"
 
 void PrintText(char** words, int n)
@@ -131,7 +130,7 @@ void SaveWordsW(char* str, char** words)
 
 }
 
-void main1()
+void main2()
 {
 	char* mystr = "I like programming and math";
 	char mystr2[200];
@@ -156,7 +155,6 @@ void main1()
 	//считывать - 2
 	fgets(mystr2, 200, stdin);
 	printf("%s\n", mystr2);
-
 
 	// примеры вызовов
 	k = strlen(mystr);
@@ -206,7 +204,7 @@ void main1()
 }
 
 
-void main()
+void main5()
 {
 	char* mystr = " program 1, program 22";
 	char* mystr2 = " I J";

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="substrings.c" />
     <ClCompile Include="Use_strings.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
