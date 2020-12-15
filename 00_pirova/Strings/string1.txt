@@ -1,0 +1,113 @@
+1 2 3 4 5 6 7
+
+scanf(%d %d)
+scanf(%d %d)
+scanf(%d %d)
+scanf(%d)
+
+
+
+// ищем слово s2 в строке s1
+s1 = I like programming
+s2 = programming
+f - флаг нашли или нет
+
+
+start = 7
+finish = 18
+f - s = 11
+
+while (i < strlen(s1))
+{
+	if (s1[i] == s2[0])
+	{
+		start = i;
+		j = 0;
+		while ((j < strlen(s2)) && (i < strlen(s1)) && (s2[j] == s1[i])) 
+		{
+			i++; j++;
+		}
+		finish = i;
+		if (finish - start == strlen(s2))
+		{
+			//совпали
+			// start - ответ
+		}
+		else
+		{
+			// не совпали
+		}
+	}
+	i++;
+}
+
+
+
+// ищем слово s2 в строке s1 c точн k симв
+s1 = "I like programm "
+s2 = prOgrams
+k = 2
+Program
+prOgrams
+program
+proga - нет, т.к. разная длина слов целиком
+myprogramm - да, если доп разная длина. Нет, если не доп.
+
+start = 7
+finish = 15
+l = 8
+strlen(s2) = 7
+
+
+while (i < strlen(s1))
+{
+		start = i;
+		j = 0;
+		myk = 0;
+		p = strchr(s1 + i, ' '); // указатель на пробел
+		pos = p - s1; // позиция пробела
+		// пока образец не кончился, а в исх строке не встретили ' '
+		while ((j < strlen(s2)) && (i < pos)) 
+		{
+			if ((s2[j] == s1[i]) || (s2[j] != s1[i]) && (myk < k))
+			{ i++; j++; }
+			else break;
+		}
+		finish = i;
+		
+		if (finish - start == strlen(s2))
+		{
+			//совпали
+			char* p = strchr(s1, ' ');
+			// длина слова в строке
+			int l = p - (s1 + start);
+			if (l - strlen(s2) < k - myk)
+			{
+				// start - ответ
+			}
+		}
+		else
+		{
+			// не совпали
+		}
+}
+
+******************************************************
+programming s1
+     111
+
+program
+rog
+mam
+start
+myprog
+
+
+1) подсчетом
+abcdef.............
+1. проход по большому слову, пометить его буквы
+2. проход по маленькому слову, смотрим на кол-во букв  
+
+2) сортировка?
+aggimmnopr
+gorr
