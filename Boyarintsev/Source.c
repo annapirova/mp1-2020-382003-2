@@ -6,24 +6,24 @@
 #include "malloc.h"
 #include "memory.h"
 #include "windows.h"
+
 int Menu()
 {
 	printf("\nMenu: \n");
 	printf(" 1. Enter massive \n");
-	printf(" 2. Random massive \n");
-	printf(" 3. Print massive \n");
-	printf(" 4. BubbleSort \n");
-	printf(" 5. DvunapBubbleSort \n");
-	printf(" 6. InsertSort \n");
-	printf(" 7. MergeSort \n");
-	printf(" 8. CountSort \n");
-	printf(" 9. QuickSort \n");
-	printf(" 10. LineSearch \n");
-	printf(" 11. BinarSearch \n");	
+	printf(" 2. Print massive \n");
+	printf(" 3. BubbleSort \n");
+	printf(" 4. DvunapBubbleSort \n");
+	printf(" 5. InsertSort \n");
+	printf(" 6. MergeSort \n");
+	printf(" 7. CountSort \n");
+	printf(" 8. QuickSort \n");
+	printf(" 9. LineSearch \n");
+	printf(" 10. BinarSearch \n");	
 	printf(" 0. Exit \n");
 }
 
-int Vvod(int n, int *B)
+int Vvod(int* B, int n)
 {
 	int i;
 	for (i = 0; i < n; i++)
@@ -35,8 +35,8 @@ int Vvod(int n, int *B)
 int InputRandArray(int *B, int n)
 {
 	int i;
-	int p = n / 2;
-	int q = -n / 2;
+	int p = n;
+	int q = -n;
 	for (i = 0; i < n; i++)
 	{
 		B[i] = rand() % (p - q) + q;
@@ -80,7 +80,7 @@ int InsertSort(int *B, int n, int *nc, int *nsw)
 {
 	int i, j, tmp;
 	(*nc)++;
-	for (i = 0; i < n; i++)
+	for (i = 1; i < n; i++)
 	{
 		tmp = B[i];
 		j = i - 1;
@@ -132,45 +132,64 @@ int BubbleSort1(int* B, int n, int *nc, int *nsw)
 	}
 } 
 
-int Merge(int* B, int l, int r, int *nc, int *nsw)
+int Merge(int* B, int mid, int l, int r, int *nc, int *nsw)
 {
-
-	if (l == r)
-		return;
-
-	int mid = (l + r) / 2;
-	Merge(B, l, mid, nc, nsw);
-	Merge(B, mid + 1, r, nc, nsw);
 	int i = l;
 	int j = mid + 1;
 	int s = 0;
-	int* k = (int*)malloc(sizeof(int) * r);
-	(*nc)++;
-	for (s = 0; s < r - l + 1; s++)
+	int g = r - l + 1;
+	int* k;
+	k = (int*)malloc(sizeof(int) * g);
+	while(i <= mid && j <= r)
 	{
-		(*nc)++;
-		if ((r > j) || ((i <= mid) && (B[i] < B[j])))
+		if (B[i] < B[j])
 		{
 			k[s] = B[i];
+			s++;
 			i++;
 			(*nsw)++;
 		}
 		else
 		{
 			k[s] = B[j];
+			s++;
 			j++;
 			(*nsw)++;
 		}
-		free(k);
 	}
 	(*nc)++;
-	for (s = 0; s < r - l + 1; s++)
+	while(i <= mid)
 	{
-		B[l + s] = k[s];
+		k[s] = B[i];
+		s++;
+		i++;
 		(*nsw)++;
 	}
+	while (j <= r)
+	{
+		k[s] = B[j];
+		s++;
+		j++;
+		(*nsw)++;
+	}
+	for (s = 0; s < g; s++)
+	{
+		B[l + s] = k[s];
+	}
+	free(k);
 }
-	
+int Merge1(int* B, int l, int r, int *nc, int *nsw)
+{
+	int mid;
+	if (l < r)
+	{
+		mid = (l + r) / 2;
+		Merge1(B, l, mid, &(*nc), &(*nsw));
+		Merge1(B, mid + 1, r, &(*nc), &(*nsw));
+		Merge(B, mid, l, r, &(*nc), &(*nsw));
+	}
+	(*nc)++;
+}
 
 int Quick(int* B, int l, int r, int *nc, int *nsw)
 {
@@ -190,54 +209,67 @@ int Quick(int* B, int l, int r, int *nc, int *nsw)
 	}
 	if (i <= j)
 	{
-		(*nc)++;
-		if (i < j)
-		{
 			t = B[i];
 			B[i] = B[j];
 			B[j] = t;
 			(*nsw)++;
-		}
 		i++;
 		j--;
 		(*nc)++;
 	}
-	while (i <= j)
-	{
 		(*nc)++;
 		if (i < r)
 		{
-			Quick(B, i, r, nc, nsw);
+			Quick(B, i, r, &(*nc), &(*nsw));
 		}
 		(*nc)++;
 		if (j > l)
 		{
-			Quick(B, l, j, nc, nsw);
+			Quick(B, l, j, &(*nc), &(*nsw));
 		}
-	}
 }
 
 int countsort(int* B, int n, int *nc, int *nsw)
 {
-	int* k = (int*)malloc(n * sizeof(int));
-	(*nc)++;
-	for  (int i = 0; i < n; i++)
+	int i, j;
+	int s = 0;
+	int min, max;
+	min = 0;
+	max = 0;
+	for (i = 0; i < n; i++)
 	{
-		int s = 0;
+		max = (B[i] > max) ? B[i] : max;
+		min = (B[i] < min) ? B[i] : min;
+	}
+	int* k;
+	k = (int*)malloc(sizeof(int) * (max - min + 1));
+	k[max - min + 1];
+	(*nc)++;
+	for (i = 0; i < max - min + 1; i++)
+	{
+		k[i] = 0;
 		(*nc)++;
-		for (int j = 0; j < n; j++)
-		{
-			if (B[j] < B[i])
-			{
-				s++;
-				(*nc)++;
-				(*nsw)++;
-			}
-		}
-		k[s] = B[i];
+		(*nsw)++;
+	}
+	(*nc)++;
+	for (i = 0; i < n; i++)
+	{
+		k[B[i] - min]++;
 		(*nc)++;
 	}
-	free(k);
+	printf("\n");
+	(*nc)++;
+	for (i = 0; i < max - min + 1; i++)
+	{
+		(*nc) += 2;
+		for (j = 0; j < k[i]; j++)
+		{
+			B[s] = i + min;
+			s++;
+			(*nc)++;
+			(*nsw)++;
+		}
+	}
 }
 
 int line(int *B, int n, int key, int *nc)
@@ -281,68 +313,120 @@ int binar(int* B, int l, int r, int key, int *nc)
 	if (s == -1)
 		printf("Element not found");
 }
+
+bool check(int* B, int n)
+{
+	int i;
+	bool f = true;
+	for (i = 0; i < n - 1; i++)
+	{
+		if (B[i + 1] < B[i])
+		{
+			f = false;
+			break;
+		}
+	}
+	return f;
+}
+
+
 int main()
 {
 	int* A = NULL;
 	int* K = NULL;
-	int n = 10;
-	int t = 10;
+	int* S = NULL;
+	int n = 0;
+	int t = 11;
+	int k = 2;
+	int m, g, gg;
 	int nSwaps[6];
-	int nComp[6];
-	srand(1000);
+	int nComp[10];
 	double alltime[6];
-	bool check = false;
-	bool check2 = false;
-	double time;
+	bool ck = false;
+	bool ck2 = true;
 	int key;
-	LARGE_INTEGER start, finish, st;
-	QueryPerformanceCounter(&st);
+	clock_t time;
+	Menu();
 	do
 	{
-		Menu();
+			srand(1000);
 			scanf_s("%d", &t);
 			switch (t)
 			{
 				case 1:
-					if (check2)
-					Vvod(A, n);
-					check = true;
-					break;
-
-				case 2:
-					if (check2)
-					InputRandArray(A, n);
-					check = true;
-					break;
-				
-				case 3:
-				
-					if (check)
+					do
 					{
-						PrintArray(A, n);
+						printf("Enter size of massive ");
+						scanf_s("%d", &n);
+					} while (n < 0);
+					A = (int*)malloc(sizeof(int) * n);
+					do
+					{
+						printf("1. User Massive\n");
+						printf("2. Random Massive\n");
+						scanf_s("%d", &k);
+					} while (k < 1 || k > 2);
+
+					switch (k)
+					{
+					case 1: 
+						Vvod(A, n);
+						break;
+					case 2:
+						InputRandArray(A, n);
+						break;
+					}
+					S = (int*)malloc(sizeof(int) * n);
+					ck2 = true;
+					ck = true;
+					break;
+				
+				case 2:
+				
+					if (ck)
+					{
+						do
+						{
+							printf("1. Default\n");
+							printf("2. Sort\n");
+							scanf_s("%d", &m);
+						} while (m < 1 || m > 2);
+						if (m == 1)
+							PrintArray(A, n);
+						else if (!ck2)
+							PrintArray(S, n);
+						else
+							printf("Sort Massive\n");
 					}
 					else
-					{
 						printf("Input Massive\n");
-					}
 					break;
 				
-			case 4:
+			case 3:
 			
-				if (check)
+				if (ck)
 				{
+					K = (int*)malloc(sizeof(int) * n);
 					memcpy(K, A, sizeof(int) * n);
 					int nc = 0;
 					int nsw = 0;
-					QueryPerformanceCounter(&start);
+					time = clock();
 					BubbleSort(K, n, &nc, &nsw);
-					QueryPerformanceCounter(&finish);
-					time = (double)(finish.QuadPart - start.QuadPart) / (double)st.QuadPart;
+					time = clock() - time;
+					if (check(K, n))
+					{
+						printf("Correct");
+					}
+					if (ck2)
+					{
+						memcpy(S, K, sizeof(int) * n);
+						ck2 = false;
+					}
+					printf("Time %f	seconds\n", (double)time / CLOCKS_PER_SEC);
+					printf("Swaps %d , compare %d \n", nsw, nc);
 					nSwaps[0] = nsw;
 					nComp[0] = nc;
 					alltime[0] = time;
-					BubbleSort(A, n, &nc, &nsw);
-					PrintArray(A, n);
 					free(K);
 				}
 				else
@@ -351,22 +435,31 @@ int main()
 				}
 				break;
 			
-			case 5:
+			case 4:
 
-				if (check)
+				if (ck)
 				{
+					K = (int*)malloc(sizeof(int) * n);
 					memcpy(K, A, sizeof(int) * n);
 					int nc = 0;
 					int nsw = 0;
-					QueryPerformanceCounter(&start);
+					time = clock();
 					BubbleSort1(K, n, &nc, &nsw);
-					QueryPerformanceCounter(&finish);
-					time = (double)(finish.QuadPart - start.QuadPart) / (double)st.QuadPart;
+					time = clock() - time;
+					if (check(K, n))
+					{
+						printf("Correct");
+					}
+					if (ck2)
+					{
+						memcpy(S, K, sizeof(int) * n);
+						ck2 = false;
+					}
+					printf("Time %f	seconds\n", (double)time / CLOCKS_PER_SEC);
+					printf("Swaps %d , compare %d \n", nsw, nc);
 					nSwaps[1] = nsw;
 					nComp[1] = nc;
 					alltime[1] = time;
-					BubbleSort1(A, n, &nc, &nsw);
-					PrintArray(A, n);
 					free(K);
 				}
 				else
@@ -376,22 +469,31 @@ int main()
 				break;
 
 
-			case 6:
+			case 5:
 			
-				if (check)
+				if (ck)
 				{
+					K = (int*)malloc(sizeof(int) * n);
 					memcpy(K, A, sizeof(int) * n);
 					int nc = 0;
 					int nsw = 0;
-					QueryPerformanceCounter(&start);
+					time = clock();
 					InsertSort(K, n, &nc, &nsw);
-					QueryPerformanceCounter(&finish);
-					time = (double)(finish.QuadPart - start.QuadPart) / (double)st.QuadPart;
+					time = clock() - time;
+					if (check(K, n))
+					{
+						printf("Correct");
+					}
+					if (ck2)
+					{
+						memcpy(S, K, sizeof(int) * n);
+						ck2 = false;
+					}
+					printf("Time %f	seconds\n", (double)time / CLOCKS_PER_SEC);
+					printf("Swaps %d , compare %d \n", nsw, nc);
 					nSwaps[2] = nsw;
 					nComp[2] = nc;
 					alltime[2] = time;
-					InsertSort(A, n, &nc, &nsw);
-					PrintArray(A, n);
 					free(K);
 				}
 				else
@@ -400,22 +502,31 @@ int main()
 				}
 				break;
 			
-			case 7:
+			case 6:
 			
-				if (check)
+				if (ck)
 				{
+					K = (int*)malloc(sizeof(int) * n);
 					memcpy(K, A, sizeof(int) * n);
 					int nc = 0;
 					int nsw = 0;
-					QueryPerformanceCounter(&start);
-					Merge(K, 0, n - 1, &nc, &nsw);
-					QueryPerformanceCounter(&finish);
-					time = (double)(finish.QuadPart - start.QuadPart) / (double)st.QuadPart;
+					time = clock();
+					Merge1(K, 0, n - 1, &nc, &nsw);
+					time = clock() - time;
+					if (check(K, n))
+					{
+						printf("Correct");
+					}
+					if (ck2)
+					{
+						memcpy(S, K, sizeof(int) * n);
+						ck2 = false;
+					}
+					printf("Time %f	seconds\n", (double)time / CLOCKS_PER_SEC);
+					printf("Swaps %d , compare %d \n", nsw, nc);
 					nSwaps[3] = nsw;
 					nComp[3] = nc;
 					alltime[3] = time;
-					Merge(A, 0, n - 1, &nc, &nsw);
-					PrintArray(A, n);
 					free(K);
 				}
 				else
@@ -423,21 +534,31 @@ int main()
 					printf("Input Massive\n");
 				}
 				break;
-			case 8:
-				if (check)
+
+			case 7:
+				if (ck)
 				{
+					K = (int*)malloc(sizeof(int) * n);
 					memcpy(K, A, sizeof(int) * n);
 					int nc = 0;
 					int nsw = 0;
-					QueryPerformanceCounter(&start);
+					time = clock();
 					countsort(K, n, &nc, &nsw);
-					QueryPerformanceCounter(&finish);
-					time = (double)(finish.QuadPart - start.QuadPart) / (double)st.QuadPart;
+					time = clock() - time;
+					if (check(K, n))
+					{
+						printf("Correct");
+					}
+					if (ck2)
+					{
+						memcpy(S, K, sizeof(int) * n);
+						ck2 = false;
+					}
+					printf("Time %f	seconds\n", (double)time / CLOCKS_PER_SEC);
+					printf("Swaps %d , compare %d \n", nsw, nc);
 					nSwaps[4] = nsw;
 					nComp[4] = nc;
 					alltime[4] = time;
-					countsort(A, n, &nc, &nsw);
-					PrintArray(A, n);
 					free(K);
 				}
 				else
@@ -445,23 +566,73 @@ int main()
 					printf("Input Massive\n");
 				}
 				break;
-			case 9:
+
+			case 8:
 			
-				if (check)
+				if (ck)
 				{
-					memcpy(K, A, sizeof(int)* n);
+					K = (int*)malloc(sizeof(int) * n);
+					memcpy(K, A, sizeof(int) * n);
 					int nc = 0;
 					int nsw = 0;
-					QueryPerformanceCounter(&start);
+					time = clock();
 					Quick(K, 0, n - 1, &nc, &nsw);
-					QueryPerformanceCounter(&finish);
-					time = (double)(finish.QuadPart - start.QuadPart) / (double)st.QuadPart;
+					time = clock() - time;
+					if (check(K, n))
+					{
+						printf("Correct");
+					}
+					if (ck2)
+					{
+						memcpy(S, K, sizeof(int) * n);
+						ck2 = false;
+					}
+					printf("Time %f	seconds\n", (double)time / CLOCKS_PER_SEC);
+					printf("Swaps %d , compare %d \n", nsw, nc);
 					nSwaps[5] = nsw;
 					nComp[5] = nc;
 					alltime[5] = time;
-					Quick(A, 0, n - 1, &nc, &nsw);
-					PrintArray(A, n);
 					free(K);
+				}
+				else
+				{
+					printf("Input Massive\n");
+				}
+				break;
+
+			case 9:
+				
+				if (ck)
+				{
+					int nc = 0;
+					do
+					{
+						printf("1. Default\n");
+						printf("2. Sort\n");
+						scanf_s("%d", &g);
+					} while (g < 1 || g > 2);
+					printf("Enter key\n");
+					scanf_s("%d", &key);
+					if (g == 1)
+						gg = line(A, n, key, &nc);
+					else 
+						if (!ck2)
+						gg = line(S, n, key, &nc);
+						else 
+						{
+							gg = -1;
+							printf("Sort massive\n");
+						}
+					if (gg == -1)
+					{
+						printf("Not Found!\n");
+					}
+					else
+					{
+						printf("Number %d\n", gg);
+					}
+					printf("Compare %d\n", nc);
+						nComp[6] = nc;
 				}
 				else
 				{
@@ -469,35 +640,32 @@ int main()
 				}
 				break;
 			case 10:
-				
-				if (check)
+				if (ck && !ck2)
 				{
 					int nc = 0;
 					printf("Enter key\n");
 					scanf_s("%d", &key);
-					line(A, n, key , &nc);
-				}
-				else
-				{
-					printf("Input Massive\n");
-				}
-				break;
-			case 11:
-				if (check)
-				{
-					int nc = 0;
-					printf("Enter key\n");
-					scanf_s("%d", &key);
-					binar(A, 0, n - 1, key, &nc);
+					gg = binar(A, 0, n - 1, key, &nc);
+					if (gg == -1)
+					{
+						printf("Not Found!\n");
+					}
+					else
+					{
+						printf("Number %d\n", gg);
+					}
+					printf("Compare %d\n", nc);
+					nComp[7] = nc;
 				}
 				else
 				{
 					printf("Input Massive\n");
 				}	
 			default:
-				printf("Please, enter number 1 to 12");
+				printf("Please, enter number 1 to 10");
 				break;
 			}
 			
 	} while (t != 0);
+	free(A);
 }
