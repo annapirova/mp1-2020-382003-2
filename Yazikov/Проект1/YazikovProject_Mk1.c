@@ -42,7 +42,7 @@ int Linear_search(int *A, int n)
 void Count_sort(int *A, int n, int a, int b)
 {
 	int i,j;
-	int *R = malloc((b - a + 1) * sizeof(int));
+	int *R = (int*)malloc((b - a + 1) * sizeof(int));
 	for (i = 0; i < (b - a); i++)
 		R[i] = 0;
 	for (i = 0; i < n; i++)
@@ -144,18 +144,18 @@ void ItemList()
 	printf("0)Выход\n");
 }
 
-int randArray(int B[], int n, int a, int b)
+int randArray(int B[], int n, int *a, int *b)
 {
 	int i, was_filled;
 	was_filled = 0;
 	printf("Введите нижнюю границу\n");
-	scanf_s("%d", &a);
+	scanf_s("%d", a);
 	printf("Введите верхнюю границу\n");
-	scanf_s("%d", &b);
-	if (a <= b)
+	scanf_s("%d", b);
+	if (*a <= *b)
 	{
 		for (i = 0; i < n; i++)
-			B[i] = rand() % (b - a) + a;
+			B[i] = rand() % (*b - *a) + *a;
 		was_filled = 1;
 	}
 	else printf("Верхняя граница не должна быть меньше нижней\n");
@@ -221,7 +221,7 @@ void main()
 		{
 		case 1:
 		{
-			indexInput = randArray(B, n, lb, rb);
+			indexInput = randArray(B, n, &lb, &rb);
 			break;
 		}
 		case 2:
