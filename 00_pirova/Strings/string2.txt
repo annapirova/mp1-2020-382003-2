@@ -1,0 +1,88 @@
+parse
+
+s1 = 2.3 2.4 2.5
+1.4 2.6 7.9
+2.5 1.6 1.0
+
+sscanf(s1, "%lf %lf %lf");
+
+
+a=5
+b=78
+fgets(s1, 10, stdin);
+sscanf(s1, "%c=%lf", &varName, &value);
+
+*******************************************
+str = 'math and programming are cool'
+точный поиск
+word = 'program'
+gram
+coo
+' is'
+
+
+str = 'math and rogRAMming are cool'
+
+i - итератор по строке
+j - итератор по слову
+int Find(char* str, char* word)
+{
+int j = 0;
+int i = 0;
+bool f = true;
+while ((i < strlen(str))&&(str[i] != word[0])) i++;
+//i - первая буква
+if (i == strlen(str))
+{
+	// не нашли
+	return -1;
+}
+start = i;
+while (f && (j < strlen(word)))
+{
+	if (word[j] == str[i])
+	{
+		i++; j++;
+	}
+	else f = false;
+}
+//i - индекс сразу за словом
+finish = i;
+if (finish - start == strlen(word))
+{
+	return start; // это ответ
+}
+else
+{
+	// слова нет
+	return -1;
+}
+}
+*******************************************
+нечеткий поиск - совп с точн до k симв 
+k = 2
+programs
+col
+Gram
+
+cool
+суффикс: l, ol, ool
+префикс: c, co, coo
+********************************************
+programming  2 g 1 a 2 m ....
+
+programming
+
+g  1 r 1 o 1 g
+mam
+gimn
+stat 
+O(len2)*O(len1)
+
+a b c d .... x y z
+O(len1 + len2)
+
+aggimmoprr
+amm
+
+arst   O(len1 * log (len1)) + O(len1)

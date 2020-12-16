@@ -1,6 +1,7 @@
 #include "string.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include "stdbool.h"
 
 struct
 {
@@ -10,17 +11,79 @@ struct
 }
 typedef Student;
 
-int Find(char* str, char* substr) // найти позицию строки substr в строке str
+// найти позицию строки substr в строке str
+int Find(char* str, char* word)
 {
-}
+	int start, finish;
+	int j = 0;
+	int i = 0;
+	bool f = false;
 
+	while (i < strlen(str))
+	{
+		f = true;
+		while ((i < strlen(str)) &&
+		       (str[i] != word[0])) i++;
+			//i - первая буква
+		if (i == strlen(str))
+		{
+			// не нашли
+			return -1;
+		}
+		start = i;
+		j = 0;
+		while (f && (j < strlen(word)))
+		{
+			if (word[j] == str[i])
+			{
+				i++; j++;
+			}
+			else f = false;
+		}
+		//i - индекс сразу за словом
+		finish = i;
+		if ((finish - start == strlen(word)) && f)
+		{
+			return start; // это ответ
+		}
+		else
+		{
+			// это не то слово
+			// ищу следующее вхождение первой буквы
+			i = start + 1;
+		}
+	}
+	if (!f)
+	{
+		return -1;
+	}
+}
 // найти позицию строки substr, допускается отличие в k знаках от образца
 int FindK(char* str, char* substr, int k) 
 {
 }
 
 
-void main33()
+void main()
+{
+	char* str = "math and programming are cool";
+	char* word = "program";
+	char* word2 = "progRAM";
+	char* word3 = "yellow";
+	char* word4 = "mathmath";
+	char* word5 = "are";
+
+	int p1, p2, p3, p4, p5;
+	p1 = Find(str, word);
+	p2 = Find(str, word2);
+	p3 = Find(str, word3);
+	p4 = Find(str, word4);
+	p5 = Find(str, word5);
+
+	printf("%d %d %d %d %d\n", p1, p2, p3, p4, p5);
+}
+
+void main200()
 {
 	char s1[10] = "123.5";
 	char s2[20] = "35, c=36";
@@ -31,6 +94,7 @@ void main33()
 	int b, c;
 	char* pos;
 
+	
 	a = atof(s1);
 	b = atoi(s2);
 	pos = strrchr(s2, 'c');
@@ -43,7 +107,7 @@ void main33()
 	printf("name is %s, m1 is %lf, m2 is %lf\n", name, mark1, mark2);  
 }
 
-void main()
+void main100()
 {
 	char stud[200] = "Ivanov 5.5 4.5";
 	char name[20];

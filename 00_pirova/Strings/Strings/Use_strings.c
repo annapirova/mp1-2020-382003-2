@@ -102,7 +102,7 @@ void SaveWordsW(char* str, char** words)
 	char* D = " ,.!?:;";
 	char* p, *p2, *prev;
 	len = strlen(str);
-
+	// " program 1, program 22"
 	prev = str; // предыдущий разделитель
 	j = 0;
 	for (i = 0; i < len; i++)
