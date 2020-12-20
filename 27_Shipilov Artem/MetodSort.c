@@ -231,7 +231,7 @@ void main()
 	int B[100], A[100];
 	int n = 100;
 	int t = 8;
-	bool wasInput = true;
+	bool wasInput = false;
 	int nComp[4]; // 0 - сравнения для Bubble, 1 - сравнения для QuickSort,...
 	int nSwaps[4]; // 0 - обмены для Bubble, 1 - обмены для QuickSort,...
 	printf("Программа по созданию и сортировки массивов с приминением разных методов сортировок\n");
