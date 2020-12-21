@@ -13,19 +13,14 @@ void carray(int a[][10], int n, int m)
 
 void trans(int a[][10], int n, int m)
 {
-    int array[m][n], i, j;
-    for (i = 0; i < m; i++)
+    int i, j, tmp;
+    for( int i = 0; i < n; i++)
     {
-        for (j = 0; j < n; j++)
+      for ( j = i+1; j < m; j++ ) 
         {
-            array[i][j] = a[j][i];
-        }
-    }
-    for (i = 0; i < m; i++)
-    {
-        for (j = 0; j < n; j++)
-        {
-            a[i][j] = array[i][j];
+           tmp = a[i][j];
+           a[i][j] = a[j][i];
+           a[j][i] = tmp;
         }
     }
 }
