@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "math.h"
+#include <math.h>
 #include "locale.h"
 
-typedef double (*function1)(double);
-typedef double (*function2)(double, int);
+typedef double (*function1)(int);
+typedef double (*function2)(int, int);
 
 int fact(int n)
 {
@@ -21,44 +21,59 @@ double sqrt1(double x)
 
 double sqrt2(double x, int i)
 {
-    if (i == 1) 
-        return x/2;
-    else return ((-x * (2 * i - 1))/ (2 * fact(i)));
+    int j;
+    double r;
+    r = (pow(x, i) * pow(-1, i + 1)) / (pow(2, i) * fact(i));
+    for (j = 1; j > i; j++)
+        r *= (2 * i - 3);
+    return r;
 }
 
-double cos1(x)
+double cos1(int x)
 {
     return 1;
 }
 
-double cos2(x, i)
+double cos2(int x, int i)
 {
-    return ((-1) * pow(x, 2) / 2 * i * (2 * i + 1));
+    return ((pow(-1, i) * pow(x, 2 * i)) / fact(2 * i));
 }
 
-double cot1(double x)
+int sin1(int x)
 {
-    return 1/x;
+    return x;
 }
 
-double cot2(double x, int i)
+double sin2(int x, int i)
 {
-    if (i == 1)
-        return ((-x * x) / 3);
-    else return ((pow(x, 2)*(i - 1))/ 3 * (2*i-1));
+    return ((pow(-1, i) * pow(x, 2 * i + 1)) / fact(2 * i + 1));
 }
 
-double func(function1 fun1, function2 fun2, double x, long double toch, int* k, double ifx, int n)
+double taycot(int x, double toch, int* k, double ifx, int n)
 {
-    double f1, f2, sum;
+	double sin = sin1(x), cos = cos1(x), a=1;
+    double r = fabs(cos/sin - ifx);
+	while ((r > toch) && (*k < n))
+	{
+		cos = cos + cos2(x, *k);
+        sin = sin + sin2(x, *k);
+        (*k)++;
+        r = fabs(cos/sin - ifx);
+	}
+	return cos/sin;
+}
+
+double func(function1 fun1, function2 fun2, int x, double toch, int* k, double ifx, int n)
+{
+    double f1, f2, sum, r;
     f1 = fun1(x);
     sum = f1;
-    while((fabs(ifx - sum)) && (*k < n))
+    r = fabs(ifx - sum);
+    while ((r > toch) && (*k < n))
     {
-        f2 = f1 * fun2(x, *k);
-        sum = sum + f2;
-        f1 = f2;
+        sum = (double)(sum + fun2(x, (*k)));
         (*k)++;
+        r = fabs(ifx - sum);
     }
     return sum;
 }
@@ -73,19 +88,19 @@ void menu()
 void main()
 {
     setlocale(LC_ALL, "Rus");
-    int t = 1, k, n;
-    double x, fx, ifx;
-    long double toch, ras;
+    int t = 1, k, n, x;
+    double fx, ifx;
+    double toch, ras;
     while ((t == 1) || (t == 2) || (t == 3))
     {
         menu();
         scanf("%d", &t);
         printf("введите x \n");
-        scanf("%f", &x);
+        scanf("%d", &x);
         printf("введите число элементов ряда \n");
         scanf("%d", &n);
         printf("введите точность вычислений \n");
-        scanf("%f", &toch);
+        scanf("%lf", &toch);
         k = 1;
 
         switch(t)
@@ -94,19 +109,19 @@ void main()
             {
                 ifx = sqrt(1 + x);
                 fx = func(sqrt1, sqrt2, x, toch, &k, ifx, n);
-                printf("эталонное значение %.5f \n", ifx);
-                printf("вычислительная оценка %.5f \n", fx);
-                printf("разница между оценкой и эталонным значением %.5f \n", fabs(ifx - fx));
+                printf("эталонное значение %.10f \n", ifx);
+                printf("вычислительная оценка %.10f \n", fx);
+                printf("разница между оценкой и эталонным значением %.10f \n", fabs(ifx - fx));
                 printf("количество слагаемых %d \n", k);
                 break;
             }
             case 2:
             {
                 ifx = cos(x)/sin(x);
-                fx = func(cot1, cot2, x, toch, &k, ifx, n);
-                printf("эталонное значение %.5f \n", ifx);
-                printf("вычислительная оценка %.5f \n", fx);
-                printf("разница между оценкой и эталонным значением %.5f \n", fabs(ifx - fx));
+                fx = taycot(x, toch, &k, ifx, n);
+                printf("эталонное значение %.10f \n", ifx);
+                printf("вычислительная оценка %.10f \n", fx);
+                printf("разница между оценкой и эталонным значением %.10f \n", fabs(ifx - fx));
                 printf("количество слагаемых %d \n", k);
                 break;
             }
@@ -114,9 +129,9 @@ void main()
             {
                 ifx = cos(x);
                 fx = func(cos1, cos2, x, toch, &k, ifx, n);
-                printf("эталонное значение %.5f \n", ifx);
-                printf("вычислительная оценка %.5f \n", fx);
-                printf("разница между оценкой и эталонным значением %.5f \n", fabs(ifx - fx));
+                printf("эталонное значение %.10f \n", ifx);
+                printf("вычислительная оценка %.10f \n", fx);
+                printf("разница между оценкой и эталонным значением %.10f \n", fabs(ifx - fx));
                 printf("количество слагаемых %d \n", k);
                 break;
             }
