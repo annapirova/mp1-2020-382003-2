@@ -107,25 +107,59 @@ int* Merge_sort(int *X, int *Y, int a, int b)
 	return target;
 }
 
+//void SortBubble(int* A, int n)
+//{
+//	int tmp, i, j;
+//	char bl;
+//	for (i = 0; i < n; i++)
+//	{
+//		bl = 0;
+//		for (j = 0; j < n - i - 1; j++)
+//		{
+//			if (A[j + 1] < A[j])
+//			{
+//				tmp = A[j + 1];
+//				A[j + 1] = A[j];
+//				A[j] = tmp;
+//				bl = 1;
+//			}
+//		}
+//		if (bl = 0)
+//			break;
+//	}
+//}
+
 void SortBubble(int* A, int n)
 {
-	int tmp, i, j;
-	char bl;
-	for (i = 0; i < n; i++)
+	int left = 0; 
+	int right = n-1;
+	int bl = 1;
+	int i, sw;
+	while ((right > left) && (bl > 0))
 	{
 		bl = 0;
-		for (j = 0; j < n - i - 1; j++)
+		for (i = left; i < right; i++)
 		{
-			if (A[j + 1] < A[j])
+			if (A[i] > A[i + 1])
 			{
-				tmp = A[j + 1];
-				A[j + 1] = A[j];
-				A[j] = tmp;
+				sw = A[i];
+				A[i] = A[i + 1];
+				A[i + 1] = sw;
 				bl = 1;
 			}
 		}
-		if (bl = 0)
-			break;
+		right--;
+		for (i = right; i > left; i--)
+		{
+			if (A[i - 1] > A[i])
+			{
+				sw = A[i];
+				A[i] = A[i - 1];
+				A[i - 1] = sw;
+				bl = 1;
+			}
+		}
+		left++;
 	}
 }
 
