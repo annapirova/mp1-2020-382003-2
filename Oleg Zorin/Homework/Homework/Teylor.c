@@ -47,7 +47,7 @@ void main()
 			{
 				printf("Enter value(from -1 to 1): ");
 				scanf_s("%lf", &x);
-			} while (((x - 1.0) > EXP) || ((x + 1.0) < EXP));
+			} while (fabs(x) > 1);
 			printf("Enter the required precision: ");
 			scanf_s("%d", &m);
 			accuracy = pow(10.0, -m);
@@ -64,7 +64,7 @@ void main()
 			{
 				printf("Enter value(from -1 to 1): ");
 				scanf_s("%lf", &x);
-			} while (((x - 1.0) > EXP) || ((x + 1.0) < EXP));
+			} while (fabs(x) > 1);
 			printf("Enter the required precision: ");
 			scanf_s("%d", &m);
 			accuracy = pow(10.0, -m);

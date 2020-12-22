@@ -15,8 +15,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="StringMedium6.c">
-      <Filter>Файлы ресурсов</Filter>
+    <ClCompile Include="Source.c">
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
