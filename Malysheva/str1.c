@@ -7,7 +7,7 @@ char dl(char* str, int len)
     int i, max = 0, im = 0, count = 0;
     for (i = 0; i < len; i++)
     {
-        if (str[i] != ' ') 
+        if ((str[i] != ' ') && (str[i] != '.') && (str[i] != ',') && (str[i] != '!') && (str[i] != '?'))
             count += 1;
         else 
         {
@@ -28,6 +28,7 @@ char dl(char* str, int len)
     max += im;
     for (i = im; i < max; i++)
         printf("%c", str[i]);
+    printf("\n");
 }
 
 void main()

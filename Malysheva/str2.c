@@ -2,7 +2,7 @@
 #include<locale.h>
 #include <string.h>
 
-void name(char* str, int len)
+void name(char* str, char* na, int len)
 {
     int in, ik, i;
     for (i = 0; i < len; i++)
@@ -14,14 +14,15 @@ void name(char* str, int len)
             ik = i - 1;
 
     for (i = in; i <= ik; i++)
-        printf("%c", str[i]);
+        na[i - in] = str[i];
 }
 
 void main()
 {
-    char str[125];
+    char str[125], na[125];
     int len;
     gets(str);
     len = strlen(str);
-    name(str, len);
+    name(str, na, len);
+    printf("%s \n", na);
 }

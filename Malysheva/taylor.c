@@ -4,7 +4,7 @@
 #include "locale.h"
 
 typedef double (*function1)(int);
-typedef double (*function2)(int, int);
+typedef double (*function2)(double, int);
 
 int fact(int n)
 {
@@ -29,27 +29,27 @@ double sqrt2(double x, int i)
     return r;
 }
 
-double cos1(int x)
+double cos1(double x)
 {
     return 1;
 }
 
-double cos2(int x, int i)
+double cos2(double x, int i)
 {
     return ((pow(-1, i) * pow(x, 2 * i)) / fact(2 * i));
 }
 
-int sin1(int x)
+int sin1(double x)
 {
     return x;
 }
 
-double sin2(int x, int i)
+double sin2(double x, int i)
 {
     return ((pow(-1, i) * pow(x, 2 * i + 1)) / fact(2 * i + 1));
 }
 
-double taycot(int x, double toch, int* k, double ifx, int n)
+double taycot(double x, double toch, int* k, double ifx, int n)
 {
 	double sin = sin1(x), cos = cos1(x), a=1;
     double r = fabs(cos/sin - ifx);
@@ -63,7 +63,7 @@ double taycot(int x, double toch, int* k, double ifx, int n)
 	return cos/sin;
 }
 
-double func(function1 fun1, function2 fun2, int x, double toch, int* k, double ifx, int n)
+double func(function1 fun1, function2 fun2, double x, double toch, int* k, double ifx, int n)
 {
     double f1, f2, sum, r;
     f1 = fun1(x);
@@ -71,7 +71,7 @@ double func(function1 fun1, function2 fun2, int x, double toch, int* k, double i
     r = fabs(ifx - sum);
     while ((r > toch) && (*k < n))
     {
-        sum = (double)(sum + fun2(x, (*k)));
+        sum = (sum + fun2(x, (*k)));
         (*k)++;
         r = fabs(ifx - sum);
     }
@@ -88,15 +88,15 @@ void menu()
 void main()
 {
     setlocale(LC_ALL, "Rus");
-    int t = 1, k, n, x;
-    double fx, ifx;
+    int t = 1, k, n;
+    double fx, ifx, x;
     double toch, ras;
     while ((t == 1) || (t == 2) || (t == 3))
     {
         menu();
         scanf("%d", &t);
         printf("введите x \n");
-        scanf("%d", &x);
+        scanf("%lf", &x);
         printf("введите число элементов ряда \n");
         scanf("%d", &n);
         printf("введите точность вычислений \n");
