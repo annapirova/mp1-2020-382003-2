@@ -28,6 +28,7 @@ int CountWordsW(char* str, char* D)
 	return k;
 }
 
+
 void MallocChar(char*** str, int n)
 {
 	int i;
@@ -69,13 +70,14 @@ bool checkPalindrome(char* str)
 void SaveWords(char** words, char* str, char* D)
 {
 	int i = 0;
-	char* p;
+	char* p = NULL;
+	char* next = NULL;
 
-	p = strtok(str, D);
+	p = strtok_s(str, D, &next);
 	while (p != NULL)
 	{
 		words[i] = p;
-		p = strtok(NULL, D);
+		p = strtok_s(NULL, D, &next);
 		i++;
 	}
 }
@@ -128,14 +130,14 @@ void CountRepit(char** words, int* counts, int n)
 
 void main()
 {
-	char mystr[200];
+	char mystr[200]= "Poops, nun, helmet, pizza, helmet, right, left, pizza, nun!";
 	char* delim = " ,.?!";
 	char** words;
 	char** palindromes;
 	int* counts;
 	int i, n, m;
 
-	fgets(mystr, 200, stdin);
+	//fgets(mystr, 200, stdin);
 
 	n = CountWordsW(mystr, delim);
 	MallocChar(&words, n);
@@ -152,13 +154,15 @@ void main()
 	CountRepit(words, counts, n);
 
 	//print:
-	for (i = 0; i < n - 1; i++)
+	printf("Words:\n");
+	for (i = 0; i < n; i++)
 	{
 		printf("%10s\t", words[i]);
 		printf("%d\n", counts[i]);
 	}
-	for (i = 0; i < m - 1; i++)
-		printf("| %s ", palindromes[i]);
+	printf("Palindromes:\n");
+	for (i = 0; i < m; i++)
+		printf("%10s\n", palindromes[i]);
 
 	//FreeChar(&words, n);
 	//FreeChar(&palindromes, m);
