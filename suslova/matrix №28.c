@@ -106,7 +106,7 @@ int GaussMethod(int a[][5], int y[], double x[], int n)
 		}
 		if (max == 0)
 		{
-			printf("невозможно получить решение");
+			printf("Г­ГҐГўГ®Г§Г¬Г®Г¦Г­Г® ГЇГ®Г«ГіГ·ГЁГІГј Г°ГҐГёГҐГ­ГЁГҐ");
 			return;
 		}
 
