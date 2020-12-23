@@ -3,7 +3,7 @@
 
 void main()
 {
-	char* str = "C:\\Users/User\OneDrive\\Рабочий стол/exam_part_1.pdf";
+	char* str = "C:\\Users/User\\OneDrive\\Р Р°Р±РѕС‡РёР№ СЃС‚РѕР»/exam_part_1.pdf";
 	int len, slash, tochka;
 	len = strlen(str);
 	slash = len;
