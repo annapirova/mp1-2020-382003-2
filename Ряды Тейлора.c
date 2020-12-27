@@ -3,60 +3,50 @@
 #include "locale.h"
 #define _USE_MATH_DEFINES
 
-double factorial(double n1)
-{
-	if (n1 == 0 || n1 == 1) return 1;
-	return n1 * factorial(n1 - 1);
-}
+typedef double (*Function)(double, int);
 
-double tey_s(double x, double i)
+double sh(double x, int i)
 {
 	double s;
-	s = pow(x, (2 * i)+1) / factorial((2 * i) + 1);
+	if (i == 0)
+	{
+		s = x;
+	}
+	else
+	s = (x * x) / ((2*i)*(2*i + 1));
 	return s;
 }
 
-double tey(double x, double i)
+double ch(double x, int i)
 {
 	double s;
-	s = pow(x, 2 * i) / factorial(2 * i);
+	if (i == 0)
+	{
+		s = 1;
+	}
+	else
+	s = (x*x) / ((i*2 - 1)*(2*i));
 	return s;
 }
 
-double my_ch(double x, double a, int n, int *p)
+double my_h(double x, double a, int n, Function ff, int *p)
 {
 	{
 		int i = 0;
-		double sum = 0;
+		double elem = 1, elemNext=0, sum = 0;
 		double t = a + 1;
-		do
+		while ((i < n) && (t > a))
 		{
-			t = tey(x, i);
-			sum += t;
+			elemNext = elem * ff(x, i);
+			sum += elemNext;
+			t = elemNext;
 			i++;
-		} while ((i < n) && (t > a));
+		}
 		*p = i;
 		return sum;
 	}
 }
 
-double my_sh(double x, double a, int n)
-{
-	double sum=0, t = a + 1;
-	int i = 0;
-	do
-	{
-		t = tey_s(x, i);
-		sum += t;
-		i++;
-	} while ((i < n) && (t > a));
-	return sum;
-}
-
-double my_cth(double x, double a, int n, int* p)
-{
-	return my_ch(x, a, n, p) / my_sh(x, a, n);
-}
 
 void EnterAXN(double *x, double *a, int *n)
 {
@@ -80,6 +70,7 @@ void menu()
 
 void main()
 {
+	Function ff;
 	double x, a, raz;
 	double i_ch, i_cth;
 	double m_ch, m_cth;
@@ -94,7 +85,7 @@ void main()
 		case 1:
 		{
 			EnterAXN(&x, &a, &n);
-			m_ch = my_ch(x, a, n, &p);
+			m_ch = my_h(x, a, n, ch, &p);
 			i_ch = cosh(x);
 			raz = fabs(m_ch - i_ch);
 			printf("%lf %lf %d\n", x, a, n);
@@ -107,7 +98,7 @@ void main()
 		case 2:
 		{
 			EnterAXN(&x, &a, &n);
-			m_cth = my_cth(x, a, n, &p);
+			m_cth = my_h(x, a, n, ch, &p)/ my_h(x, a, n, sh, &p);
 			i_cth = cosh(x)/sinh(x);
 			raz = fabs(m_cth - i_cth);
 			printf("%lf %lf %d\n", x, a, n);
