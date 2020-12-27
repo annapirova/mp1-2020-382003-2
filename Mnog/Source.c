@@ -6,7 +6,7 @@
 
 void main()
 {
-	int B[10][15];
+	int** B;
 	int i, j;
 	int m, n;
 	int range;
@@ -18,6 +18,7 @@ void main()
 	scanf_s("%d", &n);
 	printf("Enter number for column:\n");
 	scanf_s("%d", &m);
+	B = (int**)malloc(sizeof(int*) * n);
 
 	for (i = 0; i < n; i++)
 	{
@@ -66,4 +67,5 @@ void main()
 		}
 		printf("\n");
 	}
+	free(B);
 }

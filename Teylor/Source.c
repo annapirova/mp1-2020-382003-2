@@ -6,43 +6,6 @@
 typedef double (*FunctionF)(double);
 typedef double (*FunctionN)(double);
 
-double Factor(int n)
-{
-	int i;
-	double m;
-	m = 1;
-	for (i = 0; i < n; i++)
-	{
-		m *= i;
-		return m;
-	}
-}
-
-double BinCoef(int n, int k)
-{
-	return Factor(n) / (Factor(k) * Factor(n - k));
-}
-
-double Bern(int n)
-{
-	double b, sum;
-	int k;
-	sum = 0;
-	if (n > 0)
-	{
-		for (k = 0; k <= n; k++)
-			sum += BinCoef(n + 1, k + 1) * Bern(n - k);
-		b = (-1.0 / (double)(n + 1)) * sum;
-		
-		return b;
-
-	}
-	else
-	{
-		return 1;
-	}
-}
-
 double lnF(double x)
 {
 	return x;
