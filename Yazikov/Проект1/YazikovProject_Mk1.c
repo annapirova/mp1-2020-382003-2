@@ -189,11 +189,36 @@ int randArray(int B[], int n, int *a, int *b)
 	if (*a <= *b)
 	{
 		for (i = 0; i < n; i++)
-			B[i] = rand() % (*b - *a) + *a;
+			B[i] = rand() % (*b+1 - *a) + *a;
 		was_filled = 1;
 	}
 	else printf("Верхняя граница не должна быть меньше нижней\n");
 	return was_filled;
+}
+
+int Keyboard_input(int B[], int n)
+{
+	int i;
+	for (i = 0; i < 10; i++)
+	{
+		printf("B[%d]= ", i);
+		scanf_s("%d", &B[i]);
+	}
+	return 1;
+}
+
+void Find_Borders(int B[], int n, int *a, int *b)
+{
+	int l, r, i;
+	l = B[0]; r = B[0];
+	for (i = 1; i < n; i++)
+	{
+		if (l > B[i])
+			l = B[i];
+		if (r < B[i])
+			r = B[i];
+	}
+	*a = l; *b = r+1;
 }
 
 void print(int B[], int n)
@@ -241,7 +266,7 @@ void main()
 	int Bb[100];
 	int n = 10;
 	int t = 10;
-	int indexInput, wasfound;
+	int indexInput, wasfound, sw;
 	int lb = 0, rb = 0;
 	setlocale(LC_CTYPE, "Russian");
 	printf("start\n");
@@ -255,8 +280,17 @@ void main()
 		{
 		case 1:
 		{
-			indexInput = randArray(B, n, &lb, &rb);
-			break;
+			printf("Выбор способа ввода:\n1) Случайная генерация на отрезке\n2) Ввод с клавиатуры\n3) Отмена\n");
+			scanf_s("%d", &sw);
+			if (sw == 1)
+				indexInput = randArray(B, n, &lb, &rb);
+			else
+				if (sw == 2)
+				{
+					indexInput = Keyboard_input(B, n);
+					Find_Borders(B, n, &lb, &rb);
+				}
+				else break;
 		}
 		case 2:
 		{
@@ -339,8 +373,8 @@ void main()
 			{
 				wasfound = Check(B, n);
 				if (wasfound == 1)
-					printf("Массив отсортирован");
-				else printf("Массив не отсортирован");
+					printf("Массив отсортирован\n");
+				else printf("Массив не отсортирован\n");
 			}
 			else printf("Массив отсутствует\n");
 		}
