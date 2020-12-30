@@ -129,7 +129,7 @@ int* Merge_sort(int *X, int *Y, int a, int b)
 //	}
 //}
 
-void SortBubble(int* A, int n)
+void SortBubble(int* A, int n, int *comp, int *assign)
 {
 	int left = 0; 
 	int right = n-1;
@@ -146,7 +146,9 @@ void SortBubble(int* A, int n)
 				A[i] = A[i + 1];
 				A[i + 1] = sw;
 				bl = 1;
+				*assign++;
 			}
+			*comp++;
 		}
 		right--;
 		for (i = right; i > left; i--)
@@ -157,7 +159,9 @@ void SortBubble(int* A, int n)
 				A[i] = A[i - 1];
 				A[i - 1] = sw;
 				bl = 1;
+				*assign++;
 			}
+			*comp++;
 		}
 		left++;
 	}
@@ -175,6 +179,7 @@ void ItemList()
 	printf("7)Линейный поиск заданного числа\n");
 	printf("8)Бинарный поиск заданного числа\n");
 	printf("9)Проверка\n");
+	printf("10)Результат сортировки\n");
 	printf("0)Выход\n");
 }
 
@@ -260,12 +265,19 @@ void SortByInserts(int* A, int n)
 	}
 }
 
+void print_results(int comp, int assign)
+{
+	printf("comparsions = %d\nassigns = %d\n", comp, assign);
+}
+
 void main()
 {
 	int B[10];
 	int Bb[100];
 	int n = 10;
 	int t = 10;
+	int comparsions;
+	int assignments;
 	int indexInput, wasfound, sw;
 	int lb = 0, rb = 0;
 	setlocale(LC_CTYPE, "Russian");
@@ -303,7 +315,10 @@ void main()
 		{
 			if (indexInput == 1)
 			{
-				SortBubble(B, n);
+				comparsions = 0;
+				assignments = 0;
+				SortBubble(B, n, &comparsions, &assignments);
+				print_results(comparsions, assignments);
 				print(B, n);
 			}
 			else printf("Массив отсутствует\n");
@@ -377,6 +392,12 @@ void main()
 				else printf("Массив не отсортирован\n");
 			}
 			else printf("Массив отсутствует\n");
+		}
+		case 10:
+		{
+			if (Check(B, n) == 1)
+				print_results(comparsions, assignments);
+			else printf("Массив не отсортирован\n");
 		}
 		}
 	}
