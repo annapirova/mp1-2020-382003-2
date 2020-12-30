@@ -39,8 +39,10 @@ int Linear_search(int *A, int n)
 		return -1;
 }
 
-void Count_sort(int *A, int n, int a, int b)
+void Count_sort(int *A, int n, int a, int b, int *comp, int *assign)
 {
+	int co = 0;
+	int as = 0;
 	int i,j;
 	int *R = (int*)malloc((b - a + 1) * sizeof(int));
 	for (i = 0; i < (b - a); i++)
@@ -48,7 +50,7 @@ void Count_sort(int *A, int n, int a, int b)
 	for (i = 0; i < n; i++)
 	{
 		R[A[i] - a]++;
-		A[i] = 0;
+		A[i] = 0; as++;
 	}
 	j = 0;
 	for (i = 0; i < (b - a); i++)
@@ -57,14 +59,18 @@ void Count_sort(int *A, int n, int a, int b)
 		{
 			A[j] = (i + a);
 			j++;
-			R[i]--;
+			R[i]--; as++;
 		}
 	}
 	free(R);
+	*assign = as;
+	*comp = co;
 }
 
-int* Merge_sort(int *X, int *Y, int a, int b)
+int* Merge_sort(int *X, int *Y, int a, int b, int *comp, int *assign)
 {
+	int co = 0;
+	int as = 0;
 	int mid;
 	if (a == b)
 	{
@@ -72,8 +78,8 @@ int* Merge_sort(int *X, int *Y, int a, int b)
 		return Y;
 	}
 	mid = (a + b) / 2;
-	int *left = Merge_sort(X, Y, a, mid);
-	int *right = Merge_sort(X, Y, mid + 1, b);
+	int *left = Merge_sort(X, Y, a, mid, &co, &as);
+	int *right = Merge_sort(X, Y, mid + 1, b, &co, &as);
 
 	int *target = left == X ? Y : X;
 
@@ -82,28 +88,33 @@ int* Merge_sort(int *X, int *Y, int a, int b)
 	{
 		if (l_cur <= mid && r_cur <= b)
 		{
+			co++;
 			if (left[l_cur] < right[r_cur])
 			{
 				target[i] = left[l_cur];
 				l_cur++;
+				as++;
 			}
 			else
 			{
+				as++;
 				target[i] = right[r_cur];
 				r_cur++;
 			}
 		}
 		else if (l_cur <= mid)
 		{
-			target[i] = left[l_cur];
+			target[i] = left[l_cur]; as++;
 			l_cur++;
 		}
 		else
 		{
 			target[i] = right[r_cur];
-			r_cur++;
+			r_cur++; as++;
 		}
 	}
+	*assign += as;
+	*comp += co;
 	return target;
 }
 
@@ -135,6 +146,8 @@ void SortBubble(int* A, int n, int *comp, int *assign)
 	int right = n-1;
 	int bl = 1;
 	int i, sw;
+	int co = 0;
+	int as = 0;
 	while ((right > left) && (bl > 0))
 	{
 		bl = 0;
@@ -146,9 +159,9 @@ void SortBubble(int* A, int n, int *comp, int *assign)
 				A[i] = A[i + 1];
 				A[i + 1] = sw;
 				bl = 1;
-				*assign++;
+				as++;
 			}
-			*comp++;
+			co++;
 		}
 		right--;
 		for (i = right; i > left; i--)
@@ -159,12 +172,14 @@ void SortBubble(int* A, int n, int *comp, int *assign)
 				A[i] = A[i - 1];
 				A[i - 1] = sw;
 				bl = 1;
-				*assign++;
+				as++;
 			}
-			*comp++;
+			co++;
 		}
 		left++;
 	}
+	*assign = as;
+	*comp = co;
 }
 
 void ItemList()
@@ -249,20 +264,25 @@ int Check(int *B, int n)
 	return f;
 }
 
-void SortByInserts(int* A, int n)
+void SortByInserts(int* A, int n, int *comp, int *assign)
 {
+	int co = 0;
+	int as = 0;
 	int i, tmp, z;
 	for (i = 1; i < n; i++)
 	{
-		tmp = A[i];
+		tmp = A[i]; as++;
 		z = i;
 		while ((z > 0) && (A[z - 1] > tmp))
 		{
-			A[z] = A[z - 1];
+			co++;
+			A[z] = A[z - 1]; as++;
 			z--;
 		}
-		A[z] = tmp;
+		A[z] = tmp; as++;
 	}
+	*assign = as;
+	*comp = co;
 }
 
 void print_results(int comp, int assign)
@@ -328,7 +348,8 @@ void main()
 		{
 			if (indexInput == 1)
 			{
-				SortByInserts(B, n);
+				SortByInserts(B, n, &comparsions, &assignments);
+				print_results(comparsions, assignments);
 				print(B, n);
 			}
 			else printf("Массив отсутствует\n");
@@ -338,7 +359,9 @@ void main()
 		{
 			if (indexInput == 1)
 			{
-				Merge_sort(B, Bb, 0, n-1);
+				comparsions = 0; assignments = 0;
+				Merge_sort(B, Bb, 0, n-1, &comparsions, &assignments);
+				print_results(comparsions, assignments);
 				print(B, n);
 			}
 			else printf("Массив отсутствует\n");
@@ -348,7 +371,8 @@ void main()
 		{
 			if (indexInput == 1)
 			{
-				Count_sort(B, n, lb, rb);
+				Count_sort(B, n, lb, rb, &comparsions, &assignments);
+				print_results(comparsions, assignments);
 				print(B, n);
 			}
 			else printf("Массив отсутствует\n");
