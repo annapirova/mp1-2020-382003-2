@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Teylor1", "Teylor1\Teylor1.vcxproj", "{C84046CF-3270-42CB-BEAB-BFB20ABB6A49}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C84046CF-3270-42CB-BEAB-BFB20ABB6A49}.Debug|x64.ActiveCfg = Debug|x64
+		{C84046CF-3270-42CB-BEAB-BFB20ABB6A49}.Debug|x64.Build.0 = Debug|x64
+		{C84046CF-3270-42CB-BEAB-BFB20ABB6A49}.Debug|x86.ActiveCfg = Debug|Win32
+		{C84046CF-3270-42CB-BEAB-BFB20ABB6A49}.Debug|x86.Build.0 = Debug|Win32
+		{C84046CF-3270-42CB-BEAB-BFB20ABB6A49}.Release|x64.ActiveCfg = Release|x64
+		{C84046CF-3270-42CB-BEAB-BFB20ABB6A49}.Release|x64.Build.0 = Release|x64
+		{C84046CF-3270-42CB-BEAB-BFB20ABB6A49}.Release|x86.ActiveCfg = Release|Win32
+		{C84046CF-3270-42CB-BEAB-BFB20ABB6A49}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {85FFD976-C0A5-48E3-BA75-61994C6A54FF}
+	EndGlobalSection
+EndGlobal

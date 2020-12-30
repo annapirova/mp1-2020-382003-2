@@ -1,122 +1,151 @@
-#include "math.h"
-#include "stdlib.h"
+﻿
 #include "stdio.h"
+#include "locale.h"
+#include "stdlib.h"
+#include "math.h"
 #define EPS 1e-9
 
-typedef double (*FunctionF)(double);
-typedef double (*FunctionN)(double);
+typedef double(*function1)(double);
+typedef double(*function2)(double, int);
 
-double lnF(double x)
+int fact(int n)
 {
-	return x;
+	int i, t = 1;
+	for (i = 1; i <= n; i++)
+		t = t * i;
+	return t;
 }
 
-double lnN(double x, int i)
-{
-	return((-1) * x * (i - 1) / (i));
-}
-
-double ChF(double x)
+double Ch1(double x)
 {
 	return 1;
 }
 
-double ChN(double x, int i)
+double Ch2(double x, int i)
 {
-	return x * x / (double)(2 * i * (2 * i - 1));
+	return x * x / fact(2 * i);
 }
 
-double SinF(double x)
+double ln1(double x)
 {
 	return x;
 }
 
-double SinN(double x, int i)
+double ln2(double x, int i)
 {
-	return (-1) * x * x / (double)(2 * i * (2 * i + 1));
+	return((-1) * x * (i - 1) / (i));
 }
 
-double sum(FunctionF first, FunctionN next, double x, int kmax, double ideal, double* diff, int* i)
+double cos1(double x)
 {
-	double elem, elemN, sum;
-	*i = 1;
-	elem = first(x);
-	sum = elem;
-	*diff = fabs(sum - ideal);
-	while (*i < kmax && *diff > EPS)
-	{
-		elemN = elem * next(x, *i);
-		sum += elemN;
-		elem = elemN;
-		*diff = fabs(sum - ideal);
-		(*i)++;
-	}
+	return 1;
+}
 
+double cos2(double x, int i)
+{
+	return ((pow(-1, i) * pow(x, 2 * i)) / fact(2 * i));
+}
+
+double func(function1 fun1, function2 fun2, double x, int n, double rf, double* diff, int* k, double eps)
+{
+	double f1, f2, sum;
+	*k = 1;
+	f1 = fun1(x);
+	sum = f1;
+	*diff = fabs(sum - rf);
+	while ((*k < n) && (*diff > EPS))
+	{
+		f2 = f1 * fun2(x, *k);
+		sum += f2;
+		f1 = f2;
+		(*k)++;
+		*diff = fabs(sum - rf);
+	}
 	return sum;
 }
 
-int menu()
+//void print(double* x, double* n, double* eps)
+//{
+//	printf("Enter X\n");
+//	scanf_s("%lf", x);
+//	printf("Enter N \n");
+//	scanf_s("%d", n);
+//	printf("Enter EPS\n");
+//	scanf_s("%lf", eps);
+//}
+void menu()
 {
-	printf(" 1. ln(1 + x)\n");
-	printf(" 2. ch(x)\n");
-	printf(" 3. sin(x)\n");
-	printf(" 0. Exit\n");
+	printf("MENU\n");
+	printf("1.cos(x)\n");
+	printf("2.ch(x)\n");
+	printf("3.ln(1+x)\n");
 }
 
-int main()
+void main()
 {
-	int n, i, k;
-	double x, y;
-	double diff;
-
-	k = 1;
-	i = 0;
-
-	printf("Enter X: \n");
-	scnaf_s("%lf", &x);
-
-	printf("Number of terms: \n");
-	scnaf_s("%d", &n);
-
-	while (k != 0)
+	double rf; 
+	double f; 
+	double x;
+	int k; 
+	double diff; 
+	int n;
+	int t = 4;
+	
+	while (t != 0)
 	{
 		menu();
-		scanf_s("%d", &k);
-
-		switch (k)
+		scanf_s("%d", &t);
+		k = 0;
+		switch (t)
 		{
 		case 1:
-			printf(" 1. ln(1 + x) \n");
-			double ideal = log(1 + x);
-			double y = sum(lnF, lnN, x, n - 1, ideal, &diff, &i);
-			printf("Ideal: %.5f\n", ideal);
-			printf("value: %.5f\n", y);
+		{
+			printf("cos(x)\n");
+			scanf_s("%lf", &x);
+			scanf_s("%d", &n);
+			//print(&x, &n, &eps);
+			rf = cos(x);
+			f = func(cos1, cos2, x, n, rf, &diff, &k, EPS);
+			printf("Ideal: %.5f\n", rf);
+			printf("value: %.5f\n", f);
 			printf("Difference: %.5f\n", diff);
-			printf("Number of terms: %d\n", i);
+			printf("Number of terms: %d\n", k);
 			break;
-
-		case2: 
-			printf(" 2. ch(x) \n");
-			double ideal = cosh(x);
-			double y = sum(ChF, ChN, x, n - 1, ideal, &diff, &i);
-			printf("Ideal: %.5f\n", ideal);
-			printf("value: %.5f\n", y);
+		}
+		case 2:
+		{
+			printf("ch(x)\n");
+			scanf_s("%lf", &x);
+			scanf_s("%d", &n);
+			//print(&x, &n, &eps);
+			rf = cosh(x);
+			f = func(Ch1, Ch2, x, n, rf, &diff, &k, EPS);
+			printf("Ideal: %.5f\n", rf);
+			printf("value: %.5f\n", f);
 			printf("Difference: %.5f\n", diff);
-			printf("Number of terms: %d\n", i);
+			printf("Number of terms: %d\n", k);
 			break;
-
+		}
 		case 3:
-			printf(" 3. sin(x)\n");
-			double ideal = sin(x);
-			double y = sum(SinF, SinN, x, n - 1, ideal, &diff, &i);
-			printf("Ideal: %.5f\n", ideal);
-			printf("value: %.5f\n", y);
+		{
+			printf("ln(1+x)\n");
+			scanf_s("%lf", &x);
+			scanf_s("%d", &n);
+			//print(&x, &n, &eps);
+			rf = log(1 + x);
+			f = func(ln1, ln2, x, n, rf, &diff, &k, EPS);
+			printf("Ideal: %.5f\n", rf);
+			printf("value: %.5f\n", f);
 			printf("Difference: %.5f\n", diff);
-			printf("Number of terms: %d\n", i);
+			printf("Number of terms: %d\n", k);
 			break;
-			
-		default:
-			printf("Please, enter number 1 to 3");
+
+		}
+		case 0:
+		{
+			break;
+		}
+		break;
 		}
 	}
 }
