@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <math.h>
 
+typedef double(*functionType) (double, int);
+
 double LogN(double x, double eps, int *iterat) 
 {
 	double lastresult, result;
@@ -13,13 +15,34 @@ double LogN(double x, double eps, int *iterat)
 		result = lastresult;
 		lastresult += (pow(-1, n) * pow(x, n + 1)) / (n + 1);
 		n++;
-		if (n >= (*iterat)) { printf("\nОстановка"); break; }
+		//if (n >= (*iterat)) { printf("\nОстановка"); break; }
 	} 
-	while (fabs(lastresult - result) >= eps);
+	while ((fabs(lastresult - result) >= eps)&&(n<(*iterat)));
 
 	if (n <= (*iterat)) (*iterat) = n;
 	else (*iterat) -= n;
 	return lastresult;
+}
+
+/* значение, на которое должно домножаться предыдущее в ходе вычисления функции cos(x) */
+double Nextcos(double x, int i)
+{
+	double result;
+	result = pow(-1, i) * pow(x, 2 * i) / (2 * i*(2 * i - 1));
+	return result;
+}
+
+/* суммирование домножаемых элементов до желаемой точности*/
+double SUM(functionType ff, double x, double a1, double e)
+{
+	double i = 1, elem = x, elemNext, result = x;
+	while (fabs(result - a1) > e)
+	{
+		elemNext = elem * ff(x, i);
+		result += elemNext;
+		i++;
+	}
+	return result;
 }
 
 double InputOptions(double *x, int *iter, double *eps) {
@@ -37,29 +60,6 @@ double Clear(double *rr, double *x, double *eps, int *itr)
 	(*x) = 0;
 	(*eps) = 0;
 	(*itr) = 0;
-}
-
-double CosX(double x, double eps, int* count)
-{
-	double sum = 0;
-	double z = 1;
-	int n = 0;
-	while (fabs(z) > eps)
-	{
-		sum += z;
-		if (n >= (*count))
-			break;
-		n++;
-		z *= -x * x / (2.0 * n - 1.0) / (2.0 * n);
-	}
-	if ((n != 1) && (n <= (*count)))
-		(*count) = n;
-	else
-		(*count) -= (n);
-	if (n == 1)
-		(*count) = n;
-
-	return sum;
 }
 
 void menu()
@@ -99,11 +99,16 @@ void main()
 		}
 		case 2:
 		{
+			double t1, c1;
 			printf("Тейлор Sec x");
-			InputOptions(&x, &iter, &eps);
-
-			result = CosX(x, eps, &iter);
-			printf("Мой результат = %16.13f \nКол-во членов = %5d\nSec(x) = %16.13f\n", 1/result, iter, 1/cos(x));
+			printf("\nВведите значение аргумента ");
+			scanf_s("%lf", &x);
+			printf("\nВведите погрешность \n");
+			scanf_s("%d", &eps);
+			t1 = pow(10.0, -1 * eps);
+			c1 = cos(x);
+			result = SUM(Nextcos, 1, c1, t1);
+			printf("Мой результат = %16.13f \nSec(x) = %16.13f\n", 1 / result, 1 / cos(x));
 			printf("\nРазница между оценкой и эталонным значением: %16.30f", 1/result - 1/cos(x));
 			Clear(&result, &x, &eps, &iter);
 			break; 

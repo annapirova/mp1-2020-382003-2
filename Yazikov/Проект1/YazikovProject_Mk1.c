@@ -292,9 +292,9 @@ void print_results(int comp, int assign)
 
 void main()
 {
-	int B[10];
-	int Bb[100];
-	int n = 10;
+	int B[15000];
+	int Bb[15000];
+	int n = 15000;
 	int t = 10;
 	int comparsions;
 	int assignments;
@@ -338,8 +338,8 @@ void main()
 				comparsions = 0;
 				assignments = 0;
 				SortBubble(B, n, &comparsions, &assignments);
-				print_results(comparsions, assignments);
 				print(B, n);
+				print_results(comparsions, assignments);
 			}
 			else printf("Массив отсутствует\n");
 			break;
@@ -349,8 +349,8 @@ void main()
 			if (indexInput == 1)
 			{
 				SortByInserts(B, n, &comparsions, &assignments);
-				print_results(comparsions, assignments);
 				print(B, n);
+				print_results(comparsions, assignments);
 			}
 			else printf("Массив отсутствует\n");
 			break;
@@ -361,8 +361,8 @@ void main()
 			{
 				comparsions = 0; assignments = 0;
 				Merge_sort(B, Bb, 0, n-1, &comparsions, &assignments);
-				print_results(comparsions, assignments);
 				print(B, n);
+				print_results(comparsions, assignments);
 			}
 			else printf("Массив отсутствует\n");
 			break;
@@ -372,8 +372,8 @@ void main()
 			if (indexInput == 1)
 			{
 				Count_sort(B, n, lb, rb, &comparsions, &assignments);
-				print_results(comparsions, assignments);
 				print(B, n);
+				print_results(comparsions, assignments);
 			}
 			else printf("Массив отсутствует\n");
 			break;
