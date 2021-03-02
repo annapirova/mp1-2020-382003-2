@@ -10,6 +10,7 @@ public:
 	~Triangle();
 
 	double GetPer();
+	double GetSqr();
 
 
 };

@@ -33,3 +33,10 @@ double Triangle::GetPer()
 {
 	return a + b + c;
 }
+
+double Triangle::GetSqr()
+{
+	double p = GetPer() / 2;
+
+	return sqrt(p * (p - a) * (p - b) * (p - c));
+}
