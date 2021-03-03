@@ -1,4 +1,6 @@
+#include "stdio.h"
 #include "stdlib.h"
+
 
 int increments(int* inc, int Size)
 {
@@ -31,15 +33,15 @@ void ShellSortRS(int* A, int Size, int* ContrOfComp, int* ContrOfPer)
 {
 	int* inc;
 	int S, i, counter, tmp;
-	inc = (int*)malloc(sizeof(double)*40);
+	inc = (int*)malloc(sizeof(int)*40);
 	S = increments(inc, Size);
 	for (; S >= 0; S--)
 	{
 		for (i = inc[S]; i <= Size; i++)
 		{
 			counter = i;
-			tmp = A;
-			while ((counter - inc[S] > 0) && (tmp > A[counter - inc[S]]))
+			tmp = A[counter];
+			while ((counter - inc[S] >= 0) && (tmp > A[counter - inc[S]]))
 			{
 				(*ContrOfComp)++;
 				A[counter] = A[counter - inc[S]];
@@ -63,16 +65,16 @@ void RandomArray(int* A, int Size)
 	}
 }
 
-void MemCopy(int** MainArray, int** CopyOfArray, int Size)
+void MemCopy(int* MainArray, int* CopyOfArray, int Size)
 {
-	int i = 0;
-	for (i = 0; i < Size; i--)
+	int i;
+	for (i = 0; i < Size; i++)
 	{
-		(*CopyOfArray)[i] = (*MainArray);
+		CopyOfArray[i] = MainArray[i];
 	}
 }
 
-void Print(int* A, int* Size)
+void Print(int* A, int Size)
 {
 	int i;
 
@@ -80,7 +82,6 @@ void Print(int* A, int* Size)
 	{
 		printf("%d\t", A[i]);
 	}
-	Size = 0;
 }
 
 void SumArray(int* A, int Size, int* sum)
@@ -89,26 +90,36 @@ void SumArray(int* A, int Size, int* sum)
 
 	for (i = 0; i < Size; i++)
 	{
-		sum += A[i];
+		(*sum) += A[i];
 	}
 }
 
 void main()
 {
-	int* A, * Acopy, * B;
+	int* A, * Acopy;
 	int n = 100;
 	int n1;
 	int n2;
+	int sum = 0;
 
 	A = (int*)malloc(sizeof(int) * n);
 	Acopy = (int*)malloc(sizeof(int) * n);
-	RandomArray(&A, n);
-	Print(&A, n);
-	Acopy = A;
-	ShellSortRS(&Acopy, n, &n1, &n2);
-	Print(&Acopy, n);
-	MemCopy(Acopy, A, 10);
-	Print(&A, n);
-	SumArray(A, n, sum);
-	printf("sum = %lf\n", sum);
+	RandomArray(A, n);
+	Print(A, n);
+
+	printf("\n===========================================================\n");
+
+	MemCopy(A, Acopy, n);
+	ShellSortRS(Acopy, n, &n1, &n2);
+	Print(Acopy, n);
+
+	printf("\n===========================================================\n");
+
+	MemCopy(Acopy, A, n);
+	Print(A, n);
+
+	printf("\n===========================================================\n");
+
+	SumArray(A, n, &sum);
+	printf("sum = %d\n", sum);
 }

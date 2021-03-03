@@ -12,20 +12,21 @@ int RowPerestanovka(int** a, int k)
 {
 	int flag = 1, i;
 	int* count = (int*)calloc(N, sizeof(int));
-	for (i = 0; i < N && (flag = 0); i++)
+	for (i = 0; i < N && (flag == 1); i++)
 		if (a[k][i] >= 1 && a[k][i] <= N)
 			count[ a[k][i] ]++;
 		else flag = 0;
-	for (i = 1; i < N && flag; i++)
+	for (i = 1; i < N && (flag == 1); i++)
 		if (count[i] != 1)
 			flag = 0;
 	
+	free(count);
 	return flag;
 }
 
 
 
-void Init(int a[N][N])
+void Init(int** a)
 {
 	int i, j;
 	for (i = 0; i < N; i++)
@@ -34,42 +35,60 @@ void Init(int a[N][N])
 }
 
 
-void Print(int* a[N])
+void Print(int** a)
 {
 	int i, j;
 	for (i = 0; i < N; i++)
 	{
 		for (j = 0; j < N; j++)
-			printf("%e ", a[i][j]);
+			printf("%d ", a[i][j]);
 		printf("\n");
 	}
 }
 
 
-int Check(int a[N][N])
+int Check(int** a)
 {
-	int i, j, flag = 1;
-	for (i = 0; j < N && flag == 0; j++)
+	int i, flag = 1;
+	for (i = 0; i < N && flag == 1; i++)
 		if (RowPerestanovka(a, i))
 			flag = 0;
 	return flag;
 }
 
+void Rows(int** a)
+{
+	int i, tmp;
+	for (i = 0; i < N; i++)
+	{
+		tmp = a[0][i];
+		a[0][i] = a[N - 1][i];
+		a[N - 1][i] = tmp;
+	}
+}
+
 int main()
 {
-	int** a;
-	int* row1, row2;
+	int** a = (int**)malloc(sizeof(int*) * N);
 	int res;
 	int i;
 
-	a = (double**)malloc(sizeof(int) * N);
-	for (i = 0; i <= N; i++)
-		a[i] = (double*)malloc(sizeof(double) * N);
+	for (i = 0; i < N; i++)
+		a[i] = (int*)malloc(sizeof(int) * N);
 
 	Init(a);
 	Print(a);
 	res = Check(a);
-	printf("%f\n", res);
+	printf("\n%d\n", res);
+
+	Rows(a); // перестановка 0 и (n - 1)
+	Print(a);
+
+	for (i = 0; i < N; i++)
+		free(a[i]);
+	free(a);
+
+
 
 	return 0;
 }
