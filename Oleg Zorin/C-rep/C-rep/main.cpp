@@ -25,22 +25,29 @@ void main1()
 	t3.~Triangle();
 }
 
-void main()
+int main()
 {
 	Complex t, a(1, 1), b(2, 3), c, d;
 
-	t.Add(a, b);
+	c = a + b;
+	c.Print();
+	cout << endl << endl;
+	c = a - b;
+	c.Print();
+	cout << endl << endl;
+	c = a * b;
+	c.Print();
+	cout << endl << endl;
+	c = a / b;
+	c.Print();
+	cout << endl << endl;
+	t = d = b;
 	t.Print();
-	cout << "\n=====================================\n";
-	t.Sub(a, b);
-	t.Print();
-	cout << "\n=====================================\n";
-	t.Mult(a, b);
-	t.Print();
-	cout << "\n=====================================\n";
-	t.Div(a, b);
-	t.Print();
-	cout << "\n=====================================\n";
-	
+	cout << endl << endl;
+	d.Print();
 
+
+
+
+	return 0;
 }

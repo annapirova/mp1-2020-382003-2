@@ -1,15 +1,17 @@
 class Complex
 {
-public:
-	double a, b;
+	double Re, Im;
 
+public:
 	Complex();
-	Complex(double a, double b);
+	Complex(double Re, double Im);
 	Complex(const Complex& z);
-	
+
+	Complex& operator=(const Complex& other);
+	Complex operator+(const Complex& other);
+	Complex operator-(const Complex& other);
+	Complex operator*(const Complex& other);
+	Complex operator/(const Complex& other);
+
 	void Print();
-	void Add(Complex z1, Complex z2);
-	void Sub(Complex z1, Complex z2);
-	void Mult(Complex z1, Complex z2);
-	void Div(Complex z1, Complex z2);
 };

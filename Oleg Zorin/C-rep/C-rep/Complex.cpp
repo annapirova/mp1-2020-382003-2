@@ -5,55 +5,83 @@ using namespace std;
 
 Complex::Complex()
 {
-	a = 0.0;
-	b = 0.0;
+	this->Re = 0.0;
+	this->Im = 0.0;
 }
-Complex::Complex(double a0, double b0)
+Complex::Complex(double Re, double Im)
 {
-	a = a0;
-	b = b0;
+	this->Re = Re;
+	this->Im = Im;
 }
-Complex::Complex(const Complex& z)
+Complex::Complex(const Complex& other)
 {
-	a = z.a;
-	b = z.b;
+	this->Re = other.Re;
+	this->Im = other.Im;
 }
 
-void Complex::Add(Complex z1, Complex z2)
+Complex& Complex::operator=(const Complex& other)
 {
-	a = z1.a + z2.a;
-	b = z1.b + z2.b;
+	this->Re = other.Re;
+	this->Im = other.Im;
+
+	return *this;
 }
 
-void Complex::Sub(Complex z1, Complex z2)
+Complex Complex::operator+(const Complex& other)
 {
-	a = z1.a - z2.a;
-	b = z1.b - z2.b;
+	Complex res;
+
+	res.Re = this->Re + other.Re;
+	res.Im = this->Im + other.Im;
+
+	return res;
 }
 
-void Complex::Mult(Complex z1, Complex z2)
+Complex Complex::operator-(const Complex& other)
 {
-	a = z1.a * z2.a - z1.b * z2.b;
-	b = z1.a * z2.b + z1.b * z2.a;
+	Complex res;
+
+	res.Re = this->Re - other.Re;
+	res.Im = this->Im - other.Im;
+
+	return res;
 }
 
-void Complex::Div(Complex z1, Complex z2)
+Complex Complex::operator*(const Complex& other)
 {
-	a = (z1.a * z2.a + z1.b * z2.b) / (z2.a * z2.a + z2.b * z2.b);
-	b = (z1.b * z2.a - z1.a * z2.b) / (z2.a * z2.a + z2.b * z2.b);
+	Complex res;
+	
+	res.Re = this->Re * other.Re - this->Im * other.Im;
+	res.Im = this->Re * other.Im + this->Im * other.Re;
+
+	return res;
 }
+
+Complex Complex::operator/(const Complex& other)
+{
+	Complex res;
+
+	res.Re = (this->Re * other.Re + this->Im * other.Im) / (other.Re * other.Re + other.Im * other.Im);
+	res.Im = (this->Im * other.Re - this->Re * other.Im) / (other.Re * other.Re + other.Im * other.Im);
+
+	return res;
+}
+
 void Complex::Print()
 {
-	if (b > 0)
+	if (Im > 0)
 	{
 		cout.precision(2);
-		cout << a << "+" << b << "i";
+		cout << Re << "+" << Im << "i";
 	}
-	else if (b < 0)
+	else if (Im < 0)
 	{
 		cout.precision(2);
-		cout << a << b << "i";
+		cout << Re << Im << "i";
 	}
 	else
-		cout << a;
+	{
+		cout.precision(2);
+		cout << Re;
+	}
 }
