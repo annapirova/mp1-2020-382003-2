@@ -18,18 +18,12 @@
     <ClCompile Include="main.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
-    <ClCompile Include="triangle.cpp">
-      <Filter>Файлы ресурсов</Filter>
-    </ClCompile>
-    <ClCompile Include="Complex.cpp">
+    <ClCompile Include="Matrix.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="triangle.h">
-      <Filter>Файлы ресурсов</Filter>
-    </ClInclude>
-    <ClInclude Include="Complex.h">
+    <ClInclude Include="Matrix.h">
       <Filter>Файлы ресурсов</Filter>
     </ClInclude>
   </ItemGroup>
