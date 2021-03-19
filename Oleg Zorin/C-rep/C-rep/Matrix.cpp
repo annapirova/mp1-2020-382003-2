@@ -5,64 +5,43 @@
 
 #define EPS 1e-10
 
-matrix::matrix(int n , int m)
+matrix::matrix(int n = 1, int m = 1)
 {
 	this->n = n;
 	this->m = m;
-	A = new double* [n];
-	for (int i = 0; i < n; i++)
-		A[i] = new double[m];
-
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < m; j++)
-			A[i][j] = 0.0;
+	M = new vector[m];
+	for (int i = 0; i < m; i++)
+		M[i] = vector(n);
 }
 
 matrix::matrix(int n, int m, int max)
 {
-	srand((unsigned int)time(NULL));
 	this->n = n;
 	this->m = m;
-	A = new double* [n];
+	M = new vector[m];
 	for (int i = 0; i < n; i++)
-		A[i] = new double[m];
-
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < m; j++)
-			A[i][j] = rand() % max;
+		M[i] = vector(n, max);
 }
 
 matrix::matrix(const matrix& other)
 {
 	n = other.n;
 	m = other.m;
-	A = new double* [n];
-	for (int i = 0; i < n; i++)
-		A[i] = new double[m];
-
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < m; j++)
-			A[i][j] = other.A[i][j];
+	M = new vector[m];
+	for (int i = 0; i < m; i++)
+		M[i] = other.M[i];
 }
 
 matrix::~matrix()
 {
-	for (int i = 0; i < n; i++)
-		delete[] A[i];
-	delete[] A;
+	delete[] M;
 }
 
 void matrix::swap(int a, int b)
 {
-	if (a != b)
+	for (int i = 0; i < m; i++)
 	{
-		double temp = 0.0;
-		for (int i = 0; i < n; i++)
-		{
-			temp = A[a][i];
-			A[a][i] = A[b][i];
-			A[b][i] = temp;
-		}
+		M[i].swap(a, b);
 	}
 }
 
@@ -72,17 +51,12 @@ matrix& matrix::operator=(const matrix& other)
 		return *this;
 	else
 	{
-		for (int i = 0; i < n; i++)
-			delete[] A[i];
-		delete[] A;
+		delete[] M;
 		n = other.n;
 		m = other.m;
-		A = new double* [n];
-		for (int i = 0; i < n; i++)
-			A[i] = new double[m];
-		for (int i = 0; i < n; i++)
-			for (int j = 0; j < m; j++)
-				A[i][j] = other.A[i][j];
+		M = new vector[n];
+		for (int i = 0; i < m; i++)
+			M[i] = other.M[i];
 
 		return *this;
 	}
@@ -92,42 +66,39 @@ matrix matrix::operator+(const matrix& other) const
 {
 	matrix res(n, m);
 
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < m; j++)
-			res.A[i][j] = A[i][j] + other.A[i][j];
+	for (int i = 0; i < m; i++)
+		res.M[i] = M[i] + other.M[i];
 
 	return res;
 }
 
 matrix matrix::operator-(const matrix& other) const
 {
-		matrix res(n, m);
+	matrix res(n, m);
 
-		for (int i = 0; i < n; i++)
-			for (int j = 0; j < m; j++)
-				res.A[i][j] = A[i][j] - other.A[i][j];
+	for (int i = 0; i < m; i++)
+		res.M[i] = M[i] - other.M[i];
 
-		return res;
+	return res;
 }
 
 matrix matrix::operator*(const matrix& other) const
 {
-		matrix res(n, other.m);
+	matrix res(n, other.m);
 
-		for (int i = 0; i < res.n; i++)
-			for (int j = 0; j < res.m; j++)
-			{
-				for (int l = 0; l < m; l++)
-					res.A[i][j] += A[i][l] * other.A[l][j];
-			}
-		return res;
+	for (int i = 0; i < res.n; i++)
+		for (int j = 0; j < res.m; j++)
+		{
+			for (int l = 0; l < m; l++)
+				res.M[j][i] += M[j][l] * other.M[l][i];
+		}
+	return res;
 }
 
 matrix& matrix::operator+=(const matrix& other)
 {
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < m; j++)
-			A[i][j] += other.A[i][j];
+	for (int i = 0; i < m; i++)
+		M[i] += other.M[i];
 
 	return *this;
 }
@@ -135,8 +106,7 @@ matrix& matrix::operator+=(const matrix& other)
 matrix& matrix::operator-=(const matrix& other)
 {
 	for (int i = 0; i < n; i++)
-		for (int j = 0; j < m; j++)
-			A[i][j] -= other.A[i][j];
+		M[i] -= other.M[i];
 
 	return *this;
 }
@@ -144,74 +114,48 @@ matrix& matrix::operator-=(const matrix& other)
 matrix operator*(const matrix& other, double p)
 {
 	matrix res(other.n, other.m);
-	for (int i = 0; i < res.n; i++)
-		for (int j = 0; j < res.m; j++)
-			res.A[i][j] = other.A[i][j] * p;
+	for (int i = 0; i < res.m; i++)
+		res.M[i] = other.M[i] * p;
 	return res;
 }
 
 matrix operator*(double p, const matrix& other)
 {
 	matrix res(other.n, other.m);
-	for (int i = 0; i < res.n; i++)
-		for (int j = 0; j < res.m; j++)
-			res.A[i][j] = p * other.A[i][j];
+	for (int i = 0; i < res.m; i++)
+		res.M[i] = p * other.M[i];
 	return res;
 }
 
-std::ostream& operator<<(std::ostream& os, const matrix& m)
+std::ostream& operator<<(std::ostream& os, const matrix& mat)
 {
-	os.width(7);
-	os.precision(2);
-	for (int i = 0; i < m.n; i++)
-	{
-		for (int j = 0; j < m.m; j++)
-		{
-			os << std::fixed << m.A[i][j] << " ";
-		}
-		os << std::endl;
-	}
+	for (int i = 0; i < mat.m; i++)
+		os << mat.M[i];
 	return os;
 }
 
-std::istream& operator>>(std::istream& is, const matrix& m)
+std::istream& operator>>(std::istream& is, const matrix& mat)
 {
-	for (int i = 0; i < m.n; i++)
+	for (int i = 0; i < mat.m; i++)
 	{
-		for (int j = 0; j < m.m; j++)
-		{
-			std::cout << "[" << i << "][" << j << "] = ";
-			is >> m.A[i][j];
-		}
+		std::cout << "[" << i << "]";
+		is >> mat.M[i];
 	}
 	return is;
 }
 
-int matrix::maxRow(int row, int colum)
-{
-	int maxRow = row;
-	double maxElem = abs(A[row][colum]);
-	for (int i = row + 1; i < n; i++)
-		if (abs(A[i][colum]) > maxElem)
-		{
-			maxElem = abs(A[i][colum]);
-			maxRow = i;
-		}
-	return maxRow;
-}
-
-double* matrix::operator[](int i)
+vector& matrix::operator[](int i)
 {
 	if (i >= 0 && i < m)
-		return A[i];
+		return M[i];
 	else
-		return A[0];
+		return M[0];
 }
 
-const double* matrix::operator[](int i) const
+const vector& matrix::operator[](int i) const
 {
 	if (i >= 0 && i < n)
-		return A[i];
+		return M[i];
 	else
-		return A[0];
+		return M[0];
 }
