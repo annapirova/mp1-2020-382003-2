@@ -55,11 +55,9 @@ void Solver::Gauss()
 
 	for (int k = 0, p = 0; k < copyA.n - 1 && p < copyA.m; k++, p++)
 	{
-		if (fabs(copyA[k][p]) < EPS)
-		{
-			copyA.swap(k, k + 1);
-			copyB.swap(k, k + 1);
-		}
+		int row = copyA.maxRow(k, p);
+		copyA.swap(k, row);
+		copyB.swap(k, row);
 		t1 = copyA[k][p];
 
 		for (int i = k + 1; i < copyA.n; i++)

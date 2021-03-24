@@ -1,5 +1,4 @@
 #pragma once
-#include "Vector.h"
 #include <iostream>
 
 class matrix
@@ -23,6 +22,7 @@ public:
 	friend matrix operator*(double p, const matrix& other);
 	friend std::ostream& operator<<(std::ostream& os, const matrix& mat);
 	friend std::istream& operator>>(std::istream& is, const matrix& mat);
+	int maxRow(int row, int colum);
 	double* operator[](int i);
 	const double* operator[](int i) const;
 	friend class Solver;

@@ -54,12 +54,15 @@ matrix::~matrix()
 
 void matrix::swap(int a, int b)
 {
-	double temp = 0.0;
-	for (int i = 0; i < n; i++)
+	if (a != b)
 	{
-		temp = A[a][i];
-		A[a][i] = A[b][i];
-		A[b][i] = temp;
+		double temp = 0.0;
+		for (int i = 0; i < n; i++)
+		{
+			temp = A[a][i];
+			A[a][i] = A[b][i];
+			A[b][i] = temp;
+		}
 	}
 }
 
@@ -182,6 +185,19 @@ std::istream& operator>>(std::istream& is, const matrix& m)
 		}
 	}
 	return is;
+}
+
+int matrix::maxRow(int row, int colum)
+{
+	int maxRow = row;
+	double maxElem = abs(A[row][colum]);
+	for (int i = row + 1; i < n; i++)
+		if (abs(A[i][colum]) > maxElem)
+		{
+			maxElem = abs(A[i][colum]);
+			maxRow = i;
+		}
+	return maxRow;
 }
 
 double* matrix::operator[](int i)

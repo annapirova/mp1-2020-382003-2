@@ -7,8 +7,8 @@ using namespace std;
 
 int main()
 {
-	matrix a(5, 5, 100);
-	vector x(5), b(5, 100);
+	matrix a(25, 25, 100);
+	vector x(25), b(25, 100);
 	Solver ex(a, x, b);
 	
 	ex.PrintM();
@@ -16,6 +16,6 @@ int main()
 	ex.PrintAns();
 	cout << ex.Check() << endl;
 
-	cout << "end" << endl;
+	cout << endl << "end";
 	return 0;
 }
