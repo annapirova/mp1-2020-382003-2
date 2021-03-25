@@ -4,7 +4,6 @@
 #include "Vector.h"
 
 class Matrix {
-//public:
     double **matrix;
     int rows, columns;
 public:
@@ -19,12 +18,13 @@ public:
     void setValue(int posRow, int posColumn, double value);
     void generateRand() const;
     Matrix transposition() const;
-    Matrix operator-(); //отрицание
-    Matrix operator+(const Matrix &m);
-    Matrix operator-(const Matrix &m);
-    Matrix operator*(const Matrix &m);
-    Matrix operator*(double var);
-    Vector operator*(const Vector &v);
+    Matrix operator-() const;
+    Matrix operator+(const Matrix &m) const;
+    Matrix operator-(const Matrix &m) const;
+    Matrix operator*(const Matrix &m) const;
+    Matrix operator*(double var) const;
+    Vector operator*(const Vector &v) const;
+    friend Matrix operator*(double var, const Matrix &m);
     Matrix& operator+=(const Matrix &m);
     Matrix& operator-=(const Matrix &m);
     Matrix& operator=(const Matrix &m);

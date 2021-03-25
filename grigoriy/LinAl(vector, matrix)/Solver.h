@@ -4,7 +4,6 @@
 #include "Matrix.h"
 
 class Solver {
-//public:
     Matrix A;
     Vector b, x, y;
 public:

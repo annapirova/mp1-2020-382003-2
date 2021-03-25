@@ -5,7 +5,6 @@
 #include <cassert>
 
 class Vector {
-//public:
     double *pVector;
     int size;
 public:
@@ -17,10 +16,11 @@ public:
     double getValue(int pos);
     void setValue(int pos, double value);
     void generateRand() const;
-    Vector operator-(); //отрицание
-    Vector operator+(const Vector &v);
-    Vector operator-(const Vector &v);
-    Vector operator*(double var);
+    Vector operator-();
+    Vector operator+(const Vector &v) const;
+    Vector operator-(const Vector &v) const;
+    Vector operator*(double var) const;
+    friend Vector operator*(double var, const Vector &v);
     Vector& operator+=(const Vector &v);
     Vector& operator-=(const Vector &v);
     Vector& operator=(const Vector &v);

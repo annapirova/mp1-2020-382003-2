@@ -98,7 +98,7 @@ Matrix Matrix::transposition() const {
     return tmp;
 }
 
-Matrix Matrix::operator-() {
+Matrix Matrix::operator-() const {
     Matrix tmp(rows, columns);
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
@@ -108,7 +108,7 @@ Matrix Matrix::operator-() {
     return tmp;
 }
 
-Matrix Matrix::operator+(const Matrix &m) /*const */{
+Matrix Matrix::operator+(const Matrix &m) const {
 //    assert(rows == m.rows && columns == m.columns);
     if (rows != m.rows)
         throw "The number of matrix rows doesn't match";
@@ -123,7 +123,7 @@ Matrix Matrix::operator+(const Matrix &m) /*const */{
     return tmp;
 }
 
-Matrix Matrix::operator-(const Matrix &m) {
+Matrix Matrix::operator-(const Matrix &m) const {
 //    assert(rows == m.rows && columns == m.columns);
     if (rows != m.rows)
         throw "The number of matrix rows doesn't match";
@@ -138,7 +138,7 @@ Matrix Matrix::operator-(const Matrix &m) {
     return tmp;
 }
 
-Matrix Matrix::operator*(const Matrix &m) {
+Matrix Matrix::operator*(const Matrix &m) const {
 //    assert(columns == m.rows);
     if (columns != m.rows)
         throw "The number of columns in the first matrix doesn't match the number of rows in the second matrix";
@@ -153,7 +153,7 @@ Matrix Matrix::operator*(const Matrix &m) {
     return tmp;
 }
 
-Matrix Matrix::operator*(double var) {
+Matrix Matrix::operator*(double var) const {
     Matrix tmp(rows, columns);
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
@@ -163,7 +163,7 @@ Matrix Matrix::operator*(double var) {
     return tmp;
 }
 
-Vector Matrix::operator*(const Vector &v) {
+Vector Matrix::operator*(const Vector &v) const {
 //    assert(getNumColumns() == v.getSize());
     if(getNumColumns() != v.getSize())
         throw "The number of columns in the matrix doesn't match the number of elements in the vector";
@@ -174,6 +174,10 @@ Vector Matrix::operator*(const Vector &v) {
         }
     }
     return res;
+}
+
+Matrix operator*(double var, const Matrix &m) {
+    return Matrix(m*var);
 }
 
 Matrix &Matrix::operator+=(const Matrix &m) {

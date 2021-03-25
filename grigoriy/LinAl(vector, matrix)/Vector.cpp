@@ -57,7 +57,7 @@ Vector Vector::operator-() {
     return tmp;
 }
 
-Vector Vector::operator+(const Vector &v) {
+Vector Vector::operator+(const Vector &v) const {
 //    assert(size == v.size);
     if (size != v.size)
         throw "The number of vector elements doesn't match";
@@ -68,7 +68,7 @@ Vector Vector::operator+(const Vector &v) {
     return tmp;
 }
 
-Vector Vector::operator-(const Vector &v) {
+Vector Vector::operator-(const Vector &v) const {
 //    assert(size == v.size);
     if (size != v.size)
         throw "The number of vector elements doesn't match";
@@ -79,12 +79,16 @@ Vector Vector::operator-(const Vector &v) {
     return tmp;
 }
 
-Vector Vector::operator*(double var) {
+Vector Vector::operator*(double var) const {
     Vector tmp(size);
     for (int i = 0; i < size; i++) {
         tmp.pVector[i] = pVector[i] * var;
     }
     return tmp;
+}
+
+Vector operator*(double var, const Vector &v) {
+    return Vector(v*var);
 }
 
 Vector &Vector::operator+=(const Vector &v) {
