@@ -1,0 +1,48 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/root/CLionProjects/LinAl(vector, matrix)/Matrix.cpp
+Matrix.h
+/root/CLionProjects/LinAl(vector, matrix)/Matrix.h
+
+/root/CLionProjects/LinAl(vector, matrix)/Matrix.h
+Vector.h
+/root/CLionProjects/LinAl(vector, matrix)/Vector.h
+
+/root/CLionProjects/LinAl(vector, matrix)/Solver.cpp
+Solver.h
+/root/CLionProjects/LinAl(vector, matrix)/Solver.h
+cstdlib
+-
+ctime
+-
+cmath
+-
+
+/root/CLionProjects/LinAl(vector, matrix)/Solver.h
+Matrix.h
+/root/CLionProjects/LinAl(vector, matrix)/Matrix.h
+
+/root/CLionProjects/LinAl(vector, matrix)/Vector.cpp
+Vector.h
+/root/CLionProjects/LinAl(vector, matrix)/Vector.h
+
+/root/CLionProjects/LinAl(vector, matrix)/Vector.h
+iostream
+-
+cassert
+-
+
+/root/CLionProjects/LinAl(vector, matrix)/main.cpp
+Vector.h
+/root/CLionProjects/LinAl(vector, matrix)/Vector.h
+Matrix.h
+/root/CLionProjects/LinAl(vector, matrix)/Matrix.h
+Solver.h
+/root/CLionProjects/LinAl(vector, matrix)/Solver.h
+
