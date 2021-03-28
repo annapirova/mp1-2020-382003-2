@@ -1,6 +1,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "locale.h"
+#include <time.h>
 
 int Binar_search(int *A, int n)
 {                                  
@@ -300,6 +301,7 @@ void main()
 	int assignments;
 	int indexInput, wasfound, sw;
 	int lb = 0, rb = 0;
+	clock_t ttime;
 	setlocale(LC_CTYPE, "Russian");
 	printf("start\n");
 	srand(1000);
@@ -337,9 +339,12 @@ void main()
 			{
 				comparsions = 0;
 				assignments = 0;
+				ttime = clock();
 				SortBubble(B, n, &comparsions, &assignments);
+				ttime = clock() - ttime;
 				print(B, n);
 				print_results(comparsions, assignments);
+				printf("Время работы %f секунд\n", (double)ttime / CLOCKS_PER_SEC);
 			}
 			else printf("Массив отсутствует\n");
 			break;
@@ -348,9 +353,12 @@ void main()
 		{
 			if (indexInput == 1)
 			{
+				ttime = clock();
 				SortByInserts(B, n, &comparsions, &assignments);
+				ttime = clock() - ttime;
 				print(B, n);
 				print_results(comparsions, assignments);
+				printf("Время работы %f секунд\n", (double)ttime / CLOCKS_PER_SEC);
 			}
 			else printf("Массив отсутствует\n");
 			break;
@@ -360,9 +368,12 @@ void main()
 			if (indexInput == 1)
 			{
 				comparsions = 0; assignments = 0;
+				ttime = clock();
 				Merge_sort(B, Bb, 0, n-1, &comparsions, &assignments);
+				ttime = clock() - ttime;
 				print(B, n);
 				print_results(comparsions, assignments);
+				printf("Время работы %f секунд\n", (double)ttime / CLOCKS_PER_SEC);
 			}
 			else printf("Массив отсутствует\n");
 			break;
@@ -371,9 +382,12 @@ void main()
 		{
 			if (indexInput == 1)
 			{
+				ttime = clock();
 				Count_sort(B, n, lb, rb, &comparsions, &assignments);
+				ttime = clock() - ttime;
 				print(B, n);
 				print_results(comparsions, assignments);
+				printf("Время работы %f секунд\n", (double)ttime / CLOCKS_PER_SEC);
 			}
 			else printf("Массив отсутствует\n");
 			break;
