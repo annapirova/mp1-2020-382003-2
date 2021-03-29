@@ -8,11 +8,11 @@ Solver::Solver(const matrix& A, const vector& x, const vector& b)
 	this->A = A;
 	this->x = x;
 	this->b = b;
+	size = x.GetSize();
 }
 
 Solver::Solver()
 {
-	int size = 0;
 	std::cout << "Enter size: ";
 	std::cin >> size;
 	matrix A(size, size);
@@ -21,30 +21,16 @@ Solver::Solver()
 		for (int j = 0; j < size; j++)
 		{
 			std::cout << "A[" << i << "][" << j << "] = ";
-			std::cin >> A.A[i][j];
+			std::cin >> A[i][j];
 		}
 	for (int i = 0; i < size; i++)
 	{
 		std::cout << "b[" << i << "] = ";
-		std::cin >> b.value[i];
+		std::cin >> b[i];
 	}
 	this->A = A;
 	this->x = x;
 	this->b = b;
-}
-
-vector operator*(const matrix& M, const vector& v)
-{
-	int size = v.GetSize();
-	vector res(size);
-	for (int i = 0; i < size; i++)
-	{
-		for (int j = 0; j < size; j++)
-		{
-			res[i] += M[i][j] * v[j];
-		}
-	}
-	return res;
 }
 
 void Solver::Gauss()
@@ -53,27 +39,30 @@ void Solver::Gauss()
 	matrix copyA = A;
 	vector copyB = b;
 
-	for (int k = 0, p = 0; k < copyA.n - 1 && p < copyA.m; k++, p++)
+	for (int k = 0; k < size - 1; k++)
 	{
-		int row = copyA.maxRow(k, p);
+		int row = copyA.maxRow(k, k);
 		copyA.swap(k, row);
 		copyB.swap(k, row);
-		t1 = copyA[k][p];
+		t1 = copyA[k][k];
 
-		for (int i = k + 1; i < copyA.n; i++)
+		if (abs(t1) < EPS)
+			throw std::exception("inconsistent");
+
+		for (int i = k + 1; i < size; i++)
 		{
-				t2 = copyA[i][p];
+				t2 = copyA[i][k];
 				a = t2 / t1;
-				for (int j = 0; j < copyA.m; j++)
+				for (int j = 0; j < size; j++)
 					copyA[i][j] -= copyA[k][j] * a;
 				copyB[i] -= copyB[k] * a;
 		}
 	}
 
-	for (int i = copyA.n - 1; i >= 0; i--)
+	for (int i = size - 1; i >= 0; i--)
 	{
 		double sum = 0.0;
-		for (int j = i; j < copyA.n; j++)
+		for (int j = i; j < size; j++)
 		{
 			sum += copyA[i][j] * x[j];
 		}
@@ -84,9 +73,9 @@ void Solver::Gauss()
 
 void Solver::PrintM()
 {
-	for (int i = 0; i < A.n; i++)
+	for (int i = 0; i < size; i++)
 	{
-		for (int j = 0; j < A.m; j++) 
+		for (int j = 0; j < size; j++) 
 		{
 			std::cout.width(7);
 			std::cout.precision(2);
@@ -100,7 +89,7 @@ void Solver::PrintM()
 
 void Solver::PrintAns()
 {
-	for (int i = 0; i < A.n; i++)
+	for (int i = 0; i < size; i++)
 	{
 		std::cout << "x" << i << " = " << x[i] << std::endl;
 	}

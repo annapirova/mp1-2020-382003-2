@@ -1,48 +1,50 @@
 #include "Matrix.h"
 #include <iostream>
-#include <ctime>
-#include <cstdlib>
 
-#define EPS 1e-10
-
-matrix::matrix(int n = 1, int m = 1)
+matrix::matrix(int n, int m)
 {
-	this->n = n;
-	this->m = m;
-	M = new vector[m];
-	for (int i = 0; i < m; i++)
-		M[i] = vector(n);
+	if (n <= 0 || m <= 0)
+		throw std::exception("Rows and colums must be greater than 0 ");
+
+	row = n;
+	col = m;
+	val = new vector[row];
+	for (int i = 0; i < row; i++)
+		val[i] = vector(col);
 }
 
 matrix::matrix(int n, int m, int max)
 {
-	this->n = n;
-	this->m = m;
-	M = new vector[m];
-	for (int i = 0; i < n; i++)
-		M[i] = vector(n, max);
+	if (n <= 0 || m <= 0)
+		throw std::exception("Rows and colums must be greater than 0 ");
+
+	row = n;
+	col = m;
+	val = new vector[row];
+	for (int i = 0; i < row; i++)
+		val[i] = vector(col, (max - i));
 }
 
 matrix::matrix(const matrix& other)
 {
-	n = other.n;
-	m = other.m;
-	M = new vector[m];
-	for (int i = 0; i < m; i++)
-		M[i] = other.M[i];
+	row = other.row;
+	col = other.col;
+	val = new vector[row];
+	for (int i = 0; i < row; i++)
+		val[i] = other.val[i];
 }
 
 matrix::~matrix()
 {
-	delete[] M;
+	delete[] val;
 }
 
 void matrix::swap(int a, int b)
 {
-	for (int i = 0; i < m; i++)
-	{
-		M[i].swap(a, b);
-	}
+	vector tmp;
+	tmp = val[a];
+	val[a] = val[b];
+	val[b] = tmp;
 }
 
 matrix& matrix::operator=(const matrix& other)
@@ -51,12 +53,12 @@ matrix& matrix::operator=(const matrix& other)
 		return *this;
 	else
 	{
-		delete[] M;
-		n = other.n;
-		m = other.m;
-		M = new vector[n];
-		for (int i = 0; i < m; i++)
-			M[i] = other.M[i];
+		delete[] val;
+		row = other.row;
+		col = other.col;
+		val = new vector[row];
+		for (int i = 0; i < row; i++)
+			val[i] = other.val[i];
 
 		return *this;
 	}
@@ -64,98 +66,148 @@ matrix& matrix::operator=(const matrix& other)
 
 matrix matrix::operator+(const matrix& other) const
 {
-	matrix res(n, m);
+	if (row != other.row || col != other.col)
+		throw std::exception("Wrong sizes");
 
-	for (int i = 0; i < m; i++)
-		res.M[i] = M[i] + other.M[i];
+	matrix res(row, col);
+
+	for (int i = 0; i < row; i++)
+		res.val[i] = val[i] + other.val[i];
 
 	return res;
 }
 
 matrix matrix::operator-(const matrix& other) const
 {
-	matrix res(n, m);
+	if (row != other.row || col != other.col)
+		throw std::exception("Wrong sizes");
 
-	for (int i = 0; i < m; i++)
-		res.M[i] = M[i] - other.M[i];
+	matrix res(row, col);
+
+	for (int i = 0; i < row; i++)
+		res.val[i] = val[i] - other.val[i];
 
 	return res;
 }
 
 matrix matrix::operator*(const matrix& other) const
 {
-	matrix res(n, other.m);
+	if (col != other.row)
+		throw std::exception("Wrong sizes");
 
-	for (int i = 0; i < res.n; i++)
-		for (int j = 0; j < res.m; j++)
+	matrix res(row, other.col);
+
+	for (int i = 0; i < res.row; i++)
+		for (int j = 0; j < res.col; j++)
 		{
-			for (int l = 0; l < m; l++)
-				res.M[j][i] += M[j][l] * other.M[l][i];
+			for (int l = 0; l < col; l++)
+				res.val[i][j] += val[i][l] * other.val[l][j];
 		}
 	return res;
 }
 
 matrix& matrix::operator+=(const matrix& other)
 {
-	for (int i = 0; i < m; i++)
-		M[i] += other.M[i];
+	if (row != other.row || col != other.col)
+		throw std::exception("Wrong sizes");
+
+	for (int i = 0; i < row; i++)
+		val[i] += other.val[i];
 
 	return *this;
 }
 
 matrix& matrix::operator-=(const matrix& other)
 {
-	for (int i = 0; i < n; i++)
-		M[i] -= other.M[i];
+	if (row != other.row || col != other.col)
+		throw std::exception("Wrong sizes");
+
+	for (int i = 0; i < row; i++)
+		val[i] -= other.val[i];
 
 	return *this;
 }
 
-matrix operator*(const matrix& other, double p)
+matrix operator*(const matrix& mat, double p)
 {
-	matrix res(other.n, other.m);
-	for (int i = 0; i < res.m; i++)
-		res.M[i] = other.M[i] * p;
+	matrix res(mat.row, mat.col);
+	for (int i = 0; i < res.row; i++)
+		res.val[i] = mat.val[i] * p;
 	return res;
 }
 
-matrix operator*(double p, const matrix& other)
+matrix operator*(double p, const matrix& mat)
 {
-	matrix res(other.n, other.m);
-	for (int i = 0; i < res.m; i++)
-		res.M[i] = p * other.M[i];
+	matrix res(mat.row, mat.col);
+	for (int i = 0; i < res.row; i++)
+		res.val[i] = mat.val[i] * p;
 	return res;
 }
 
 std::ostream& operator<<(std::ostream& os, const matrix& mat)
 {
-	for (int i = 0; i < mat.m; i++)
-		os << mat.M[i];
+	for (int i = 0; i < mat.row; i++)
+	{
+		os << mat.val[i];
+		os << std::endl;
+	}
 	return os;
 }
 
 std::istream& operator>>(std::istream& is, const matrix& mat)
 {
-	for (int i = 0; i < mat.m; i++)
+	for (int i = 0; i < mat.row; i++)
 	{
 		std::cout << "[" << i << "]";
-		is >> mat.M[i];
+		is >> mat.val[i];
 	}
 	return is;
 }
 
 vector& matrix::operator[](int i)
 {
-	if (i >= 0 && i < m)
-		return M[i];
-	else
-		return M[0];
+	if (i < 0 || i >= row)
+		throw std::exception("Wrong row");
+	return val[i];
 }
 
 const vector& matrix::operator[](int i) const
 {
-	if (i >= 0 && i < n)
-		return M[i];
-	else
-		return M[0];
+	if (i < 0 || i >= row)
+		throw std::exception("Wrong row");
+	return val[i];
+}
+
+vector operator*(const matrix& M, const vector& v)
+{
+	if (M.col != v.GetSize())
+		throw std::exception("Wrong sizes");
+
+	vector res(M.row);
+	for (int i = 0; i < M.row; i++)
+	{
+		for (int j = 0; j < M.col; j++)
+		{
+			res[i] += M[i][j] * v[j];
+		}
+	}
+	return res;
+}
+
+int matrix::maxRow(int row, int colum)
+{
+	int maxRow = row;
+	double maxElem = abs(val[row][colum]);
+	for (int i = row + 1; i < this->row; i++)
+		if (abs(val[i][colum]) > maxElem)
+		{
+			maxElem = abs(val[i][colum]);
+			maxRow = i;
+		}
+	return maxRow;
+}
+
+bool matrix::IsSqr() const
+{
+	return row == col;
 }

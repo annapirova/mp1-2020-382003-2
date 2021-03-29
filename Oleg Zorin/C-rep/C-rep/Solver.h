@@ -5,6 +5,7 @@ class Solver
 {
 	matrix A;
 	vector x, b;
+	int size;
 public:
 	Solver(const matrix& A, const vector& x, const vector& b);
 	Solver();

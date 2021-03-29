@@ -3,8 +3,8 @@
 
 class matrix
 {
-	vector* M;
-	int n, m;
+	vector* val;
+	int row, col;
 public:
 	matrix(int n = 1, int m = 1);
 	matrix(int n, int m, int max);
@@ -24,5 +24,8 @@ public:
 	friend std::istream& operator>>(std::istream& is, const matrix& mat);
 	vector& operator[](int i);
 	const vector& operator[](int i) const;
+	int maxRow(int row, int colum);
+	bool IsSqr() const;
+	friend vector operator*(const matrix& M, const vector& v);
 	friend class Solver;
 };

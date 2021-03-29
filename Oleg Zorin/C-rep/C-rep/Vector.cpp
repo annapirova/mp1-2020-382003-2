@@ -6,6 +6,9 @@
 
 vector::vector(int n)
 {
+	if (n <= 0)
+		throw std::exception("Size must be > 0");
+
 	value = new double[n];
 	size = n;
 	for (int i = 0; i < n; i++)
@@ -16,6 +19,9 @@ vector::vector(int n)
 
 vector::vector(int n, double * v)
 {
+	if (n <= 0)
+		throw std::exception("Size must be > 0");
+
 	value = new double[n];
 	size = n;
 	for (int i = 0; i < n; i++)
@@ -26,6 +32,9 @@ vector::vector(int n, double * v)
 
 vector::vector(int n, int max)
 {
+	if (n <= 0)
+		throw std::exception("Size must be > 0");
+
 	srand((unsigned int)time(NULL));
 	value = new double[n];
 	size = n;
@@ -48,14 +57,6 @@ vector::vector(const vector & v)
 vector::~vector()
 {
 	delete[] value;
-}
-
-void vector::swap(int a, int b)
-{
-	double tmp = 0.0;
-	tmp = value[a];
-	value[a] = value[b];
-	value[b] = tmp;
 }
 
 vector & vector::operator=(const vector & v)
@@ -174,22 +175,23 @@ vector operator*(const vector& v, double p)
 
 double & vector::operator[](int i)
 {
-	if (i >= 0 && i < size)
-		return value[i];
-	else
-		return value[0];
+	if (i < 0 || i >= size)
+		throw std::exception("Wrong number of value");
+	return value[i];
 }
 
 const double& vector::operator[](int i) const
 {
-	if (i >= 0 && i < size)
-		return value[i];
-	else
-		return value[0];
+	if (i < 0 || i >= size)
+		throw std::exception("Wrong number of value");
+	return value[i];
 }
 
 bool vector::operator==(const vector& v) const
 {
+	if (size != v.size)
+		return false;
+
 	int i = 0;
 	while (i < size)
 	{
@@ -206,13 +208,19 @@ int vector::GetSize() const
 	return size;
 }
 
+void vector::swap(int a, int b)
+{
+	double tmp = value[a];
+	value[a] = value[b];
+	value[b] = tmp;
+}
+
 std::ostream & operator<<(std::ostream & os, const vector & v)
 {
 	os.width(7);
 	os.precision(2);
 	for (int i = 0; i < v.size; i++)
 		os << std::fixed << v.value[i] << " ";
-	os << std::endl;
 	return os;
 }
 

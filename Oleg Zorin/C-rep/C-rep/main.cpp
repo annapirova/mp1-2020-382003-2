@@ -7,15 +7,22 @@ using namespace std;
 
 int main()
 {
-	matrix a(25, 25, 100);
-	vector x(25), b(25, 100);
-	Solver ex(a, x, b);
-	
-	ex.PrintM();
-	ex.Gauss();
-	ex.PrintAns();
-	cout << ex.Check() << endl;
+	try
+	{
+		matrix a(25, 25, 100);
+		vector x(25), b(25, 100);
+		Solver ex(a, x, b);
 
-	cout << endl << "end";
+		ex.PrintM();
+		ex.Gauss();
+		ex.PrintAns();
+		cout << ex.Check() << endl;
+	}
+	catch (const std::exception& ex)
+	{
+		cout << ex.what() << endl;
+	}
+	
+
 	return 0;
 }

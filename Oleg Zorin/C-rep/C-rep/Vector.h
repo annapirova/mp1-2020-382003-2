@@ -10,7 +10,6 @@ public:
 	vector(int n, int max);
 	vector(const vector& v);
 	~vector();
-	void swap(int a, int b);
 	vector& operator=(const vector& v);
 	vector operator+(const vector& v) const;
 	vector operator-(const vector& v) const;
@@ -24,5 +23,6 @@ public:
 	int GetSize() const;
 	friend std::ostream& operator<<(std::ostream& os, const vector& v);
 	friend std::istream& operator>>(std::istream& is, const vector& v);
+	void swap(int a, int b);
 	friend class Solver;
 };
