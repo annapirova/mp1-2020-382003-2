@@ -47,7 +47,7 @@ void Solver::Gauss()
 		t1 = copyA[k][k];
 
 		if (abs(t1) < EPS)
-			throw std::exception("inconsistent");
+			throw std::exception("System is inconsistent");
 
 		for (int i = k + 1; i < size; i++)
 		{

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include "Matrix.h"
 #include "Vector.h"
 #include "Solver.h"
@@ -7,6 +8,7 @@ using namespace std;
 
 int main()
 {
+	srand(unsigned int(time(NULL)));
 	try
 	{
 		matrix a(25, 25, 100);
@@ -16,13 +18,13 @@ int main()
 		ex.PrintM();
 		ex.Gauss();
 		ex.PrintAns();
-		cout << ex.Check() << endl;
+		cout << "Correct answer? - " << ex.Check() << endl;
 	}
-	catch (const std::exception& ex)
+	catch (const std::exception& exp)
 	{
-		cout << ex.what() << endl;
+		cout << exp.what() << endl;
 	}
 	
-
+	cout << endl << "end";
 	return 0;
 }

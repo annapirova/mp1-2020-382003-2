@@ -22,7 +22,7 @@ matrix::matrix(int n, int m, int max)
 	col = m;
 	val = new vector[row];
 	for (int i = 0; i < row; i++)
-		val[i] = vector(col, (max - i));
+		val[i] = vector(col, max);
 }
 
 matrix::matrix(const matrix& other)
@@ -194,7 +194,7 @@ vector operator*(const matrix& M, const vector& v)
 	return res;
 }
 
-int matrix::maxRow(int row, int colum)
+int matrix::maxRow(int row, int colum) const
 {
 	int maxRow = row;
 	double maxElem = abs(val[row][colum]);
@@ -205,9 +205,4 @@ int matrix::maxRow(int row, int colum)
 			maxRow = i;
 		}
 	return maxRow;
-}
-
-bool matrix::IsSqr() const
-{
-	return row == col;
 }

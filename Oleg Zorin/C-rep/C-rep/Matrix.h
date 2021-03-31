@@ -24,8 +24,6 @@ public:
 	friend std::istream& operator>>(std::istream& is, const matrix& mat);
 	vector& operator[](int i);
 	const vector& operator[](int i) const;
-	int maxRow(int row, int colum);
-	bool IsSqr() const;
+	int maxRow(int row, int colum) const;
 	friend vector operator*(const matrix& M, const vector& v);
-	friend class Solver;
 };

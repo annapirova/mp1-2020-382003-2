@@ -35,7 +35,7 @@ vector::vector(int n, int max)
 	if (n <= 0)
 		throw std::exception("Size must be > 0");
 
-	srand((unsigned int)time(NULL));
+	
 	value = new double[n];
 	size = n;
 	for (int i = 0; i < n; i++)

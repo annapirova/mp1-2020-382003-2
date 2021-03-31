@@ -24,5 +24,4 @@ public:
 	friend std::ostream& operator<<(std::ostream& os, const vector& v);
 	friend std::istream& operator>>(std::istream& is, const vector& v);
 	void swap(int a, int b);
-	friend class Solver;
 };
