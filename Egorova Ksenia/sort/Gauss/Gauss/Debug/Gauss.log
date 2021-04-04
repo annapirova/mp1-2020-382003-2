@@ -1,0 +1,7 @@
+﻿  Gauss.cpp
+  main.cpp
+C:\Users\Ксюша\Desktop\Gauss\Gauss\main.cpp(6,1): warning C4326: возвращаемый тип "main" должен быть "int", а не "void"
+C:\Users\Ксюша\Desktop\Gauss\Gauss\main.cpp(13,9): warning C4101: i: неиспользованная локальная переменная
+C:\Users\Ксюша\Desktop\Gauss\Gauss\main.cpp(23,27): warning C4101: Multi: неиспользованная локальная переменная
+  Создание кода...
+  Gauss.vcxproj -> C:\Users\Ксюша\Desktop\Gauss\Debug\Gauss.exe
