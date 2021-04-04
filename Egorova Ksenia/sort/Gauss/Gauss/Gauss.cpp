@@ -47,11 +47,9 @@ void Gauss::GaussMethod(double** a, double* y, int n, double* x)
 	int k, imax, i, j;
 	double eps = 0.00001;
 	k = 0;
-
-	//прямой ход
+	
 	while (k < n)
 	{
-		//поиск максимального элемента
 		max = fabs(a[k][k]);
 		imax = k;
 		for (i = k + 1; i < n; i++)
@@ -65,9 +63,8 @@ void Gauss::GaussMethod(double** a, double* y, int n, double* x)
 
 		if (max == 0)
 		{
-			cout << "решение получить невозможно" << endl;
+			cout << "Г°ГҐГёГҐГ­ГЁГҐ ГЇГ®Г«ГіГ·ГЁГІГј Г­ГҐГўГ®Г§Г¬Г®Г¦Г­Г®" << endl;
 		}
-		//перестановка элемента
 
 		for (j = 0; j < n; j++)
 		{
@@ -79,7 +76,6 @@ void Gauss::GaussMethod(double** a, double* y, int n, double* x)
 		y[k] = y[imax];
 		y[imax] = temp;
 
-		//деление на первый ненулевой элемент, вычитание
 		for (i = k; i < n; i++)
 		{
 			temp = a[i][k];
@@ -105,8 +101,7 @@ void Gauss::GaussMethod(double** a, double* y, int n, double* x)
 
 			k++;
 		}
-		//k++;
-		//обратный ход
+
 		x[n] = y[n];
 		for (i = n - 1; i >= 0; i--)
 		{
