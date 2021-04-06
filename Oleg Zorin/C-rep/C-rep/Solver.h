@@ -13,4 +13,5 @@ public:
 	void PrintM();
 	void PrintAns();
 	bool Check();
+	void Jacobi();
 };

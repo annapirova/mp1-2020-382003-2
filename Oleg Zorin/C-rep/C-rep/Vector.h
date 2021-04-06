@@ -15,11 +15,13 @@ public:
 	vector operator-(const vector& v) const;
 	vector& operator-=(const vector& v);
 	vector& operator+=(const vector& v);
+	vector& operator=(double p);
 	friend vector operator*(double p, const vector& v);
 	friend vector operator*(const vector& v, double p);
 	double& operator[](int i);
 	const double& operator[](int i) const;
 	bool operator==(const vector& v) const;
+	bool operator!=(const vector& v) const;
 	int GetSize() const;
 	friend std::ostream& operator<<(std::ostream& os, const vector& v);
 	friend std::istream& operator>>(std::istream& is, const vector& v);

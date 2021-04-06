@@ -11,14 +11,16 @@ int main()
 	srand(unsigned int(time(NULL)));
 	try
 	{
-		matrix a(25, 25, 100);
-		vector x(25), b(25, 100);
+		matrix a(5, 5, 10);
+		vector x(5), b(5, 10);
 		Solver ex(a, x, b);
 
 		ex.PrintM();
 		ex.Gauss();
 		ex.PrintAns();
 		cout << "Correct answer? - " << ex.Check() << endl;
+		cout << endl << "JACOBI:" << endl;
+		ex.Jacobi();
 	}
 	catch (const std::exception& exp)
 	{

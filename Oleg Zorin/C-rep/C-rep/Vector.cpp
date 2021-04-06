@@ -153,6 +153,13 @@ vector & vector::operator+=(const vector & v)
 	return *this;
 }
 
+vector & vector::operator=(double p)
+{
+	for (int i = 0; i < size; i++)
+		value[i] = p;
+	return *this;
+}
+
 vector operator*(double p, const vector& v)
 {
 	vector res(v.size);
@@ -201,6 +208,23 @@ bool vector::operator==(const vector& v) const
 			return false;
 	}
 	return true;
+}
+
+bool vector::operator!=(const vector& v) const
+{
+	if (size != v.size)
+	{
+		return true;
+	}
+
+	for (int i = 0; i < size; i++)
+	{
+		if (abs(value[i] - v.value[i]) > EPS)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 int vector::GetSize() const

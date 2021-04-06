@@ -1,7 +1,7 @@
 #include "Solver.h"
 #include <iostream>
 #include <cmath>
-#define EPS 1e-10
+#define EPS 1e-3
 
 Solver::Solver(const matrix& A, const vector& x, const vector& b)
 {
@@ -99,4 +99,35 @@ bool Solver::Check()
 {
 	vector tmp = A * x;
 	return tmp == b;
+}
+
+void Solver::Jacobi()
+{
+	vector tmp(size);
+	int k = 0;
+	double norm;
+
+	x = 0.2;
+
+	do
+	{
+		k++;
+		for (int i = 0; i < size; i++)
+		{
+			tmp[i] = b[i];
+			for (int j = 0; j < size; j++)
+			{
+				if (j != i)
+					tmp[i] -= A[i][j] * x[i];
+			}
+			tmp[i] /= A[i][i];
+		}
+		norm = abs(x[0] - tmp[0]);
+		for (int h = 1; h < size; h++)
+			if (abs(x[h] - tmp[h]) > norm)
+				norm = abs(x[h] - tmp[h]);
+		x = tmp;
+	} while (norm > EPS);
+	
+	std::cout << "Iterations = " << k << std::endl << x << std::endl;
 }
