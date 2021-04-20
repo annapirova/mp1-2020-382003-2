@@ -1,38 +1,23 @@
 #include <iostream>
-#include "gauss.h"
-using namespace std;
+#include "Matrix.h"
+#include "Vector.h"
+#include "Gauss.h"
 
 void main()
 {
-    setlocale(LC_ALL, "Rus");
+    Matrix A(5, 5);
+    Vector x(5), y(5);
+    Gauss g(A, x, y);
+    int n = 5;
 
-    double** a;
-    double* y;
-    double* x;
-    int n = 3;
-    int i;
-
-    a = new double* [n];
-    for (int i = 0; i < n; i++)
-    {
-        a[i] = new double[n];
-    }
-    y = new double[n];
-    x = new double[n];
-
-    Gauss InputA, InputX, Multi, Method, Result;
-    InputA.InputMatr(a, n);
+    g.InputMatr(A, n);
     cout << endl;
-    InputX.InputVectorX(y, x, a, n);
+    g.InputVectorX(y, x, A, n);
     cout << endl;
-    Result.Result('x', x, n);
+    g.Result('x', x, n);
     cout << endl;
-    Result.Result('y', y, n);
+    g.Result('y', y, n);
     cout << endl;
-    Method.GaussMethod(a, y, n, x);
-    Result.Result('x', x, n);
-
-   /* delete[]a;
-    delete[]y;
-    delete[]x;*/
+    g.GaussMethod(a, y, n, x);
+    g.Result('x', x, n);
 }
