@@ -1,3 +1,0 @@
-/root/CLionProjects/diff_eq/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/root/CLionProjects/diff_eq/cmake-build-debug/CMakeFiles/edit_cache.dir
-/root/CLionProjects/diff_eq/cmake-build-debug/CMakeFiles/diff_eq.dir
