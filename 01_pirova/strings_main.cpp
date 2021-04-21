@@ -40,31 +40,29 @@ void main()
 	}
 	cout << s1 << endl;
 
+	// split to words
 	//std::getline(std::cin, s1);
 	//cout << "line: " << s1 << endl;
 
-    // разбить строку по предложениям
-	s1 = "hello. world";
+	// format string
+	s1.insert(s1.begin(), 3, ' ');
 	cout << s1 << endl;
 	int k = s1.find('.');
 	vector<string> v;
 	v.push_back(s1.substr(0, k));
 	v.push_back(s1.substr(k + 1, s1.length() - (k + 1)));
 	cout << v[0] << endl << v[1] << endl;
-
-	// удаление, вставка
 	s1.replace(2, 2, "vasya");
 	cout << s1 << endl;
 	s1.replace(s1.begin() + 1, s1.begin() + 3, "valya");
 	cout << s1 << endl;
-	string::iterator it;
+	string::iterator it2;
 	pos = s1.find("valya");
-	it = s1.begin() + pos;
-	s1.erase(it, it + 5);
+	it2 = s1.begin() + pos;
+	s1.erase(it2, it2 + 5);
 	cout << s1 << endl;
 
-    // поиск в массиве строк
-	vector<string> v;
+	v.clear();
 	v.push_back("vasya");
 	v.push_back("vanya");
 	v.push_back("kolya");
@@ -81,7 +79,6 @@ void main()
 		}
 	}
 
-    // запись в файл
 	ofstream of("select.txt");
 	if (of)
 	{
@@ -90,7 +87,7 @@ void main()
 	}
 	of.close();
 
-    // чтение из файла
+
 	vector<string> newV;
 	string tmp;
 	ifstream myfile("select.txt");
@@ -106,7 +103,6 @@ void main()
 	for (it = newV.begin(); it != newV.end(); it++)
 		cout << *it << "\n";
 
-    // чтение из файла 2
 	vector<string> newV2;
 	string tmp2;
 	ifstream myfile2("select.txt");
@@ -114,6 +110,21 @@ void main()
 	{
 		while (myfile2 >> tmp2)
 		{
+			newV2.push_back(tmp2);
+		}
+	}
+	myfile2.close();
+
+	for (it = newV2.begin(); it != newV2.end(); it++)
+		cout << *it << "\n";
+
+	newV2.clear();
+	myfile2.open("select.txt");
+	if (myfile2.is_open())
+	{
+		while (!myfile2.eof())
+		{
+			myfile2 >> tmp2;
 			newV2.push_back(tmp2);
 		}
 	}
