@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/Complex_num.dir/main.cpp.o CMakeFiles/Complex_num.dir/Complex.cpp.o  -o Complex_num 

@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/labirint.dir/main.cpp.o -o labirint 

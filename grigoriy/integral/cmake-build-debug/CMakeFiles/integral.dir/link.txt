@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/integral.dir/main.cpp.o -o integral 

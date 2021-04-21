@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/diff_eq.dir/main.cpp.o -o diff_eq 

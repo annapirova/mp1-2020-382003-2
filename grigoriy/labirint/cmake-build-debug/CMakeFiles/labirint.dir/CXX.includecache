@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/root/CLionProjects/labirint/main.cpp
+iostream
+-
+vector
+-
+utility
+-
+map
+-
+ctime
+-
+cmath
+-
+random
+-
+
