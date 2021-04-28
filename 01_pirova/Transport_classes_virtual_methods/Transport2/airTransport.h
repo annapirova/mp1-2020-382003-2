@@ -2,6 +2,7 @@
 #define __AIR_TRANSPORT__
 
 #include "transport.h"
+#include <iostream>
 
 typedef enum {MILITARY, CIVILIAN} AirType;
 
@@ -16,7 +17,31 @@ public:
   AirTransport(const AirTransport& at);
   ~AirTransport();
   void Info();
-  void Go();
+  void Info(int k) {};
+  void Go() = 0;
+};
+
+
+class Plane : public AirTransport
+{
+public:
+	Plane(AirType t = CIVILIAN, int nE = 2) : AirTransport(t, nE) 
+	{
+		std::cout << "plane constructor\n";
+	}
+
+	Plane(const Plane& at) : AirTransport(at) {};
+
+	~Plane() 
+	{
+		std::cout << "plane destructor\n";
+	};
+
+	void Go()
+	{
+		std::cout << "plane go!\n";
+	}
+
 };
 
 #endif

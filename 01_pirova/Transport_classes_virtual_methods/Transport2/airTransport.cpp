@@ -33,7 +33,7 @@ void AirTransport::Info()
   Transport::Info();
 }
 
-void AirTransport::Go()
-{
-  std::cout << "AirTransport Go\n";
-}
+//void AirTransport::Go()
+//{
+//  std::cout << "AirTransport Go\n";
+//}

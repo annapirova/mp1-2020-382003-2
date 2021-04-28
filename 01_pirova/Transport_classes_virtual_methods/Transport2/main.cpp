@@ -1,6 +1,8 @@
 #include "transport.h"
 #include "landTransport.h"
 #include "airTransport.h"
+#include <iostream>
+
 
 const int n = 5;
 
@@ -12,22 +14,28 @@ void main()
   //tortoise.Info();
 
   LandTransport car(60.0, 4, BLUE, WEELS, 4), car2(car), snowmobile;
-  car.Info();
-  car2.Info();
-  snowmobile.Info();
+//  car.Info();
+//  car2.Info();
+//  snowmobile.Info();
 
-  AirTransport plane(800.0, 120, WHITE, CIVILIAN, 4),
-    helicopter(300.0, 4, GREEN, MILITARY, 1);
+  //AirTransport plane(800.0, 120, WHITE, CIVILIAN, 4),
+  //  helicopter(300.0, 4, GREEN, MILITARY, 1);
+
+  Plane  plane(CIVILIAN, 4), plane2(plane);
 
   Transport** transpTable = new Transport* [n];
+  //transpTable[0] = &plane;
+  //transpTable[1] = &helicopter;
   transpTable[0] = &plane;
-  transpTable[1] = &helicopter;
+  transpTable[1] = &plane2;
   transpTable[2] = &car;
   transpTable[3] = &car2;
   transpTable[4] = &snowmobile;
 
+  std::cout << "****************\n";
   for(int i = 0; i < n; i++)
-    transpTable[i]->Info();
+    transpTable[i]->Go();
+  std::cout << "****************\n";
 
   delete[] transpTable;
 }
