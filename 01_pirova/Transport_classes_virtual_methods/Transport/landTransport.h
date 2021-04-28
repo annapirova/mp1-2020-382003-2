@@ -17,6 +17,8 @@ public:
   ~LandTransport();
   void Info();
   void Go();
+
+  LandTransport& operator=(const LandTransport& lt);
 };
 
 

@@ -9,7 +9,7 @@ AirTransport::AirTransport(AirType t, int nE) : type(t), nEngines(nE)
 }
 
 AirTransport::AirTransport(double v, int nP, ColorType col, AirType t, int nE):
-  Transport(v, nP, col), type(t), nEngines(nE)
+  Transport("plane", v, nP, col), type(t), nEngines(nE)
 {
   std::cout<<"AirTransport Init Constructor\n";
 }

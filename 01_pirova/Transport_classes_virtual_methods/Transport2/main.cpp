@@ -6,7 +6,7 @@
 
 const int n = 5;
 
-void main()
+void main1()
 {
   // нельзя, т.к. Transport стал абстрактным классом  
   //Transport man(5.0, 1), tortoise(0.1, 0, RED);
@@ -38,4 +38,37 @@ void main()
   std::cout << "****************\n";
 
   delete[] transpTable;
+}
+
+void main()
+{
+	LandTransport car(60.0, 4, BLUE, WEELS, 4);
+	Plane  plane(CIVILIAN, 4);
+	Transport* p;
+
+	p = &car;
+	LandTransport* pcar = dynamic_cast<LandTransport*>(p);
+	std::cout << "****************\n";	
+	pcar->Info();
+
+	Plane* pplane = dynamic_cast<Plane*>(p);
+	if (pplane)
+		pplane->Info();
+	else
+		std::cout << "whis is not a plane\n";
+	std::cout << "****************\n";
+
+	pcar = static_cast<LandTransport*>(p);
+	pcar->Info();
+	pplane = static_cast<Plane*>(p);
+	pplane->Info();
+	std::cout << "****************\n";
+
+	LandTransport snowmobile = car;
+	Plane newPlane = plane;
+
+	//snowmobile.Info();
+	//newPlane.Info();
+
+	std::cout << "****************\n";
 }

@@ -42,6 +42,14 @@ public:
 		std::cout << "plane go!\n";
 	}
 
+
+	//Plane& operator=(const Plane& p2)
+	//{
+	//	//Transport::operator=(p2);
+	//	type = p2.type;
+	//	nEngines = p2.nEngines;
+	//	return *this;
+	//}
 };
 
 #endif

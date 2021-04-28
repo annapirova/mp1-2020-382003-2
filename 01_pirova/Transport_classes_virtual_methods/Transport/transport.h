@@ -1,22 +1,24 @@
-#ifndef _TRANSPORT_H_
-#define _TRANSPORT_H_
+#pragma once
 
-typedef enum {RED, GREEN, BLUE, WHITE, BLACK} ColorType;
+#include <string>
+
+enum ColorType {RED, GREEN, BLUE, WHITE, BLACK};
 
 class Transport
 {
 private:
   double velocity;
-protected:
   ColorType color;
-public:
   int nPassengers;
-  
-  Transport(double v = 0, int nP = 0, ColorType col = BLACK);
+protected:
+  std::string name;
+
+public:
+  Transport(std::string _name = "", double v = 0.0, int nP = 0, ColorType col = BLACK);
   Transport(const Transport& tr);
   ~Transport();
   void Info();
   void Go();
+  Transport& operator=(const Transport& t2);
 };
 
-#endif

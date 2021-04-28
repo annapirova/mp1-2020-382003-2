@@ -3,12 +3,13 @@
 
 const char* ToolNames[] = {"weels", "skies", "track"};
 
-LandTransport::LandTransport(ToolType t, int nT): tool(t), nTools(nT) 
+LandTransport::LandTransport(ToolType t, int nT): tool(t), nTools(nT)
 {
+	name = "car";
   std::cout<<"LandTransport Default Constructor\n";
 }
 
-LandTransport::LandTransport(double v, int nP, ColorType col, ToolType t, int nT):Transport(v, nP, col)
+LandTransport::LandTransport(double v, int nP, ColorType col, ToolType t, int nT):Transport("car", v, nP, col)
 {
   tool = t;
   nTools = nT;
@@ -40,3 +41,10 @@ void LandTransport::Go()
   std::cout << "LandTransport Go\n";
 }
 
+LandTransport& LandTransport::operator=(const LandTransport& lt)
+{
+	Transport::operator=(lt);
+	tool = lt.tool;
+	nTools = lt.nTools;
+	return *this;
+}
