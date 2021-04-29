@@ -18,10 +18,13 @@ void main1()
 //  car2.Info();
 //  snowmobile.Info();
 
-  //AirTransport plane(800.0, 120, WHITE, CIVILIAN, 4),
+  //AirTransport airplane(800.0, 120, WHITE, CIVILIAN, 4),
   //  helicopter(300.0, 4, GREEN, MILITARY, 1);
 
   Plane  plane(CIVILIAN, 4), plane2(plane);
+
+  Transport* p = new Plane;
+  delete p;
 
   Transport** transpTable = new Transport* [n];
   //transpTable[0] = &plane;
@@ -47,28 +50,32 @@ void main()
 	Transport* p;
 
 	p = &car;
-	LandTransport* pcar = dynamic_cast<LandTransport*>(p);
-	std::cout << "****************\n";	
-	pcar->Info();
+	//LandTransport* pcar = dynamic_cast<LandTransport*>(p);
+	//std::cout << "****************\n";	
+	//if (pcar)
+	//	pcar->Info();
 
-	Plane* pplane = dynamic_cast<Plane*>(p);
-	if (pplane)
-		pplane->Info();
-	else
-		std::cout << "whis is not a plane\n";
-	std::cout << "****************\n";
+	//Plane* pplane = dynamic_cast<Plane*>(p);
+	//if (pplane)
+	//	pplane->Land();
+	//else
+	//	std::cout << "whis is not a plane\n";
+	//std::cout << "****************\n";
 
+	LandTransport* pcar;
+	Plane* pplane;
 	pcar = static_cast<LandTransport*>(p);
 	pcar->Info();
 	pplane = static_cast<Plane*>(p);
 	pplane->Info();
-	std::cout << "****************\n";
+	pplane->Land();
+	//std::cout << "****************\n";
 
-	LandTransport snowmobile = car;
-	Plane newPlane = plane;
+	//LandTransport snowmobile = car;
+	//Plane newPlane = plane;
 
-	//snowmobile.Info();
-	//newPlane.Info();
+	////snowmobile.Info();
+	////newPlane.Info();
 
-	std::cout << "****************\n";
+	//std::cout << "****************\n";
 }

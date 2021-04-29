@@ -47,10 +47,10 @@ void AirTransport::Info()
   showPassengers();
 }
 
-void AirTransport::Go()
-{
-  std::cout << name << " Go\n";
-}
+//void AirTransport::Go()
+//{
+//  std::cout << name << " Go\n";
+//}
 
 
 void AirTransport::showPassengers()

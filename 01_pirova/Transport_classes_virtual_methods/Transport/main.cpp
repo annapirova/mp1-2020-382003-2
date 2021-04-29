@@ -7,6 +7,10 @@ const int n = 5;
 
 void main()
 {
+	Transport tortoise("tortoise", 0.1, 0, RED), man("man", 5.0, 1);
+	tortoise.Info();
+	man.Info();
+
   LandTransport car(60.0, 4, BLUE, WEELS, 4), car2(car), snowmobile;
   car.Info();
   car2.Info();
@@ -26,21 +30,21 @@ void main()
   for(int i = 0; i < n; i++)
     transpTable[i]->Info();
   std::cout << "****************\n";
-  
-  Transport tortoise("tortoise", 0.1, 0, RED), man("man", 5.0, 1);
-  tortoise = car;
-  tortoise.Info();
+  //
+  //Transport tortoise("tortoise", 0.1, 0, RED), man("man", 5.0, 1);
+  //tortoise = car;
+  ////tortoise.Info();
 
-  //car = man; // нельзя
-  
-  
-  //plane = car; // нельзя
-  plane = helicopter;
-  plane.Info();
+  ////car = man; // нельзя
+  ////
+  ////
+  ////plane = car; // нельзя
+  //plane = helicopter;
+  ////plane.Info();
 
-  car = snowmobile;
-  car.Info();
+  //car = snowmobile;
+  //car.Info();
   std::cout << "****************\n";
 
-  delete[] transpTable;
+  //delete[] transpTable;
 }

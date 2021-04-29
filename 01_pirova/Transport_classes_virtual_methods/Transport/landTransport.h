@@ -17,9 +17,9 @@ public:
   LandTransport(const LandTransport& lt);
   ~LandTransport();
   void Info();
-  void Go();
+  //void Go();
 
- LandTransport& operator=(const LandTransport& lt);
+ //LandTransport& operator=(const LandTransport& lt);
 };
 
 

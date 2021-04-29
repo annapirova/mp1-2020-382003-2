@@ -37,18 +37,18 @@ void LandTransport::Info()
   std::cout<<"LandTransport Info: "<< ToolNames[(int)tool] <<" nTools: " << nTools << "\n"; 
   //Transport::Info();
 }
+//
+//void LandTransport::Go()
+//{
+//  std::cout << "LandTransport Go\n";
+//}
 
-void LandTransport::Go()
-{
-  std::cout << "LandTransport Go\n";
-}
-
-LandTransport& LandTransport::operator=(const LandTransport& lt)
-{
-	Transport::operator=(lt);
-	tool = lt.tool;
-	nTools = lt.nTools;
-	return *this;
-}
+//LandTransport& LandTransport::operator=(const LandTransport& lt)
+//{
+//	Transport::operator=(lt);
+//	tool = lt.tool;
+//	nTools = lt.nTools;
+//	return *this;
+//}
 
 

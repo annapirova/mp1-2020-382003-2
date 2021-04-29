@@ -18,7 +18,7 @@ public:
   AirTransport(const AirTransport& at);
   ~AirTransport();
   void Info();
-  void Go();
+  //void Go();
 
   AirTransport& operator=(const AirTransport& at);
 

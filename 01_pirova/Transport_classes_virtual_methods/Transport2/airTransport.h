@@ -43,6 +43,16 @@ public:
 	}
 
 
+	void Info()
+	{
+		std::cout << "plane info\n";
+	}
+
+	void Land()
+	{
+		std::cout << "plane land\n";
+	}
+
 	//Plane& operator=(const Plane& p2)
 	//{
 	//	//Transport::operator=(p2);
