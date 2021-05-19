@@ -20,7 +20,8 @@ Vector::~Vector()
 Vector Vector::operator+(const Vector& V) const 
 {
     Vector tmp(n);
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) 
+    {
         tmp.Vec[i] = Vec[i] + V.Vec[i];
     }
     return tmp;
@@ -29,15 +30,21 @@ Vector Vector::operator+(const Vector& V) const
 Vector Vector::operator-(const Vector& V) const 
 {
     Vector tmp(n);
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) 
+    {
         tmp.Vec[i] = Vec[i] - V.Vec[i];
     }
     return tmp;
 }
 
-Vector operator*(double var, const Vector& V) 
+Vector Vector::operator*(double var) 
 {
-    return Vector(V * var);
+    Vector tmp(n);
+    for (int i = 0; i < n; i++) 
+    {
+        tmp.Vec[i] = Vec[i] * var;
+    }
+    return tmp;
 }
 
 Vector& Vector::operator+=(const Vector& V) 
