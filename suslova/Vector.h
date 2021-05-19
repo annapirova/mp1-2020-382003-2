@@ -12,8 +12,9 @@ public:
     Vector(const Vector& V);
     ~Vector();
 
-    Vector operator+(const Vector& V) const;
+     Vector operator+(const Vector& V) const;
     Vector operator-(const Vector& V) const;
+    Vector operator*(double var);
     friend Vector operator*(double var, const Vector& V);
     Vector& operator+=(const Vector& V);
     Vector& operator-=(const Vector& V);
