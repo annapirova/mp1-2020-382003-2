@@ -55,7 +55,7 @@ Matrix Matrix::operator+(const Matrix& B) const
     return result;
 }
 
-Matrix Matrix::operator-(const Matrix& B) const 
+Matrix& Matrix::operator-(const Matrix& B) const 
 {
     Matrix result(n, m);
 
@@ -78,8 +78,22 @@ Matrix Matrix::operator*(const Matrix& B) const
     return result;
 }
 
-Matrix& Matrix::operator+=(const Matrix& B) 
+Matrix Matrix::operator*(double var) 
 {
+    Matrix result(n, m);
+    for (int i = 0; i < n; i++) 
+    {
+        for (int j = 0; j < m; j++) 
+        {
+            result.A[i][j] = A[i][j] * var;
+        }
+    }
+    return result;
+}
+
+Matrix Matrix::operator+=(const Matrix& B) 
+{
+    Matrix result(n, m);
     for (int i = 0; i < n; i++) 
     {
         for (int j = 0; j < m; j++) 
@@ -87,7 +101,7 @@ Matrix& Matrix::operator+=(const Matrix& B)
             A[i][j] += B.A[i][j];
         }
     }
-    return *this;
+    return result;
 }
 
 Matrix& Matrix::operator-=(const Matrix& B) 
