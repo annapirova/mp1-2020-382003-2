@@ -9,8 +9,8 @@ class Transport
 private:
   double velocity;
   ColorType color;
+protected:  
   int nPassengers;
-protected:
   std::string name;
 
 public:

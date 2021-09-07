@@ -1,0 +1,36 @@
+class Function
+{
+public:
+virtual double f(x) = 0;
+virtual double pf(x) = 0;
+}
+
+class Parabola: public Function
+{
+public:
+ double f(x) { return x*x-x+1; }
+ double pf(x) { return 2.0*x - 1; }
+}
+
+class Sin: public Function
+{
+public:
+ double f(x) { return sin(x); }
+ double pf(x) { return cos(x); }
+}
+
+class Method
+{
+public:
+virtual double GetNext(x_0, x_prev, Function* func);
+}
+
+class Newton
+{
+public:
+double GetNext(x_0, x_prev, Function* func)
+{
+return x_prev - func->f(x_prev)/func->pf(x_prev);
+}
+}
+
