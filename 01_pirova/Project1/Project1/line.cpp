@@ -36,6 +36,7 @@ Line::Line(int np)
 		points = new point[np];
 	else
 		points = nullptr;
+	std::cout << np << " is alloceted\n";
 }
 
 // {20, 30, 40, 50} n = 4
@@ -137,11 +138,11 @@ std::ostream& operator<<(std::ostream& s, const Line& l2)
 	return s;
 }
 
-ClosedLine::ClosedLine(int np): Line(np + 1)
+ClosedLine::ClosedLine(int np): Line(np + 1), isVisible(false)
 {
 }
 
-ClosedLine::ClosedLine(double* coords, int n) : Line(n / 2 + 1)
+ClosedLine::ClosedLine(double* coords, int n) : Line(n / 2 + 1), isVisible(false)
 {
 	for (int i = 0; i < n; i += 2)
 	{
@@ -152,14 +153,32 @@ ClosedLine::ClosedLine(double* coords, int n) : Line(n / 2 + 1)
 	points[n / 2].y = coords[1];
 }
 
-double ClosedLine::GetP() // периметр
+double Line::GetP() 
 {
 	return 0.0;
 }
 
-// вар 1 - фигура выпуклая, без пересений
-// вар 2 - линии могут пересекаться
 double ClosedLine::GetS()
 {
 	return 0.0;
+}
+
+void ClosedLine::Move(const point& newLeftPoint)
+{
+}
+
+
+Rect::Rect(point leftPoint, point rightPoint) : ClosedLine(4)
+{
+	points[0] = leftPoint;
+	points[1] = point(leftPoint.x, rightPoint.y);
+	points[2] = rightPoint;
+	points[3] = point(rightPoint.x, leftPoint.y);
+	points[4] = points[0];
+	std::cout << "rectangle was created\n";
+}
+
+Triangle::Triangle(point leftPoint, point rightPoint) : ClosedLine(3)
+{
+	std::cout << "triangle was created\n";
 }
