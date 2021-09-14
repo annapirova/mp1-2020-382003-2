@@ -17,6 +17,7 @@ double GetDistance(const point& p1, const point& p2);
 class Line
 {
 protected:
+	int color;
 	int nPoints;
 	point* points;
 public:
@@ -37,16 +38,43 @@ public:
 
 class ClosedLine : public Line
 {
+protected: 
+	int colorFill;
 public:
 	ClosedLine(int np = 0);
 	ClosedLine(double* coords, int n);
-	~ClosedLine() 
+	virtual ~ClosedLine() 
 	{
 		std::cout << "ClosedLine delete\n";
 	};
+
+	virtual void Resize(int side, const point& newPoint) = 0;
+	//{
+	//	std::cout << "ClosedLine resize\n";
+	//};
 
 	double GetP();
 	double GetS();
 };
 
-// сложение двух ClosedLine: 
+class Trap : public ClosedLine
+{
+public:
+	Trap(const point& pLeft, const point& pRight);
+	void Resize(int side, const point& newPoint);
+	virtual ~Trap() 
+	{
+		std::cout << "Trap delete\n";
+	}
+};
+
+class Triangle : public ClosedLine
+{
+public:
+	Triangle(const point& pLeft, const point& pRight);
+	void Resize(int side, const point& newPoint);
+	virtual ~Triangle()
+	{
+		std::cout << "Triangle delete\n";
+	}
+};

@@ -163,3 +163,31 @@ double ClosedLine::GetS()
 {
 	return 0.0;
 }
+
+Trap::Trap(const point& pLeft, const point& pRight) : ClosedLine(4)
+{
+	points[0] = pLeft;
+	points[1].x = pLeft.x + 5.0;
+	points[1].y = pRight.y;
+	points[2] = pRight;
+	points[3].x = pRight.x + 5.0;
+	points[3].y = pLeft.y;
+	std::cout << "trap constructor\n";
+}
+
+
+void Trap::Resize(int side, const point& newPoint)
+{
+	std::cout << "trap resize\n";
+}
+
+Triangle::Triangle(const point& pLeft, const point& pRight) : ClosedLine(3)
+{
+	std::cout << "tringle constructor\n";
+}
+
+
+void Triangle::Resize(int side, const point& newPoint)
+{
+	std::cout << "Triangle resize\n";
+}
