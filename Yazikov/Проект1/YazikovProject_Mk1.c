@@ -1,6 +1,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "locale.h"
+#include <time.h>
 
 int Binar_search(int *A, int n)
 {                                  
@@ -39,16 +40,18 @@ int Linear_search(int *A, int n)
 		return -1;
 }
 
-void Count_sort(int *A, int n, int a, int b)
+void Count_sort(int *A, int n, int a, int b, int *comp, int *assign)
 {
+	int co = 0;
+	int as = 0;
 	int i,j;
-	int *R = malloc((b - a + 1) * sizeof(int));
+	int *R = (int*)malloc((b - a + 1) * sizeof(int));
 	for (i = 0; i < (b - a); i++)
 		R[i] = 0;
 	for (i = 0; i < n; i++)
 	{
 		R[A[i] - a]++;
-		A[i] = 0;
+		A[i] = 0; as++;
 	}
 	j = 0;
 	for (i = 0; i < (b - a); i++)
@@ -57,14 +60,18 @@ void Count_sort(int *A, int n, int a, int b)
 		{
 			A[j] = (i + a);
 			j++;
-			R[i]--;
+			R[i]--; as++;
 		}
 	}
 	free(R);
+	*assign = as;
+	*comp = co;
 }
 
-int* Merge_sort(int *X, int *Y, int a, int b)
+int* Merge_sort(int *X, int *Y, int a, int b, int *comp, int *assign)
 {
+	int co = 0;
+	int as = 0;
 	int mid;
 	if (a == b)
 	{
@@ -72,8 +79,8 @@ int* Merge_sort(int *X, int *Y, int a, int b)
 		return Y;
 	}
 	mid = (a + b) / 2;
-	int *left = Merge_sort(X, Y, a, mid);
-	int *right = Merge_sort(X, Y, mid + 1, b);
+	int *left = Merge_sort(X, Y, a, mid, &co, &as);
+	int *right = Merge_sort(X, Y, mid + 1, b, &co, &as);
 
 	int *target = left == X ? Y : X;
 
@@ -82,51 +89,98 @@ int* Merge_sort(int *X, int *Y, int a, int b)
 	{
 		if (l_cur <= mid && r_cur <= b)
 		{
+			co++;
 			if (left[l_cur] < right[r_cur])
 			{
 				target[i] = left[l_cur];
 				l_cur++;
+				as++;
 			}
 			else
 			{
+				as++;
 				target[i] = right[r_cur];
 				r_cur++;
 			}
 		}
 		else if (l_cur <= mid)
 		{
-			target[i] = left[l_cur];
+			target[i] = left[l_cur]; as++;
 			l_cur++;
 		}
 		else
 		{
 			target[i] = right[r_cur];
-			r_cur++;
+			r_cur++; as++;
 		}
 	}
+	*assign += as;
+	*comp += co;
 	return target;
 }
 
-void SortBubble(int* A, int n)
+//void SortBubble(int* A, int n)
+//{
+//	int tmp, i, j;
+//	char bl;
+//	for (i = 0; i < n; i++)
+//	{
+//		bl = 0;
+//		for (j = 0; j < n - i - 1; j++)
+//		{
+//			if (A[j + 1] < A[j])
+//			{
+//				tmp = A[j + 1];
+//				A[j + 1] = A[j];
+//				A[j] = tmp;
+//				bl = 1;
+//			}
+//		}
+//		if (bl = 0)
+//			break;
+//	}
+//}
+
+void SortBubble(int* A, int n, int *comp, int *assign)
 {
-	int tmp, i, j;
-	char bl;
-	for (i = 0; i < n; i++)
+	int left = 0; 
+	int right = n-1;
+	int bl = 1;
+	int i, sw;
+	int co = 0;
+	int as = 0;
+	while ((right > left) && (bl > 0))
 	{
 		bl = 0;
-		for (j = 0; j < n - i - 1; j++)
+		for (i = left; i < right; i++)
 		{
-			if (A[j + 1] < A[j])
+			if (A[i] > A[i + 1])
 			{
-				tmp = A[j + 1];
-				A[j + 1] = A[j];
-				A[j] = tmp;
+				sw = A[i];
+				A[i] = A[i + 1];
+				A[i + 1] = sw;
 				bl = 1;
+				as++;
 			}
+			co++;
 		}
-		if (bl = 0)
-			break;
+		right--;
+		for (i = right; i > left; i--)
+		{
+			if (A[i - 1] > A[i])
+			{
+				sw = A[i];
+				A[i] = A[i - 1];
+				A[i - 1] = sw;
+				bl = 1;
+				as++;
+			}
+			co++;
+		}
+		left++;
 	}
+	*assign = as;
+	*comp = co;
 }
 
 void ItemList()
@@ -141,25 +195,51 @@ void ItemList()
 	printf("7)Линейный поиск заданного числа\n");
 	printf("8)Бинарный поиск заданного числа\n");
 	printf("9)Проверка\n");
+	printf("10)Результат сортировки\n");
 	printf("0)Выход\n");
 }
 
-int randArray(int B[], int n, int a, int b)
+int randArray(int B[], int n, int *a, int *b)
 {
 	int i, was_filled;
 	was_filled = 0;
 	printf("Введите нижнюю границу\n");
-	scanf_s("%d", &a);
+	scanf_s("%d", a);
 	printf("Введите верхнюю границу\n");
-	scanf_s("%d", &b);
-	if (a <= b)
+	scanf_s("%d", b);
+	if (*a <= *b)
 	{
 		for (i = 0; i < n; i++)
-			B[i] = rand() % (b - a) + a;
+			B[i] = rand() % (*b+1 - *a) + *a;
 		was_filled = 1;
 	}
 	else printf("Верхняя граница не должна быть меньше нижней\n");
 	return was_filled;
+}
+
+int Keyboard_input(int B[], int n)
+{
+	int i;
+	for (i = 0; i < 10; i++)
+	{
+		printf("B[%d]= ", i);
+		scanf_s("%d", &B[i]);
+	}
+	return 1;
+}
+
+void Find_Borders(int B[], int n, int *a, int *b)
+{
+	int l, r, i;
+	l = B[0]; r = B[0];
+	for (i = 1; i < n; i++)
+	{
+		if (l > B[i])
+			l = B[i];
+		if (r < B[i])
+			r = B[i];
+	}
+	*a = l; *b = r+1;
 }
 
 void print(int B[], int n)
@@ -185,30 +265,43 @@ int Check(int *B, int n)
 	return f;
 }
 
-void SortByInserts(int* A, int n)
+void SortByInserts(int* A, int n, int *comp, int *assign)
 {
+	int co = 0;
+	int as = 0;
 	int i, tmp, z;
 	for (i = 1; i < n; i++)
 	{
-		tmp = A[i];
+		tmp = A[i]; as++;
 		z = i;
 		while ((z > 0) && (A[z - 1] > tmp))
 		{
-			A[z] = A[z - 1];
+			co++;
+			A[z] = A[z - 1]; as++;
 			z--;
 		}
-		A[z] = tmp;
+		A[z] = tmp; as++;
 	}
+	*assign = as;
+	*comp = co;
+}
+
+void print_results(int comp, int assign)
+{
+	printf("comparsions = %d\nassigns = %d\n", comp, assign);
 }
 
 void main()
 {
-	int B[10];
-	int Bb[100];
-	int n = 10;
+	int B[15000];
+	int Bb[15000];
+	int n = 15000;
 	int t = 10;
-	int indexInput, wasfound;
+	int comparsions;
+	int assignments;
+	int indexInput, wasfound, sw;
 	int lb = 0, rb = 0;
+	clock_t ttime;
 	setlocale(LC_CTYPE, "Russian");
 	printf("start\n");
 	srand(1000);
@@ -221,8 +314,17 @@ void main()
 		{
 		case 1:
 		{
-			indexInput = randArray(B, n, lb, rb);
-			break;
+			printf("Выбор способа ввода:\n1) Случайная генерация на отрезке\n2) Ввод с клавиатуры\n3) Отмена\n");
+			scanf_s("%d", &sw);
+			if (sw == 1)
+				indexInput = randArray(B, n, &lb, &rb);
+			else
+				if (sw == 2)
+				{
+					indexInput = Keyboard_input(B, n);
+					Find_Borders(B, n, &lb, &rb);
+				}
+				else break;
 		}
 		case 2:
 		{
@@ -235,8 +337,14 @@ void main()
 		{
 			if (indexInput == 1)
 			{
-				SortBubble(B, n);
+				comparsions = 0;
+				assignments = 0;
+				ttime = clock();
+				SortBubble(B, n, &comparsions, &assignments);
+				ttime = clock() - ttime;
 				print(B, n);
+				print_results(comparsions, assignments);
+				printf("Время работы %f секунд\n", (double)ttime / CLOCKS_PER_SEC);
 			}
 			else printf("Массив отсутствует\n");
 			break;
@@ -245,8 +353,12 @@ void main()
 		{
 			if (indexInput == 1)
 			{
-				SortByInserts(B, n);
+				ttime = clock();
+				SortByInserts(B, n, &comparsions, &assignments);
+				ttime = clock() - ttime;
 				print(B, n);
+				print_results(comparsions, assignments);
+				printf("Время работы %f секунд\n", (double)ttime / CLOCKS_PER_SEC);
 			}
 			else printf("Массив отсутствует\n");
 			break;
@@ -255,8 +367,13 @@ void main()
 		{
 			if (indexInput == 1)
 			{
-				Merge_sort(B, Bb, 0, n-1);
+				comparsions = 0; assignments = 0;
+				ttime = clock();
+				Merge_sort(B, Bb, 0, n-1, &comparsions, &assignments);
+				ttime = clock() - ttime;
 				print(B, n);
+				print_results(comparsions, assignments);
+				printf("Время работы %f секунд\n", (double)ttime / CLOCKS_PER_SEC);
 			}
 			else printf("Массив отсутствует\n");
 			break;
@@ -265,8 +382,12 @@ void main()
 		{
 			if (indexInput == 1)
 			{
-				Count_sort(B, n, lb, rb);
+				ttime = clock();
+				Count_sort(B, n, lb, rb, &comparsions, &assignments);
+				ttime = clock() - ttime;
 				print(B, n);
+				print_results(comparsions, assignments);
+				printf("Время работы %f секунд\n", (double)ttime / CLOCKS_PER_SEC);
 			}
 			else printf("Массив отсутствует\n");
 			break;
@@ -305,10 +426,16 @@ void main()
 			{
 				wasfound = Check(B, n);
 				if (wasfound == 1)
-					printf("Массив отсортирован");
-				else printf("Массив не отсортирован");
+					printf("Массив отсортирован\n");
+				else printf("Массив не отсортирован\n");
 			}
 			else printf("Массив отсутствует\n");
+		}
+		case 10:
+		{
+			if (Check(B, n) == 1)
+				print_results(comparsions, assignments);
+			else printf("Массив не отсортирован\n");
 		}
 		}
 	}
